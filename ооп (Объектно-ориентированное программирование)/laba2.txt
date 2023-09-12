@@ -1,0 +1,26 @@
+        /* Задание_1.1 */
+#include <iostream>
+
+using namespace std;
+class Test {
+protected:
+    int W;
+
+public:
+    Test(int w) : W(w) {}
+
+    void Z() {
+        cout << "Это закрытая функция класса Test" << endl;
+    }
+};
+
+int main() {
+    Test myTest(42);
+    myTest.Z();
+    return 0;
+}
+        /* Задание_1.2 */
+        /* Задание_1.3 */
+        /* Задание_2.1 */
+        /* Задание_2.2 */
+        /* Задание_2.3 */
