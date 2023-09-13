@@ -3,7 +3,7 @@
 /*
 var x = 10;
 var y = 15;
-var z = 0;
+var z = 10;
 
 var result = x + y / z;
 
@@ -15,7 +15,7 @@ alert(result);
 /*
 let s1 = 123;
 let s2 = 456;
-let s3 = name;
+let s3 = "name";
 
 var n = 123;
 
