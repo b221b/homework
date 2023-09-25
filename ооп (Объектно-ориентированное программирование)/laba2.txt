@@ -1,26 +1,327 @@
         /* Задание_1.1 */
 #include <iostream>
-
 using namespace std;
+
 class Test {
 protected:
     int W;
 
 public:
-    Test(int w) : W(w) {}
+    Test(int w = 1) {
+        W = w;
+    }
 
     void Z() {
         cout << "Это закрытая функция класса Test" << endl;
     }
+
+    friend void fun(Test* obj);
 };
 
+void fun(Test* obj) {
+    // используем значение поля W объекта obj
+    cout << "Значение поля W: " << obj->W << endl;
+    
+    // вызываем защищенную функцию Z()
+    obj->Z();
+}
+
 int main() {
-    Test myTest(42);
-    myTest.Z();
+    Test obj(5);
+    fun(&obj); // вызываем функцию fun(), передавая ей указатель на объект obj
     return 0;
 }
         /* Задание_1.2 */
+#include <iostream>
+using namespace std;
+
+class Test {
+protected:
+    int W;
+
+public:
+    Test(int w = 1) {
+        W = w;
+    }
+
+    void Z() {
+        cout << "Это закрытая функция класса Test" << endl;
+    }
+
+    friend void fun(Test* obj);
+};
+
+// Следующая функция fun на внешнем уровне выводит на экран значение параметра W и
+// вызывает защищенную функцию Z из класса Test.
+void fun(Test* obj) {
+    // используем значение поля W объекта obj
+    cout << "Значение поля W: " << obj->W << endl;
+
+    // вызываем защищенную функцию Z()
+    obj->Z();
+}
+
+int main() {
+    Test obj(5);
+    fun(&obj); // вызываем функцию fun(), передавая ей указатель на объект obj
+    return 0;
+}
+
         /* Задание_1.3 */
+#include <iostream>
+using namespace std;
+
+class Test {
+protected:
+    int W;
+
+public:
+    Test(int w = 1) {
+        W = w;
+    }
+
+    void Z() {
+        cout << "Это закрытая функция класса Test" << endl;
+    }
+
+    friend void fun(Test* obj);
+};
+
+// Следующая функция fun на внешнем уровне выводит на экран значение параметра W и
+// вызывает защищенную функцию Z из класса Test.
+void fun(Test* obj) {
+    // используем значение поля W объекта obj
+    cout << "Значение поля W: " << obj->W << endl;
+
+    // вызываем защищенную функцию Z()
+    obj->Z();
+}
+
+int main() {
+    Test obj; // описываем переменную класса Test без явной инициализации
+    fun(&obj); // вызываем функцию fun(), передавая ей указатель на объект obj
+    return 0;
+}
         /* Задание_2.1 */
+#include <iostream>
+#include <string>
+#include <ctime>
+
+using namespace std;
+
+class Abonent {
+public:
+    // Конструктор класса Abonent, принимает номер абонента, фамилию и номер телефона
+    Abonent(int number, string surname, string phone_num) 
+        : m_number(number), m_surname(surname), m_phone_num(phone_num) {
+        time_t t = time(nullptr);
+        cout << "Abonent created at " << asctime(localtime(&t));
+    }
+
+    // Деструктор класса Abonent, выводит время уничтожения объекта
+    ~Abonent() {
+        time_t t = time(nullptr);
+        cout << "Abonent destroyed at " << asctime(localtime(&t));
+    }
+
+    // Функция, которая возвращает номер абонента
+    int get_number() const {
+        return m_number;
+    }
+
+    // Функция, которая возвращает фамилию абонента
+    string get_surname() const {
+        return m_surname;
+    }
+
+    // Функция, которая возвращает номер телефона абонента
+    string get_phone_num() const {
+        return m_phone_num;
+    }
+
+private:
+    int m_number;        // Номер абонента
+    string m_surname;    // Фамилия абонента
+    string m_phone_num;  // Номер телефона абонента
+};
+
+int main() {
+    // Создание объекта abonent типа класса Abonent
+    Abonent abonent(12345, "Ivanov", "8-800-555-35-35");
+
+    // Вывод информации об абоненте
+    cout << "Number: " << abonent.get_number() << endl;
+    cout << "Surname: " << abonent.get_surname() << endl;
+    cout << "Phone number: " << abonent.get_phone_num() << endl;
+
+    return 0;
+}
+
         /* Задание_2.2 */
+#include <iostream>
+#include <string>
+#include <ctime>
+#include <vector>
+
+using namespace std;
+
+class Abonent {
+    friend class Notebook; // Объявить класс Notebook другом класса Abonent
+
+public:
+    // Конструктор Abonent
+    Abonent(int number, string surname, string phone_num)
+        : m_number(number), m_surname(surname), m_phone_num(phone_num) {
+        time_t t = time(nullptr);
+        cout << "Абонент создан в " << asctime(localtime(&t));
+    }
+
+    // Деструктор Abonent
+    ~Abonent() {
+        time_t t = time(nullptr);
+        cout << "Абонент уничтожен в " << asctime(localtime(&t));
+    }
+
+    // Функция получения номера абонента
+    int get_number() const {
+        return m_number;
+    }
+
+    // Функция получения фамилии абонента
+    string get_surname() const {
+        return m_surname;
+    }
+
+private:
+    int m_number;         // Номер абонента
+    string m_surname;     // Фамилия абонента
+    string m_phone_num;   // Номер телефона абонента
+};
+
+class Notebook {
+public:
+    // Функция добавления абонента в блокнот
+    void add_abonent(const Abonent &abonent) {
+        m_abonents.push_back(abonent);
+    }
+
+    // Функция изменения номера телефона абонента
+    void change(int abonent_number, const string &new_phone_num) {
+        for (Abonent &abonent : m_abonents) {
+            if (abonent.m_number == abonent_number) {
+                abonent.m_phone_num = new_phone_num;
+                break;
+            }
+        }
+    }
+
+    // Функция отображения информации об абоненте
+    void show(int abonent_number) {
+        for (const Abonent &abonent : m_abonents) {
+            if (abonent.m_number == abonent_number) {
+                cout << "Номер: " << abonent.m_number << endl;
+                cout << "Фамилия: " << abonent.m_surname << endl;
+                cout << "Номер телефона: " << abonent.m_phone_num << endl;
+                break;
+            }
+        }
+    }
+
+private:
+    vector<Abonent> m_abonents; // Вектор для хранения абонентов
+};
+
+int main() {
+    Abonent abonent1(12345, "Иванов", "8-800-555-35-35");
+    Abonent abonent2(67890, "Петров", "8-900-555-45-45");
+
+    Notebook notebook;
+    notebook.add_abonent(abonent1);
+    notebook.add_abonent(abonent2);
+
+    // Вывод информации об abonent1
+    notebook.show(12345);
+
+    // Обновление номера телефона abonent1
+    notebook.change(12345, "8-800-555-35-36");
+
+    // Вывод обновленной информации об abonent1
+    notebook.show(12345);
+
+    return 0;
+}
         /* Задание_2.3 */
+#include <iostream>
+#include <cstring>
+
+using namespace std;
+
+class Abonent {
+private:
+    int number;
+    string name;
+    string phone;
+public:
+    Abonent(int number, string name, string phone);
+    ~Abonent();
+    friend class Notebook;
+};
+
+Abonent::Abonent(int number, string name, string phone) {
+    this->number = number;
+    this->name = name;
+    this->phone = phone;
+    cout << "Constructor called for " << name << endl;
+}
+
+Abonent::~Abonent() {
+    cout << "Destructor called for " << name << endl;
+}
+
+class Notebook {
+private:
+    Abonent* abonents;
+    int size;
+public:
+    Notebook(Abonent* abonents, int size);
+    void change(int number, string newPhone);
+    void show();
+};
+
+Notebook::Notebook(Abonent* abonents, int size) {
+    this->abonents = abonents;
+    this->size = size;
+}
+
+void Notebook::change(int number, string newPhone) {
+    for (int i = 0; i < size; i++) {
+        if (abonents[i].number == number) {
+            abonents[i].phone = newPhone;
+            cout << "Phone number changed for " << abonents[i].name << endl;
+            return;
+        }
+    }
+    cout << "Abonent with number " << number << " not found" << endl;
+}
+
+void Notebook::show() {
+    cout << "Number\tName\tPhone" << endl;
+    for (int i = 0; i < size; i++) {
+        cout << abonents[i].number << "\t" << abonents[i].name << "\t" << abonents[i].phone << endl;
+    }
+}
+
+int main() {
+    Abonent abonents[] = {
+        Abonent(1, "Ivanov", "+79001112233"),
+        Abonent(2, "Petrov", "+79003334455"),
+        Abonent(3, "Sidorov", "+79005556677"),
+        Abonent(4, "Kuznetsov", "+79007778899"),
+        Abonent(5, "Smirnov", "+79001010101")
+    };
+    Notebook notebook(abonents, 5);
+    notebook.show();
+    notebook.change(3, "+79001234567");
+    notebook.show();
+    return 0;
+}
