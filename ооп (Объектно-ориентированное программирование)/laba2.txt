@@ -16,7 +16,7 @@ public:
     }
 
     friend void fun(Test* obj);
-};
+};  
 
 void fun(Test* obj) {
     // используем значение поля W объекта obj
@@ -27,7 +27,7 @@ void fun(Test* obj) {
 }
 
 int main() {
-    Test obj(5);
+    Test obj(1);
     fun(&obj); // вызываем функцию fun(), передавая ей указатель на объект obj
     return 0;
 }
