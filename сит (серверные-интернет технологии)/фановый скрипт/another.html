@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Расписание</title>
+                                <style>
+                                    /*задний фон*/
+                                    body {
+                                        background: linear-gradient(to bottom right, #000000, #ffffff);
+                                        color: #512da8;
+                                        font-family: Arial, sans-serif;
+                                    }
+                                    h1, h2 {
+                                        color: #7e57c2;
+                                        text-align: center;
+                                    }
+                                    .center {
+                                        display: flex;
+                                        justify-content: center;
+                                        align-items: center;
+                                        height: 100vh;
+                                        text-align: center;
+                                    }
+                                    .box {
+                                        border: 1px solid #512da8;
+                                        border-radius: 15px;
+                                        padding: 30px;
+                                        background-color: #ffffff;
+                                        width: 35%;
+                                        word-wrap: break-word;
+                                    }
+                                    select, button, div {
+                                        margin: 10px;
+                                    }
+                                    select, button {
+                                        background-color: #7e57c2;
+                                        color: white;
+                                        border: none;
+                                        padding: 10px;
+                                        text-align: center;
+                                        text-decoration: none;
+                                        display: inline-block;
+                                        font-size: 16px;
+                                        transition-duration: 0.4s;
+                                        cursor: pointer;
+                                    }
+                                    select:hover, button:hover {
+                                        background-color: #512da8;
+                                        color: white;
+                                    }
+
+                                    #clearButton {
+                                        margin-left: 10px;
+                                    }
+                                    /*задний фон*/
+
+                                    /*кнопка по страницам*/
+                                    .top-right-button {
+                                    position: fixed;
+                                    top: 20px;
+                                    right: 20px;
+                                    background-color: #7e57c2; /* Medium-Fair purple select and button background */
+                                    color: white;
+                                    border: none;
+                                    padding: 10px;
+                                    text-align: center;
+                                    text-decoration: none;
+                                    display: inline-block;
+                                    font-size: 16px;
+                                    transition-duration: 0.4s;
+                                    cursor: pointer;
+                                    }
+                                    .top-right-button:hover {
+                                    background-color: #512da8; /* Darker purple select and button on hover */
+                                    color: white;
+                                    }
+                                    /*кнопка по страницам*/
+                                </style>
+</head>
+<body>
+  <div class="center">
+    <div class="box">
+        <h1>Выберите день недели</h1>
+        <select id="weekday">
+            <option value="0">Понедельник</option>
+            <option value="1">Вторник</option>
+            <option value="2">Среда</option>
+            <option value="3">Четверг</option>
+            <option value="4">Пятница</option>
+            <option value="5">Суббота</option>
+            <option value="6">Воскресенье</option>
+        </select>
+        <button onclick="showSchedule()">Показать расписание</button>
+        <button id="clearButton" onclick="clearFields()">Очистить</button>
+        <h2>Расписание:</h2>
+        <div id="subjects"></div>
+        <h2>Реакция:</h2>
+        <div id="response"></div>
+        
+                        <script> 
+
+                            const Weekday = { 
+                                Monday: 0, 
+                                Tuesday: 1, 
+                                Wednesday: 2, 
+                                Thursday: 3, 
+                                Friday: 4, 
+                                Saturday: 5, 
+                                Sunday: 6 
+                            };
+                            
+                            function getSubjectForWeekday(weekday) { 
+                                switch (weekday) { 
+                                case Weekday.Monday: 
+                                case Weekday.Saturday: 
+                                case Weekday.Sunday: return "выходной"; 
+                                case Weekday.Tuesday: return "ООП, Каныгин, ООП лекция, Барашко лекция"; 
+                                case Weekday.Wednesday: return "JS, Физра, Моделирование, Барашко"; 
+                                case Weekday.Thursday: return "Каныгин лекция, УД лекция"; 
+                                case Weekday.Friday: return "УД, ООП, JS, Моделирование"; 
+                                default: return "Некорректный день недели"; } 
+                            }
+                            
+                            function getImgForSubject(subject) {
+                                if (subject === "выходной") return "";
+                                else if (subject.includes("УД")) return "";
+                                else if (subject.includes("УД лекция")) return "";
+                                else if (subject.includes("Физра")) return "";
+                                else return "";
+                            }
+                            
+                            function getResponseForSubject(subject) { 
+                                if (subject === "выходной") return "ура, можно зависать дома"; 
+                                else if (subject.includes("УД")) return "можно с кайфом идти"; 
+                                else if (subject.includes("УД лекция")) return "можно с кайфом идти"; 
+                                else if (subject.includes("Физра")) return "БЛЯЯЯТЬ ЕБАТЬ АХУЕННО, ИДЕМ КАЧАТЬ СПИНУ"; 
+                                else return "блять нахуй я сюда пришел"; 
+                            }
+                            
+                            function showSchedule() { 
+                                const ddl = document.getElementById("weekday"); 
+                                const selectedDay = parseInt(ddl.options[ddl.selectedIndex].value); 
+                                const subject = getSubjectForWeekday(selectedDay); 
+                                const response = getResponseForSubject(subject);
+                                const img = getImgForSubject(subject);
+                                
+                                document.getElementById("subjects").textContent = subject; 
+                                document.getElementById("response").textContent = response;
+                                document.getElementById("subjectImage").src = img; 
+                            } 
+                            
+                            function clearFields() { 
+                                document.getElementById("subjects").textContent = ''; 
+                                document.getElementById("response").textContent = '';
+                                document.getElementById("subjectImage").src = ""; 
+                            }
+                            
+                            </script>
+    </div>
+    </div>
+        <a href="index.html" class="top-right-button" style="text-decoration: none; color: #ffffff;">Возврат на индекс страницу</a>
+  </div>
+</body>
+</html>

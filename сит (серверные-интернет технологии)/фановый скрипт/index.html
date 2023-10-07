@@ -3,6 +3,7 @@
 <head>
     <title>Расписание</title>
                                 <style>
+                                    /*задний фон*/
                                     body {
                                     background: linear-gradient(to bottom right, #001f3f, #512da8, #ff6363, #ffc300, #d4af37, #808080);
                                     color: #512da8;
@@ -50,6 +51,29 @@
                                     #clearButton {
                                     margin-left: 10px;
                                     }
+                                    /*задний фон*/
+
+                                    /*кнопка по страницам*/
+                                    .top-right-button {
+                                    position: fixed;
+                                    top: 20px;
+                                    right: 20px;
+                                    background-color: #7e57c2; /* Medium-Fair purple select and button background */
+                                    color: white;
+                                    border: none;
+                                    padding: 10px;
+                                    text-align: center;
+                                    text-decoration: none;
+                                    display: inline-block;
+                                    font-size: 16px;
+                                    transition-duration: 0.4s;
+                                    cursor: pointer;
+                                    }
+                                    .top-right-button:hover {
+                                    background-color: #512da8; /* Darker purple select and button on hover */
+                                    color: white;
+                                    }
+                                    /*кнопка по страницам*/
                                 </style>
 </head>
 <body>
@@ -130,7 +154,6 @@
                                             document.getElementById("response").textContent = '';
                                         }
                                 </script>
-    </div>
-  </div>
+        <a href="another.html" class="top-right-button" onclick="someFunction()" style="text-decoration: none; color: #ffffff;">Еще один скриптич (для фанов Калайды), остальным вход воспрещен!!!</a>
 </body>
 </html>
