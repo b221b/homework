@@ -74,11 +74,34 @@
                                     color: white;
                                     }
                                     /*кнопка по страницам*/
+
+                                    /*левая кнопка*/
+                                    .top-left-button {
+                                    position: fixed;
+                                    top: 20px;
+                                    left: 0px;
+                                    background-color: #777777; /* Medium-Fair purple select and button background */
+                                    color: white;
+                                    border: none;
+                                    padding: 10px;
+                                    text-align: center;
+                                    text-decoration: none;
+                                    display: inline-block;
+                                    font-size: 16px;
+                                    transition-duration: 0.4s;
+                                    cursor: pointer;
+                                    }
+                                    .top-left-button:hover {
+                                    background-color: #313131; /* Darker purple select and button on hover */
+                                    color: white;
+                                    }
+                                    /*левая кнопка*/
                                 </style>
 </head>
 <body>
   <div class="center">
     <div class="box">
+        <img src="123.svg" width="100">
         <h1>Выберите день недели</h1>
         <select id="weekday">
             <option value="0">Понедельник</option>
@@ -155,5 +178,5 @@
                                         }
                                 </script>
         <a href="another.html" class="top-right-button" onclick="someFunction()" style="text-decoration: none; color: #ffffff;">Еще один скриптич (для фанов Калайды), остальным вход воспрещен!!!</a>
-</body>
+    </body>
 </html>
