@@ -812,3 +812,103 @@ int main() {
 
     return 0;
 }
+
+                                                                ВРОДЕ ТО ЧТО НУЖНО, ОТ И ДО 
+#include <iostream>
+#include <chrono> // Для измерения времени
+using namespace std;
+
+class Goods {
+private:
+    string name;
+    string date;
+    float price;
+    int quantity;
+    int invoiceNumber;
+
+public:
+    Goods() {
+        auto now = chrono::system_clock::now();
+        time_t tt = chrono::system_clock::to_time_t(now);
+        cout << "Вызван конструктор Goods по умолчанию: " << ctime(&tt) << endl;
+    }
+
+    Goods(const string& name, const string& date, float price, int quantity, int invoiceNumber)
+        : name(name), date(date), price(price), quantity(quantity), invoiceNumber(invoiceNumber) {
+        auto now = chrono::system_clock::now();
+        time_t tt = chrono::system_clock::to_time_t(now);
+        cout << "Вызван конструктор Goods с параметрами: " << ctime(&tt) << endl;
+    }
+
+    // Конструктор копирования
+    Goods(const Goods& other) {
+        name = other.name;
+        date = other.date;
+        price = other.price;
+        quantity = other.quantity;
+        invoiceNumber = other.invoiceNumber;
+        auto now = chrono::system_clock::now();
+        time_t tt = chrono::system_clock::to_time_t(now);
+        cout << "Вызван конструктор копирования Goods: " << ctime(&tt) << endl;
+    }
+
+    // Оператор присваивания
+    Goods& operator=(const Goods& other) {
+        if (this == &other)
+            return *this;
+
+        name = other.name;
+        date = other.date;
+        price = other.price;
+        quantity = other.quantity;
+        invoiceNumber = other.invoiceNumber;
+        auto now = chrono::system_clock::now();
+        time_t tt = chrono::system_clock::to_time_t(now);
+        cout << "Вызвана операция присваивания Goods: " << ctime(&tt) << endl;
+
+        return *this;
+    }
+
+    ~Goods() {
+        auto now = chrono::system_clock::now();
+        time_t tt = chrono::system_clock::to_time_t(now);
+        cout << "Вызван деструктор Goods: " << ctime(&tt) << endl;
+    }
+
+    void editInfo(const string& newName, const string& newDate, float newPrice, int newQuantity, int newInvoiceNumber) {
+        name = newName;
+        date = newDate;
+        price = newPrice;
+        quantity = newQuantity;
+        invoiceNumber = newInvoiceNumber;
+    }
+
+    float calculateTotalCost() {
+        return price * quantity;
+    }
+};
+
+Goods tovar(Goods s) {
+    return s;
+}
+
+int main() {
+    cout << "Вход в функцию main()" << endl;
+    Goods g1;
+    Goods g2("Товар 1", "01.10.2023", 10.99, 5, 12345); 
+
+    Goods g3 = g2;
+    Goods g4(g3);
+
+    g1.editInfo("Новое имя", "02.10.2023", 15.99, 3, 54321); 
+
+    float totalCost = g1.calculateTotalCost();
+
+    Goods g5 = tovar(g1); 
+
+    g3 = g1; // Здесь срабатывает оператор присваивания
+
+    cout << "Выход из функции main()" << endl;
+
+    return 0;
+}
