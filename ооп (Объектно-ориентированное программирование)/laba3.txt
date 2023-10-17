@@ -897,14 +897,14 @@ int main() {
     Goods g1;
     Goods g2("Товар 1", "01.10.2023", 10.99, 5, 12345); 
 
-    Goods g3 = g2;
-    Goods g4(g3);
+    Goods g3 = g2; 
+    Goods g4(g3); 
 
     g1.editInfo("Новое имя", "02.10.2023", 15.99, 3, 54321); 
 
     float totalCost = g1.calculateTotalCost();
 
-    Goods g5 = tovar(g1); 
+    Goods g5 = tovar(g1); // Здесь аргумент функции копируется
 
     g3 = g1; // Здесь срабатывает оператор присваивания
 
