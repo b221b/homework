@@ -813,7 +813,7 @@ int main() {
     return 0;
 }
 
-                                                                ВРОДЕ ТО ЧТО НУЖНО, ОТ И ДО 
+                                                              ВРОДЕ ТО ЧТО НУЖНО, ОТ И ДО 
 #include <iostream>
 #include <chrono> // Для измерения времени
 using namespace std;
