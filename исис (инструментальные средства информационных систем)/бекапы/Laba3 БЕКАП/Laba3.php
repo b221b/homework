@@ -1,83 +1,87 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
     <title>PHP Database CRUD Interface</title>
     <style>
         /* Adding a smooth font and a bit margin for the body */
-        body {
-            font-family: Arial, sans-serif; 
-            margin: 10px;
-        }
+    body {
+        font-family: Arial, sans-serif; 
+        margin: 10px;
+    }
         
-        /* Styling the table */
-        table {
-            border-collapse: collapse;
-            width: 100%;
-            margin-bottom: 20px;
-            font-size: 0.9em;
-            color: #333;
-        }
+    /* Styling the table */
+    .table {
+        border-collapse: collapse;
+        width: 70%;
+        margin-bottom: 20px;
+        font-size: 0.9em;
+        color: #333;
+    }
+      
+    /* Making the borders a bit thinner and a lighter color */
+    .table,
+    .table th,
+    .table td {
+        border: 1px solid #ddd;
+        padding: 10px;
+    }
+
+    /* Changing the background color of the table headings, and making the text a bit larger and bold */
+    .table th {
+        background-color: #f2f2f2;
+        color: #111;
+        text-transform: uppercase;
+        font-weight: bold;
+    }
+
+    /* Adding a hover effect to rows */
+    .table tr:hover {
+        background-color: #f2f2f2;
+    }
+
+    /* Styling the links */
+    a {
+        color: #0066cc;
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
         
-        /* Making the borders a bit thinner and a lighter color */
-        table, th, td {
-            border: 1px solid #ddd;
-            padding: 10px;
-        }
-        
-        /* Changing the background color of the table headings, and making the text a bit larger and bold */
-        th {
-            background-color: #f2f2f2;
-            color: #111;
-            text-transform: uppercase;
-            font-weight: bold;
-        }
+    /* Adding a bit of margin to the form, and aligning text to the right (looks better with the form inputs) */
+    form {
+        margin-top: 20px;
+        text-align: right;
+    }
 
-        /* Adding a hover effect to rows */
-        tr:hover {
-            background-color: #f2f2f2;
-        }
+    /* Styling the labels */
+    label {
+        padding: 10px;
+        display: inline-block;
+        width: 100px;
+    }
 
-        /* Styling the links */
-        a {
-            color: #0066cc;
-            text-decoration: none;
-        }
+    /* Styling the inputs */
+    input[type="text"] {
+        padding: 5px;
+        width: 200px;
+        margin-bottom: 10px;
+    }
 
-        a:hover {
-            text-decoration: underline;
-        }
-        
-        /* Adding a bit of margin to the form, and aligning text to the right (looks better with the form inputs) */
-        form {
-            margin-top: 20px;
-            text-align: right;
-        }
+    input[type="submit"] {
+        padding: 5px 10px;
+        background-color: #0066cc;
+        border: none;
+        color: #fff;
+        cursor: pointer;
+    }
 
-        /* Styling the labels */
-        label {
-            padding: 10px;
-            display: inline-block;
-            width: 100px;
-        }
-
-        /* Styling the inputs */
-        input[type="text"] {
-            padding: 5px;
-            width: 200px;
-            margin-bottom: 10px;
-        }
-
-        input[type="submit"] {
-            padding: 5px 10px;
-            background-color: #0066cc;
-            border: none;
-            color: #fff;
-            cursor: pointer;
-        }
-
-        input[type="submit"]:hover {
-            background-color: #004d99;
-        }
+    input[type="submit"]:hover {
+        background-color: #004d99;
+    }
     </style>
 </head>
 <body>
@@ -118,7 +122,7 @@
         $result = $conn->query($sql);
     
         if ($result->num_rows > 0) {
-            echo "<table>";
+            echo "<table class='table'>";
             echo "<tr>";
             echo "<th>ID</th>";
             echo "<th>Name Firma</th>";
@@ -160,7 +164,8 @@
         $result = $conn->query($sql);
     
         if ($result->num_rows > 0) {
-            echo "<table>";
+            echo "<table class='table'>";
+
             echo "<tr>";
             echo "<th>ID</th>";
             echo "<th>Model Name</th>";
@@ -205,7 +210,8 @@
         $result = $conn->query($sql);
     
         if ($result->num_rows > 0) {
-            echo "<table>";
+            echo "<table class='table'>";
+
             echo "<tr>";
             echo "<th>ID</th>";
             echo "<th>FIO</th>";
@@ -246,7 +252,8 @@
         $result = $conn->query($sql);
     
         if ($result->num_rows > 0) {
-            echo "<table>";
+            echo "<table class='table'>";
+
             echo "<tr>";
             echo "<th>ID</th>";
             echo "<th>year start</th>";
@@ -285,7 +292,8 @@
         $result = $conn->query($sql);
     
         if ($result->num_rows > 0) {
-            echo "<table>";
+            echo "<table class='table'>";
+
             echo "<tr>";
             echo "<th>ID model</th>";
             echo "<th>ID client</th>";
