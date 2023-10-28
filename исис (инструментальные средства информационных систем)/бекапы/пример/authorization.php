@@ -12,7 +12,9 @@ if (mysqli_num_rows($query) == 1) {
 } else {
     echo ("Ошибка: Данный логин или пароль неправильны.");
 }
+?>
 
+<?php
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $_POST['username'];
     $password = $_POST['password'];
@@ -28,4 +30,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header('Location: user.php');
         exit();
     }
-?>
+    ?>

@@ -1,59 +1,47 @@
-<html>
+        <?php
+        session_start();
+      //  if ($_SESSION['user']) {
+      //      header('Location: profile.php');
+      //  }
+        ?>
+
+<!doctype html>
+<html lang="en">
 
 <head>
-    <title>Регистрация</title>
-    <script>
-        function validateForm() {
-            var login = document.forms["registrationForm"]["login"].value;
-            var password = document.forms["registrationForm"]["password"].value;
-
-            // Проведите необходимую валидацию для полей логина и пароля
-            // Например, проверка на длину, наличие обязательных символов и т.д.
-
-            if (login === "") {
-                alert("Пожалуйста, введите логин.");
-                return false;
-            }
-
-            if (password === "") {
-                alert("Пожалуйста, введите пароль.");
-                return false;
-            }
-        }
-    </script>
+    <meta charset="UTF-8">
+    <title>Авторизация и регистрация</title>
+    <link rel="stylesheet" href="assets/css/main.css">
 </head>
 
 <body>
-    <?php
-    // вся процедура работает на сессиях. Именно в ней хранятся данные пользователя, пока он находится на сайте. Очень важно запустить их в  самом начале странички!!!
-    session_start();
-    include("bd.php");
-    ?>
-    <h2>Регистрация</h2>
-    <form name="registrationForm" action="save_user.php" method="post" onsubmit="return validateForm()">
-        <!--**** save_user.php - это адрес обработчика.  То есть, после нажатия на кнопку "Зарегистрироваться", данные из полей  отправятся на страничку save_user.php методом "post" ***** -->
-        <p>
-            <label>Ваш логин:<br></label>
-            <input name="login" type="text" size="20" maxlength="150">
-        </p>
-        <!--**** В текстовое поле (name="login" type="text") пользователь вводит свой логин ***** -->
-        <p>
-            <label>Ваш пароль:<br></label>
-            <input name="password" type="password" size="20" maxlength="150">
-        </p>
-        <!--**** В поле для паролей (name="password" type="password") пользователь вводит свой пароль ***** -->
-        <p>
-            <label>
-                <input type="checkbox" name="remember"> Запомнить меня
-            </label>
-        </p>
-        <p>
-            <input type="submit" name="submit" value="Зарегистрироваться">
-            <!--**** Кнопочка (type="submit") отправляет данные на страничку save_user.php ***** -->
-        </p>
-        
 
+    <!-- Форма регистрации -->
+
+    <form action="vendor/signup.php" method="post">
+
+        <label>Логин</label>
+        <input type="text" name="login" placeholder="Введите свой логин">
+
+        <label>Пароль</label>
+        <input type="password" name="password" placeholder="Введите пароль">
+
+        <label>Подтверждение пароля</label>
+        <input type="password" name="password_confirm" placeholder="Подтвердите пароль">
+
+        <button type="submit">Войти</button>
+        <p>
+            У вас уже есть аккаунт? - <a href="index.php">авторизируйтесь</a>!
+        </p>
+        <?php
+        
+        if ($_SESSION['message'] = 'Неверный логин или пароль') {
+            echo '<p class="msg"> ' . $_SESSION['message'] . ' </p>';
+        }
+        unset($_SESSION['message']);
+        ?>
     </form>
+
 </body>
 
 </html>
