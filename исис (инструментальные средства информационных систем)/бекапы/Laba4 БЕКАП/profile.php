@@ -37,9 +37,9 @@ if (!$_SESSION['user']) {
     <!-- Профиль -->
     <div class="box">
         <form>
-            <img src="uploads/ava.jpg" width="250" height="250"> <br>
+            <img src="uploads/chel.jpg" width="250" height="250">
             Логин:<h2 style="margin: 10px 0;"><?= $_SESSION['user']['login'] ?></h2>
-            ID Вашей Роли: <br> <a href="role.html"><?= $_SESSION['user']['role_id'] ?></a>
+            ID Вашей Роли: <br><br> <a href="role.html"><?= $_SESSION['user']['role_id'] ?></a>
 
             ↑ <br>
             Нажми сюда и узнаешь <br> значение роли
@@ -111,55 +111,11 @@ if (!$_SESSION['user']) {
 
 
 
-
-    <?php
-    if (isset($_SESSION['user']) && $_SESSION['user']['role_id'] == 2) {
-        // Устанавливаем параметры подключения к базе данных
-        $dbHost = 'localhost';
-        $dbUsername = 'root';
-        $dbPassword = '';
-        $dbName = 'komercheskaya firma2';
-
-        // Создаем подключение к базе данных
-        $conn = new mysqli($dbHost, $dbUsername, $dbPassword, $dbName);
-
-        // Проверяем подключение
-        if ($conn->connect_error) {
-            die("Ошибка подключения к базе данных: " . $conn->connect_error);
-        }
-
-        // Получаем логин текущего пользователя
-        $login = $_SESSION['user']['login'];
-
-        // Обновляем last_visit и visit_count
-        $currentDate = date('Y-m-d H:i:s');
-        $updateQuery = "UPDATE users SET last_visit = '$currentDate', visit_count = visit_count + 1 WHERE login = '$login'";
-
-        if ($conn->query($updateQuery) === TRUE) {
-            // Выполните дополнительный запрос для извлечения значений last_visit и visit_count
-            $selectQuery = "SELECT last_visit, visit_count FROM users WHERE login = '$login'";
-            $result = $conn->query($selectQuery);
-
-            if ($result->num_rows > 0) {
-                $row = $result->fetch_assoc();
-                echo "Последнее посещение: " . $row['last_visit'] . "<br>";
-                echo "Вы зашли в " . $row['visit_count'] . " раз";
-            } else {
-                echo "Ошибка при извлечении данных: " . $conn->error;
-            }
-        } else {
-            echo "Ошибка при обновлении данных: " . $conn->error;
-        }
-
-        // Закрываем подключение
-        $conn->close();
-    } else {
-        echo "Функция записи посещений только для операторов";
-    }
-    ?>
+    
 
 
-<br><br><br><br><br><br>
+
+
 
 
 

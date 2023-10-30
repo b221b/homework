@@ -92,7 +92,7 @@
     $servername = "localhost";
     $username = "root";
     $password = "";
-    $database = "Komercheskaya firma2";
+    $database = "Komercheskaya firma";
 
     $conn = new mysqli($servername, $username, $password, $database);
 
@@ -117,10 +117,11 @@
     }
 
     // Функция для отображения данных из таблицы
-    //Модели
-    function displayDataUsers()
+
+    //Клиенты
+    function displayDataClients()
     {
-        $table = 'Users';
+        $table = 'Clients';
         $sql = "SELECT * FROM $table";
         global $conn;
         $result = $conn->query($sql);
@@ -129,22 +130,22 @@
             echo "<table class='table'>";
 
             echo "<tr>";
-            echo "<th>ID</th>";
-            echo "<th>login</th>";
-            echo "<th>password</th>";
-            echo "<th>role_id</th>";
-            echo "<th>comment</th>";
+            echo "<th>FIO</th>";
+            echo "<th>Dogovor number</th>";
+            echo "<th>Buy Date</th>";
+            echo "<th>Phone</th>";
+            echo "<th>Address</th>";
             echo "<th>Actions</th>";
             echo "</tr>";
 
             while ($row = $result->fetch_assoc()) {
                 echo "<tr>";
-                echo "<td>" . $row["id"] . "</td>";
-                echo "<td>" . $row["login"] . "</td>";
-                echo "<td>" . $row["password"] . "</td>";
-                echo "<td>" . $row["role_id"] . "</td>";
-                echo "<td>" . $row["comment"] . "</td>";
-                echo "<td><a href='edit.php?table=$table&id=" . $row["id"] . "'>Edit</a> | <a href='delete.php?table=$table&id=" . $row["id"] . "'>Delete</a> </td>";
+                echo "<td>" . $row["FIO"] . "</td>";
+                echo "<td>" . $row["dogovor_number"] . "</td>";
+                echo "<td>" . $row["buy_date"] . "</td>";
+                echo "<td>" . $row["phone"] . "</td>";
+                echo "<td>" . $row["address"] . "</td>";
+                echo "<td><a href='edit.php?table=$table&id=" . $row["id"] . "'>Edit</a> | <a href='delete.php?table=$table&id=" . $row["id"] . "'>Delete</a></td>";
                 echo "</tr>";
             }
 
@@ -154,23 +155,22 @@
         }
     }
 
-    // Отображение данных таблицы 'models'
-    echo "<h2>Зарегистрированные пользователи сайта:</h2>";
-    displayDataUsers('users');
+    // Отображение данных таблицы 'clients'
+    echo "<h2>Clients</h2>";
+    displayDataClients('clients');
 
-    $table = 'Users';
+    $table = 'clients';
     echo "<a href='create.php?table=$table' style='display: inline-block; width: 150px; height: 50px; background-color: #ccc; text-align: center; line-height: 50px; border-radius: 5px;'>Добавить запись</a>";
 
-    
+
+
+
+
 
     $conn->close();
     ?>
-<br><br>
-<?php
-echo "<a href='profile.php?=' style='display: inline-block; width: 150px; height: 50px; background-color: #ccc; text-align: center; line-height: 50px; border-radius: 5px;'>Профиль</a>";
-?>
-
-
+    
+    </form>
 </body>
 
 </html>

@@ -161,14 +161,10 @@
     $table = 'Users';
     echo "<a href='create.php?table=$table' style='display: inline-block; width: 150px; height: 50px; background-color: #ccc; text-align: center; line-height: 50px; border-radius: 5px;'>Добавить запись</a>";
 
-    
 
     $conn->close();
     ?>
-<br><br>
-<?php
-echo "<a href='profile.php?=' style='display: inline-block; width: 150px; height: 50px; background-color: #ccc; text-align: center; line-height: 50px; border-radius: 5px;'>Профиль</a>";
-?>
+
 
 
 </body>

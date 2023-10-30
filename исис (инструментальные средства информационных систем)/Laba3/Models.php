@@ -129,14 +129,14 @@
             echo "<table class='table'>";
 
             echo "<tr>";
-            echo "<th>Model Name</th>";
-            echo "<th>Color</th>";
-            echo "<th>Obivka</th>";
-            echo "<th>Engine Power</th>";
-            echo "<th>Door Number</th>";
-            echo "<th>Korobka Peredach</th>";
-            echo "<th>Nomer Postavshika</th>";
-            echo "<th>Actions</th>";
+            echo "<th>Название модели</th>";
+            echo "<th>Цвет</th>";
+            echo "<th>Обивка</th>";
+            echo "<th>Мощность двигателя</th>";
+            echo "<th>Кол-во дверей</th>";
+            echo "<th>Коробка передач</th>";
+            echo "<th>номер поставщика</th>";
+            echo "<th>Возможность</th>";
             echo "</tr>";
 
             while ($row = $result->fetch_assoc()) {

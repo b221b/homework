@@ -47,7 +47,7 @@
 
 
         .blubtn {
-            width: 155px;
+            width: 150px;
             text-align: center;
             display: block;
             font-family: arial;
@@ -96,12 +96,12 @@
         <div class="box">
             <h2>Выберите таблицу:</h2>
             <div class="button-container">
-                <button class="blubtn" onclick="location.href='models.php'">Модели</button>
-                <button class="blubtn" onclick="location.href='Clients.php'">Клиенты</button>
+                <button class="blubtn" onclick="location.href='models.php'">Models</button>
+                <button class="blubtn" onclick="location.href='Clients.php'">Clients</button>
             </div>
             <div class="button-container">
-                <button class="blubtn" onclick="location.href='Postavshiki.php'">Поставщики</button>
-                <button class="blubtn" onclick="location.href='price_list.php'">Прайс лист</button>
+                <button class="blubtn" onclick="location.href='Postavshiki.php'">Postavshiki</button>
+                <button class="blubtn" onclick="location.href='price_list.php'">Price list</button>
             </div>
         </div>
     </div>
