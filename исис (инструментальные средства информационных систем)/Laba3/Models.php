@@ -159,7 +159,7 @@
     }
 
     // Отображение данных таблицы 'models'
-    echo "<h2>Models</h2>";
+    echo "<h2>Модели машин</h2>";
     displayDataModels('models');
 
     $table = 'models';
