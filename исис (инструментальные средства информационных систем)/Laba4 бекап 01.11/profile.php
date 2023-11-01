@@ -96,7 +96,7 @@ if (!$_SESSION['user']) {
     <?php
     // Проверяем, является ли текущий пользователь оператором или администратором
     $userRoleID = $_SESSION['user']['role_id'];
-    $allowedRoles = [1, 2, 3];
+    $allowedRoles = [1];
     ?>
 
     <form method="POST" action="обработчикСообщений.php">
