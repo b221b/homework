@@ -5,7 +5,7 @@
         //  }
         ?>
 
-        <br><br><br><br><br><br><br>
+        <br><br><br><br><br><br><br><br><br><br>
 
         <!doctype html>
         <html lang="en">
@@ -24,9 +24,6 @@
 
                 <label>Логин</label>
                 <input type="text" name="login" placeholder="Введите свой логин">
-
-                <label>Почта</label>
-                <input type="text" name="email" placeholder="Введите свою почту">
 
                 <label>Пароль</label>
                 <input type="password" name="password" placeholder="Введите пароль">

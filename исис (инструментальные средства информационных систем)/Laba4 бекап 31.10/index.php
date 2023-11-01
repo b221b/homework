@@ -38,9 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 ?>
-
-<br><br><br><br><br><br><br>
-
+<br><br><br><br><br><br><br><br><br><br>
 <!doctype html>
 <html lang="en">
 
@@ -84,10 +82,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <p>
             У вас нет аккаунта? - <a href="register.php">зарегистрируйтесь</a>!
-        </p>
-
-        <p>
-            Забыли пароль? - <a href="reset/reset_password_form.php">восстановить</a>
         </p>
 
         <?php

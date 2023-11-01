@@ -92,7 +92,7 @@
     $servername = "localhost";
     $username = "root";
     $password = "";
-    $database = "Komercheskaya firma";
+    $database = "Komercheskaya firma2";
 
     $conn = new mysqli($servername, $username, $password, $database);
 
@@ -118,9 +118,9 @@
 
     // Функция для отображения данных из таблицы
     //Модели
-    function displayDataModels()
+    function displayDataUsers()
     {
-        $table = 'Models';
+        $table = 'Users';
         $sql = "SELECT * FROM $table";
         global $conn;
         $result = $conn->query($sql);
@@ -129,26 +129,22 @@
             echo "<table class='table'>";
 
             echo "<tr>";
-            echo "<th>Название модели</th>";
-            echo "<th>Цвет</th>";
-            echo "<th>Обивка</th>";
-            echo "<th>Мощность двигателя</th>";
-            echo "<th>Кол-во дверей</th>";
-            echo "<th>Коробка передач</th>";
-            echo "<th>номер поставщика</th>";
-            echo "<th>Действия</th>";
+            echo "<th>ID</th>";
+            echo "<th>login</th>";
+            echo "<th>password</th>";
+            echo "<th>role_id</th>";
+            echo "<th>comment</th>";
+            echo "<th>Actions</th>";
             echo "</tr>";
 
             while ($row = $result->fetch_assoc()) {
                 echo "<tr>";
-                echo "<td>" . $row["model_name"] . "</td>";
-                echo "<td>" . $row["color"] . "</td>";
-                echo "<td>" . $row["obivka"] . "</td>";
-                echo "<td>" . $row["engine_power"] . "</td>";
-                echo "<td>" . $row["door_number"] . "</td>";
-                echo "<td>" . $row["korobka_peredach"] . "</td>";
-                echo "<td>" . $row["id_postavshika"] . "</td>";
-                echo "<td><a href='edit.php?table=$table&id=" . $row["id"] . "'>Изменить</a> | <a href='delete.php?table=$table&id=" . $row["id"] . "'>Удалить</a> </td>";
+                echo "<td>" . $row["id"] . "</td>";
+                echo "<td>" . $row["login"] . "</td>";
+                echo "<td>" . $row["password"] . "</td>";
+                echo "<td>" . $row["role_id"] . "</td>";
+                echo "<td>" . $row["comment"] . "</td>";
+                echo "<td><a href='edit.php?table=$table&id=" . $row["id"] . "'>Edit</a> | <a href='delete.php?table=$table&id=" . $row["id"] . "'>Delete</a> </td>";
                 echo "</tr>";
             }
 
@@ -159,19 +155,21 @@
     }
 
     // Отображение данных таблицы 'models'
-    echo "<h2>Модели машин</h2>";
-    displayDataModels('models');
+    echo "<h2>Зарегистрированные пользователи сайта:</h2>";
+    displayDataUsers('users');
 
-    $table = 'models';
+    $table = 'Users';
     echo "<a href='create.php?table=$table' style='display: inline-block; width: 150px; height: 50px; background-color: #ccc; text-align: center; line-height: 50px; border-radius: 5px;'>Добавить запись</a>";
 
-
-
-
-
+    
 
     $conn->close();
     ?>
+<br><br>
+<?php
+echo "<a href='profile.php?=' style='display: inline-block; width: 150px; height: 50px; background-color: #ccc; text-align: center; line-height: 50px; border-radius: 5px;'>Профиль</a>";
+?>
+
 
 </body>
 

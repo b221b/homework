@@ -132,6 +132,7 @@
             echo "<th>ID</th>";
             echo "<th>login</th>";
             echo "<th>password</th>";
+            echo "<th>email</th>";
             echo "<th>role_id</th>";
             echo "<th>comment</th>";
             echo "<th>Actions</th>";
@@ -142,6 +143,7 @@
                 echo "<td>" . $row["id"] . "</td>";
                 echo "<td>" . $row["login"] . "</td>";
                 echo "<td>" . $row["password"] . "</td>";
+                echo "<td>" . $row["email"] . "</td>";
                 echo "<td>" . $row["role_id"] . "</td>";
                 echo "<td>" . $row["comment"] . "</td>";
                 echo "<td><a href='edit.php?table=$table&id=" . $row["id"] . "'>Edit</a> | <a href='delete.php?table=$table&id=" . $row["id"] . "'>Delete</a> </td>";

@@ -130,12 +130,12 @@
             echo "<table class='table'>";
 
             echo "<tr>";
-            echo "<th>FIO</th>";
-            echo "<th>Dogovor number</th>";
-            echo "<th>Buy Date</th>";
-            echo "<th>Phone</th>";
-            echo "<th>Address</th>";
-            echo "<th>Actions</th>";
+            echo "<th>ФИО</th>";
+            echo "<th>Номер договора</th>";
+            echo "<th>Дата покупки</th>";
+            echo "<th>Телефон</th>";
+            echo "<th>Адрес</th>";
+            echo "<th>Действия</th>";
             echo "</tr>";
 
             while ($row = $result->fetch_assoc()) {
@@ -145,7 +145,7 @@
                 echo "<td>" . $row["buy_date"] . "</td>";
                 echo "<td>" . $row["phone"] . "</td>";
                 echo "<td>" . $row["address"] . "</td>";
-                echo "<td><a href='edit.php?table=$table&id=" . $row["id"] . "'>Edit</a> | <a href='delete.php?table=$table&id=" . $row["id"] . "'>Delete</a></td>";
+                echo "<td><a href='edit.php?table=$table&id=" . $row["id"] . "'>Изменить</a> | <a href='delete.php?table=$table&id=" . $row["id"] . "'>Удалить</a> </td>";
                 echo "</tr>";
             }
 
@@ -156,7 +156,7 @@
     }
 
     // Отображение данных таблицы 'clients'
-    echo "<h2>Clients</h2>";
+    echo "<h2>Клиенты</h2>";
     displayDataClients('clients');
 
     $table = 'clients';
