@@ -14,6 +14,16 @@ body {
     font-family: Montserrat, sans-serif;
 }
 
+.body2 {
+    height: 100vh;
+    padding: 10px;
+    padding-left: 80px;
+    /* Добавляем отступ слева */
+    align-items: center;
+    justify-content: center;
+    font-family: Montserrat, sans-serif;
+}
+
 .box {
     border: 2px solid #512da8;
     /* Dark purple border */
@@ -39,6 +49,7 @@ form {
     display: flex;
     flex-direction: column;
     width: 400px;
+    justify-content: center;
 }
 
 input {
@@ -75,4 +86,64 @@ button {
 
 .logout {
     color: #b7625c;
+}
+
+
+
+
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.profile-box {
+    text-align: center;
+}
+
+.avatar {
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+}
+
+.username {
+    font-size: 24px;
+    margin: 10px 0;
+}
+
+.role-id {
+    font-size: 18px;
+}
+
+.logout {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    text-decoration: none;
+    background-color: #000;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+
+.info {
+    margin-top: 20px;
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
+h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    margin-bottom: 10px;
 }

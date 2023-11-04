@@ -1,29 +1,34 @@
 <?php
+session_start();
+require_once 'connect.php';
 
-    session_start();
-    require_once 'connect.php';
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $login = mysqli_real_escape_string($connect, $_POST['login']);
+    $password = $_POST['password'];
 
-    $login = $_POST['login'];
-    $password = md5($_POST['password']);
-
-    $check_user = mysqli_query($connect, "SELECT * FROM `users` WHERE `login` = '$login' AND `password` = '$password'");
+    $check_user = mysqli_query($connect, "SELECT * FROM `users` WHERE `login` = '$login'");
     if (mysqli_num_rows($check_user) > 0) {
-
         $user = mysqli_fetch_assoc($check_user);
 
-        $_SESSION['user'] = [
-            "id" => $user['id'],
-            "login" => $user['login'],
-            "role_id" => $user['role_id'],
-            "role_name" => $user['role_name'],
-        ];
+        // Verify the entered password with the hashed password in the database
+        if (password_verify($password, $user['password'])) {
+            $_SESSION['user'] = [
+                "id" => $user['id'],
+                "login" => $user['login'],
+                "role_id" => $user['role_id'],
+                "role_name" => $user['role_name'],
+            ];
 
-        header('Location: ../profile.php');
-
+            header('Location: ../profile.php');
+        } else {
+            $_SESSION['message'] = 'Не верный логин или пароль';
+            header('Location: ../index.php');
+        }
     } else {
         $_SESSION['message'] = 'Не верный логин или пароль';
         header('Location: ../index.php');
-    } 
+    }
+}
 
 
 
@@ -36,7 +41,7 @@ if (!isset($_SESSION['incorrect_password_attempts'])) {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $login = $_POST['login'];
-    $password = md5($_POST['password']);
+    $password = password_hash($_POST['password']);
 
     // Проверка наличия пользователя в базе данных
     $check_user = mysqli_query($connect, "SELECT * FROM `users` WHERE `login` = '$login' AND `password` = '$password'");
@@ -60,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($_SESSION['incorrect_password_attempts'] >= 3) {
             // Если количество неправильных попыток больше или равно 3, выводим сообщение и блокируем вход
-            $_SESSION['message'] = 'Вы ввели пароль неверно 3 раза!!!';
+            $_SESSION['message'] = 'Вы ввели пароль неправильно 3 раза!';
             header('Location: ../index.php');
             exit();
         } 
@@ -83,11 +88,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
         if (isset($_POST['remember_me'])) {
             // Если чекбокс "Запомнить меня" был выбран, создаем куку, которая будет хранить данные авторизации
+            
             $cookie_name = 'remember_me_cookie';
             $cookie_value = base64_encode($username . ':' . $password);
-            $expiration = time() + 30 * 24 * 60 * 60; // Например, 30 дней
+            $expiration = time() + 30 * 24 * 60 * 60; 
     
-            setcookie($cookie_name, $cookie_value, $expiration, "/");
+            setcookie($cookie_name, $cookie_value, $expiration, "/", "", false, true);
         }
         header('Location: ../profile.php');
             exit();

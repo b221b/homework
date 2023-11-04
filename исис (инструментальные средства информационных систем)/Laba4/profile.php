@@ -32,34 +32,28 @@ if (!$_SESSION['user']) {
     </style>
 </head>
 
-<body>
-
-    <!-- Профиль -->
-    <div class="box">
-        <form>
-            <img src="uploads/ava.jpg" width="250" height="250"> <br>
-            Логин:<h2 style="margin: 10px 0;"><?= $_SESSION['user']['login'] ?></h2>
-            ID Вашей Роли: <br> <a href="role.html"><?= $_SESSION['user']['role_id'] ?></a>
-
-            ↑ <br>
-            Нажми сюда и узнаешь <br> значение роли
-            <br><br>
+<body class="body2">
+    <div class="container">
+        <div class="profile-box">
+            <img src="uploads/ava.jpg" alt="Аватар" class="avatar">
+            <h2 class="username"><?= strip_tags($_SESSION['user']['login']) ?></h2>
+            <p class="role-id">ID Вашей Роли: <a href="role.html"><?= strip_tags($_SESSION['user']['role_id']) ?></a></p>
             <a href="vendor/logout.php" class="logout">Выйти из аккаунта</a>
-        </form>
-    </div>
+        </div>
 
+        <div class="info">
+            <h2>Информация о веб-приложении:</h2>
+            <ul>
+                <li>Название проекта: Коммерческая фирма</li>
+                <li>Версия: 1.0</li>
+            </ul>
+        </div>
 
-    <br><br>
-    <!-- Информация о веб-приложении -->
-    <h2>Информация о веб-приложении:</h2>
-    <p>Название проекта: Коммерческая фирма</p>
-    <p>Версия: 1.0</p>
-
-    <!-- Информация о разработчике -->
-    <h2>Информация о разработчике:</h2>
-    <p>Разработчик: Титаренко Мирослав, ДГТУ группа ВИС33</p>
-    <p>Email: titarenkomiroslav61@gmail.com</p>
-    <br>
+        <div class="info">
+            <h2>Информация о разработчике:</h2>
+            <p>Разработчик: Титаренко Мирослав, ДГТУ группа ВИС33</p>
+            <p>Email: titarenkomiroslav61@gmail.com</p>
+        </div><br>
     <!-- кнопка ведомости для оперов и админов-->
 
 
@@ -70,12 +64,12 @@ if (!$_SESSION['user']) {
 
     if (in_array($userRoleID, $allowedRoles)) {
         // Пользователь имеет разрешение на создание ведомости
-        echo '<a href="Laba2/laba2_extended.php" class="button">Ведомость</a>';
+        echo '<a href="Laba2/laba2_extended.php" class="button"><h2>Ведомость</h2></a>';
     }
     ?>
 
 
-    <br><br>
+    <br>
     <!-- кнопка проверки пользователей админов-->
 
 
@@ -86,8 +80,8 @@ if (!$_SESSION['user']) {
 
     if (in_array($userRoleID, $allowedRoles)) {
         // Пользователь имеет разрешение на создание ведомости
-        echo '<a href="users.php" class="button">Пользователи сайта</a>';
-        echo '<a href="laba3/laba3.php" class="button"><br><br>CRUD</a>';
+        echo '<a href="users.php" class="button"><h2>Пользователи сайта</h2></a>';
+        echo '<a href="laba3/laba3.php" class="button"><br><h2>CRUD</h2><br></a>';
     }
     ?>
 
@@ -101,13 +95,26 @@ if (!$_SESSION['user']) {
 
     <form method="POST" action="обработчикСообщений.php">
         <?php if (in_array($userRoleID, $allowedRoles)) : ?>
-            <textarea name="comment" rows="4" cols="50"></textarea>
+            <textarea name="comment" id="comment" rows="4" cols="50" oninput="countCharacters()"></textarea>
+            <p id="charCount">Количество символов: 500</p>
             <br>
             <input type="submit" class='knopka' value="Сохранить комментарий">
         <?php endif; ?>
     </form>
 
+    <script>
+        function countCharacters() {
+            var textarea = document.getElementById("comment");
+            var charCount = document.getElementById("charCount");
+            var maxLength = 500;
+            var currentLength = textarea.value.length;
+            var charactersLeft = maxLength - currentLength;
+            charCount.textContent = "Characters left: " + charactersLeft;
+        }
+    </script>
+
     <br><br><br>
+
 
 
 
@@ -131,26 +138,43 @@ if (!$_SESSION['user']) {
         }
 
         // Получаем логин текущего пользователя
-        $login = $_SESSION['user']['login'];
+        $login = strip_tags($_SESSION['user']['login']);
 
         // Обновляем last_visit и visit_count
         $currentDate = date('Y-m-d H:i:s');
-        $updateQuery = "UPDATE users SET last_visit = '$currentDate', visit_count = visit_count + 1 WHERE login = '$login'";
+        $updateQuery = "UPDATE users SET last_visit = ?, visit_count = visit_count + 1 WHERE login = ?";
 
-        if ($conn->query($updateQuery) === TRUE) {
-            // Выполните дополнительный запрос для извлечения значений last_visit и visit_count
-            $selectQuery = "SELECT last_visit, visit_count FROM users WHERE login = '$login'";
-            $result = $conn->query($selectQuery);
+        if ($stmt = $conn->prepare($updateQuery)) {
+            $stmt->bind_param("ss", $currentDate, $login); // "ss" указывает, что параметры - это строки
+            if ($stmt->execute()) {
+                // Выполните дополнительный запрос для извлечения значений last_visit и visit_count
+                $selectQuery = "SELECT last_visit, visit_count FROM users WHERE login = ?";
 
-            if ($result->num_rows > 0) {
-                $row = $result->fetch_assoc();
-                echo "Последнее посещение: " . $row['last_visit'] . "<br>";
-                echo "Вы зашли в " . $row['visit_count'] . " раз";
+                // Используем подготовленный запрос
+                if ($stmt = $conn->prepare($selectQuery)) {
+                    $stmt->bind_param("s", $login); // "s" указывает, что параметр - это строка
+                    if ($stmt->execute()) {
+                        $result = $stmt->get_result();
+
+                        if ($result->num_rows > 0) {
+                            $row = $result->fetch_assoc();
+                            echo "Последнее посещение: " . $row['last_visit'] . "<br>";
+                            echo "Вы зашли в " . $row['visit_count'] . " раз";
+                        } else {
+                            echo "Ошибка при извлечении данных: " . $conn->error;
+                        }
+                        $stmt->close(); // Закрываем подготовленный запрос
+                    } else {
+                        echo "Ошибка при выполнении запроса: " . $stmt->error;
+                    }
+                } else {
+                    echo "Ошибка при подготовке запроса: " . $conn->error;
+                }
             } else {
-                echo "Ошибка при извлечении данных: " . $conn->error;
+                echo "Ошибка при обновлении данных: " . $stmt->error;
             }
         } else {
-            echo "Ошибка при обновлении данных: " . $conn->error;
+            echo "Ошибка при подготовке запроса: " . $conn->error;
         }
 
         // Закрываем подключение
@@ -160,12 +184,6 @@ if (!$_SESSION['user']) {
     }
     ?>
 
-
-<br><br><br><br><br><br>
-
-
-
-
-
+    <br><br><br><br><br><br>
 
 </html>

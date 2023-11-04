@@ -41,22 +41,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <br><br><br><br><br><br><br>
 
-
-
-
-
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Авторизация и регистрация</title>
     <link rel="stylesheet" href="assets/css/main.css">
+
+    <!--<script src="https://www.google.com/recaptcha/enterprise.js?render=6LdMRuEoAAAAABe7o6aupla7JA8uxmL5SteySFOS" async defer></script>
+-->
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-
-
 
 </head>
 

@@ -3,8 +3,9 @@
 
 <head>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-
-    <title>PHP Database CRUD Interface</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Пользователи сайта</title>
     <style>
         /* Adding a smooth font and a bit margin for the body */
         body {
@@ -130,12 +131,12 @@
 
             echo "<tr>";
             echo "<th>ID</th>";
-            echo "<th>login</th>";
-            echo "<th>password</th>";
-            echo "<th>email</th>";
-            echo "<th>role_id</th>";
-            echo "<th>comment</th>";
-            echo "<th>Actions</th>";
+            echo "<th>Логин</th>";
+            echo "<th>Пароль</th>";
+            echo "<th>Почта</th>";
+            echo "<th>ID роли</th>";
+            echo "<th>Комментарий</th>";
+            echo "<th>Действия</th>";
             echo "</tr>";
 
             while ($row = $result->fetch_assoc()) {
@@ -146,7 +147,7 @@
                 echo "<td>" . $row["email"] . "</td>";
                 echo "<td>" . $row["role_id"] . "</td>";
                 echo "<td>" . $row["comment"] . "</td>";
-                echo "<td><a href='edit.php?table=$table&id=" . $row["id"] . "'>Edit</a> | <a href='delete.php?table=$table&id=" . $row["id"] . "'>Delete</a> </td>";
+                echo "<td><a href='edit.php?table=$table&id=" . $row["id"] . "'>Изменить</a> | <a href='delete.php?table=$table&id=" . $row["id"] . "'>Удалить</a> </td>";
                 echo "</tr>";
             }
 
@@ -160,17 +161,15 @@
     echo "<h2>Зарегистрированные пользователи сайта:</h2>";
     displayDataUsers('users');
 
-    $table = 'Users';
-    echo "<a href='create.php?table=$table' style='display: inline-block; width: 150px; height: 50px; background-color: #ccc; text-align: center; line-height: 50px; border-radius: 5px;'>Добавить запись</a>";
 
-    
+
 
     $conn->close();
     ?>
-<br><br>
-<?php
-echo "<a href='profile.php?=' style='display: inline-block; width: 150px; height: 50px; background-color: #ccc; text-align: center; line-height: 50px; border-radius: 5px;'>Профиль</a>";
-?>
+
+    <?php
+    echo "<a href='profile.php?=' style='display: inline-block; width: 150px; height: 50px; background-color: #ccc; text-align: center; line-height: 50px; border-radius: 5px;'>Профиль</a>";
+    ?>
 
 
 </body>
