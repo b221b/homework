@@ -1,0 +1,1 @@
+document.body.innerHTML +=  '<h1></h1>  <img src="./" alt="cat">    <p></p>';

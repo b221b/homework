@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style.css">
+    <title>My server</title>
+    <h1>Сервер запущен</h1>
+</head>
+
+<div class="center">
+    <div class="box">
+        <img src="123.svg" width="100">
+        <h1>Выберите день недели</h1>
+        <select id="weekday">
+            <option value="0">Понедельник</option>
+            <option value="1">Вторник</option>
+            <option value="2">Среда</option>
+            <option value="3">Четверг</option>
+            <option value="4">Пятница</option>
+            <option value="5">Суббота</option>
+            <option value="6">Воскресенье</option>
+        </select>
+        <button onclick="showSchedule()">Показать расписание</button>
+        <button id="clearButton" onclick="clearFields()">Очистить</button>
+        <h2>Расписание:</h2>
+        <div id="subjects"></div>
+        <h2>Реакция:</h2>
+        <div id="response"></div>
+
+        <script>
+            const Weekday = {
+                Monday: 0,
+                Tuesday: 1,
+                Wednesday: 2,
+                Thursday: 3,
+                Friday: 4,
+                Saturday: 5,
+                Sunday: 6
+            };
+
+            function getSubjectForWeekday(weekday) {
+                switch (weekday) {
+                    case Weekday.Monday:
+                    case Weekday.Saturday:
+                    case Weekday.Sunday:
+                        return "выходной";
+                    case Weekday.Tuesday:
+                        return "ООП, Каныгин, ООП лекция, Барашко лекция";
+                    case Weekday.Wednesday:
+                        return "JS, Физра, Моделирование, Барашко";
+                    case Weekday.Thursday:
+                        return "Каныгин лекция, УД лекция";
+                    case Weekday.Friday:
+                        return "УД, ООП, JS, Моделирование";
+                    default:
+                        return "Некорректный день недели";
+                }
+            }
+
+            function getResponseForSubject(subject) {
+                if (subject === "выходной")
+                    return "ура, можно зависать дома";
+                else if (subject.includes("Физра") && subject.includes("Моделирование"))
+                    return "счастье, js, потом качалка ура, потом немного тильтич на моделировании";
+                else if (subject.includes("УД лекция"))
+                    return "круто, повидаюсь с любимым Алексеем Васильевичем <3";
+                else if (subject.includes("УД"))
+                    return "это считай праздник бро";
+                else
+                    return "терпимо";
+            }
+
+            function showSchedule() {
+                const ddl = document.getElementById("weekday");
+                const selectedDay = parseInt(ddl.options[ddl.selectedIndex].value);
+                const subject = getSubjectForWeekday(selectedDay);
+                const response = getResponseForSubject(subject);
+
+                document.getElementById("subjects").textContent = subject;
+                document.getElementById("response").textContent = response;
+            }
+
+            function clearFields() {
+                document.getElementById("subjects").textContent = '';
+                document.getElementById("response").textContent = '';
+            }
+        </script>
+        <a href="another.html" class="top-right-button" onclick="someFunction()"
+            style="text-decoration: none; color: #ffffff;">Еще один скриптич (для фанов Калайды), остальным вход
+            воспрещен!!!</a>
+        </body>
+
+</html>
