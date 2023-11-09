@@ -1,1 +1,1 @@
-document.body.innerHTML +=  '<h1></h1>  <img src="./" alt="cat">    <p></p>';
+document.body.innerHTML += '<h1>Сервер запущен</h1><img src="images/js.png" width="150px"><p>↑ вот картинка</p>';
