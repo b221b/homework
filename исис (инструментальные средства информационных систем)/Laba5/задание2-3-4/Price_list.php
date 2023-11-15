@@ -177,7 +177,7 @@
     }
 
     // Usage
-    $dbManager = new DBManager("localhost", "root", "", "Komercheskaya firma");
+    $dbManager = new DBManager("localhost", "root", "", "Komercheskaya firma3");
 
     echo "<h2>Прайс лист</h2>";
     $dbManager->displayDataPriceList();

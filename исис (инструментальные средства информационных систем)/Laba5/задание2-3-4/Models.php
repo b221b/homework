@@ -120,7 +120,7 @@
             $servername = "localhost";
             $username = "root";
             $password = "";
-            $database = "Komercheskaya firma";
+            $database = "Komercheskaya firma3";
 
             $this->conn = new mysqli($servername, $username, $password, $database);
 
