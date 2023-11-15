@@ -29,16 +29,27 @@
 //     }
 
 // из методы:
-include("libs/rb-mysql.php");
+include("libs/rb.php");
 
-R::setup("mysql:host=localhost;dbname=test", "root", "root");
+R::setup("mysql:host=127.0.0.1;dbname=ydacha", "root", "");
 
 if (!R::testConnection()) {
     // R::fancyDebug(TRUE);
-    exit('<h1>Cannot connect to the database</h1>');
+    echo('<h1>Cannot connect to the database</h1>');
 } else {
-    echo '<h1>You are connected.</h1>';
+    exit('<h1>You are connected.</h1>') ;
 }
+
+
+
+// $conn = new mysqli("localhost", "root", "", "ydacha");
+// $conn->query("SET NAMES 'utf8'");
+
+// if ($conn->connect_error) {
+//     echo('<h1>Cannot connect to the database</h1>');
+// } else {
+//     exit('<h1>You are connected.</h1>') ;
+// }
 
 
 
@@ -57,7 +68,7 @@ if (!R::testConnection()) {
 //метод через composer:
 // require_once __DIR__ . '/vendor/autoload.php';
 // use \RedBeanPHP\R as R;
-// R::setup('mysql:host=localhost;dbname=test', 'root', '');
+// R::setup('mysql:host=localhost;dbname=ydacha', 'root', 'root1');
 // if (!R::testConnection()    )
 // {
 //     exit('нет подключения к базе данных');
