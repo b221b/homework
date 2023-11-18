@@ -55,7 +55,7 @@
       margin-right: 5px;
     }
 
-    input[type=submit] {
+    .button {
       border: none;
       padding: 5px 10px;
       cursor: pointer;
@@ -67,7 +67,7 @@
       font-weight: bold;
     }
 
-    input[type=submit]:hover {
+    .button:hover {
       background-color: #696969;
     }
   </style>
@@ -115,16 +115,18 @@
             <%= item.id_postavshika %>
           </td>
           <td>
+
             <!-- div contains forms -->
             <div class="forms">
+
               <!-- кнопка Изменить -->
-              <form action="/edit-model" method="GET">
-                <input type="hidden" name="id" value="<%= item.id %>">
-                <input type="submit" value="Изменить">
+              <form a href="edit-model.ejs" action="/edit-model" method="GET">
+                <a class="button" href="/edit-model/<%= item.id %>">Изменить</a>
               </form>
+
               <!-- кнопка Удалить -->
-              <form action="delete-model" method="POST">
-                <input type="submit" value="Удалить">
+              <form action="app" method="POST">
+                <a class="button" href="/delete/<%= item.id %>">Удалить</a>
               </form>
             </div>
           </td>
@@ -138,7 +140,7 @@
         <br>
         <!-- кнопка создать -->
         <form action="/create-model/" method="POST">
-          <input type="submit" value="Создать">
+          <a class="button" href="/create-model/">Создать</a>
         </form>
 </body>
 

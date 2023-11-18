@@ -1,35 +1,32 @@
-//  document.body.innerHTML += '<h1>Сервер запущен</h1><img src="images/js.png" width="150px"><p>↑ вот картинка</p>';
-
 const express = require('express');
 const app = express();
 const mysql = require('mysql');
-
-
-const bodyParser = require('body-parser');
 const formidable = require('express-formidable');
-
-// Это позволит вам служить файлам из папки "public"
-app.use(express.static(__dirname + '/public'));
-
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
-app.use(formidable());
-
-// Установите EJS в качестве шаблонизатора
-app.set('view engine', 'ejs');
-
+const methodOverride = require('method-override');
 const path = require('path');
+
+app.use(express.static(__dirname + '/public'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(methodOverride('_method'));
+
+app.use(formidable({
+  encoding: 'utf-8',
+  uploadDir: './uploads',
+  multiples: true,
+  keepExtensions: true,
+}));
+
+app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '../views'));
 
-// Создание подключения
 const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: '',
-  database: 'js'
+  database: 'javascript'
 });
 
-// Установка соединения
 connection.connect((err) => {
   if (err) {
     console.error('Ошибка подключения:', err);
@@ -39,14 +36,12 @@ connection.connect((err) => {
 });
 
 app.get('/', (req, res) => {
-  // Выполнение запроса
   const sqlQuery = 'SELECT * FROM models';
   connection.query(sqlQuery, (err, results) => {
     if (err) {
       console.error('Ошибка выполнения запроса:', err);
       return;
     }
-    // отправка данных в виде ответа
     res.render('models', { data: results });
   });
 });
@@ -58,13 +53,13 @@ app.get('/create-model', (req, res) => {
 app.post('/models', (req, res) => {
   const sqlQuery = 'INSERT INTO models SET ?';
   const data = {
-    model_name: req.body.model_name,
-    color: req.body.color,
-    obivka: req.body.obivka,
-    engine_power: req.body.engine_power,
-    door_number: req.body.door_number,
-    korobka_peredach: req.body.korobka_peredach,
-    id_postavshika: req.body.id_postavshika
+    model_name: req.fields.model_name,
+    color: req.fields.color,
+    obivka: req.fields.obivka,
+    engine_power: req.fields.engine_power,
+    door_number: req.fields.door_number,
+    korobka_peredach: req.fields.korobka_peredach,
+    id_postavshika: req.fields.id_postavshika
   };
   connection.query(sqlQuery, data, (err, results) => {
     if (err) {
@@ -89,18 +84,18 @@ app.get('/edit-model/:id', (req, res) => {
 app.put('/models/:id', (req, res) => {
   const sqlQuery = 'UPDATE models SET ? WHERE id = ?';
   const data = {
-    model_name: req.body.model_name,
-    color: req.body.color,
-    obivka: req.body.obivka,
-    engine_power: req.body.engine_power,
-    door_number: req.body.door_number,
-    korobka_peredach: req.body.korobka_peredach,
-    id_postavshika: req.body.id_postavshika
+    model_name: req.fields.model_name,
+    color: req.fields.color,
+    obivka: req.fields.obivka,
+    engine_power: req.fields.engine_power,
+    door_number: req.fields.door_number,
+    korobka_peredach: req.fields.korobka_peredach,
+    id_postavshika: req.fields.id_postavshika
   };
   connection.query(sqlQuery, [data, req.params.id], (err, results) => {
     if (err) {
       console.error('Ошибка выполнения запроса:', err);
-      return;
+      return res.status(500).send('Ошибка на сервере!');
     }
     res.redirect('/');
   });

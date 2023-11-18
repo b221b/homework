@@ -9,6 +9,7 @@
 <body>
     <h1>Редактирование модели</h1>
     <form action="/models/<%= data.id %>" method="POST">
+        <input type="hidden" name="_method" value="PUT">
         <label for="model_name">Название:</label>
         <input type="text" id="model_name" name="model_name" value="<%= data.model_name %>" required>
         <br>
