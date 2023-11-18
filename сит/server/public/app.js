@@ -3,9 +3,7 @@
 const express = require('express');
 const app = express();
 const mysql = require('mysql');
-const routes = require('./routes');
 
-routes(app, mysql);
 
 const bodyParser = require('body-parser');
 const formidable = require('express-formidable');
@@ -16,11 +14,6 @@ app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(formidable());
-
-app.use(function (err, req, res, next) {
-  console.error(err.stack);
-  res.status(500).send('Something broke!');
-});
 
 // Установите EJS в качестве шаблонизатора
 app.set('view engine', 'ejs');
@@ -58,7 +51,7 @@ app.get('/', (req, res) => {
   });
 });
 
-app.get('../views/create-model', (req, res) => {
+app.get('/create-model', (req, res) => {
   res.render('create-model');
 });
 

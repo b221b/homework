@@ -4,13 +4,80 @@
 <head>
   <title>Основная страница</title>
   <link rel="stylesheet" type="text/css" href="/style.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    table {
+      /* decrease table size */
+      width: 60%;
+      border-collapse: collapse;
+      background-color: #e8f5e9;
+    }
+
+    th,
+    td {
+      /* decrease cell size */
+      border: 1px solid #4caf50;
+      padding: 10px;
+      /* align text to left */
+      text-align: left;
+      /* set width for all cells */
+      width: 10%;
+    }
+
+    th {
+      background-color: #4caf50;
+      color: white;
+    }
+
+    th:last-child {
+      /* increase width for cell with buttons */
+      width: 20%;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    tr:hover {
+      background-color: #ddd;
+    }
+
+    /* design for forms div */
+    .forms {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    form {
+      margin-right: 5px;
+    }
+
+    input[type=submit] {
+      border: none;
+      padding: 5px 10px;
+      cursor: pointer;
+      text-decoration: none;
+      margin: 2px 2px;
+      transition-duration: 0.4s;
+      background-color: #4caf50;
+      color: white;
+      font-weight: bold;
+    }
+
+    input[type=submit]:hover {
+      background-color: #696969;
+    }
+  </style>
 </head>
 
 <body>
   <h1>Модели машин</h1>
   <% if (data && data.length) { %>
-    <table style="width:70%; border-collapse: collapse;" border="1">
-      <tr style="background-color: #f2f2f2;">
+    <table>
+      <tr>
         <th>ID</th>
         <th>Название</th>
         <th>Цвет</th>
@@ -48,14 +115,18 @@
             <%= item.id_postavshika %>
           </td>
           <td>
-            <!-- кнопка Изменить -->
-            <form action="/edit-model/" method="GET">
-              <input type="submit" value="Изменить">
-            </form>
-            <!-- кнопка Удалить -->
-            <form action="/delete-model/" method="POST">
-              <input type="submit" value="Удалить">
-            </form>
+            <!-- div contains forms -->
+            <div class="forms">
+              <!-- кнопка Изменить -->
+              <form action="/edit-model" method="GET">
+                <input type="hidden" name="id" value="<%= item.id %>">
+                <input type="submit" value="Изменить">
+              </form>
+              <!-- кнопка Удалить -->
+              <form action="delete-model" method="POST">
+                <input type="submit" value="Удалить">
+              </form>
+            </div>
           </td>
         </tr>
         <% }) %>
@@ -64,7 +135,11 @@
       <p>Нет данных для вывода.</p>
       <% } %>
 
-
+        <br>
+        <!-- кнопка создать -->
+        <form action="/create-model/" method="POST">
+          <input type="submit" value="Создать">
+        </form>
 </body>
 
 </html>
