@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Основная страница</title>
+  <link rel="stylesheet" type="text/css" href="/style.css">
+</head>
+
+<body>
+  <!-- <h1>Сервер запущен</h1>
+  <img src="images/js.png" width="150px">
+  <p>↑ вот картинка</p> -->
+
+  <h1>Модели машин</h1>
+<% if (data && data.length) { %>
+  <table style="width:70%; border-collapse: collapse;" border="1">
+    <tr style="background-color: #f2f2f2;">
+      <th>Название</th>
+      <th>Цвет</th>
+      <th>Обивка</th>
+      <th>Мощность двигателя</th>
+      <th>Количество дверей</th>
+      <th>Коробка передач</th>
+      <th>Номер поставщика</th>
+    </tr>
+    <% data.forEach(function(item) { %>
+    <tr>
+      <td><%= item.model_name %></td>
+      <td><%= item.color %></td>
+      <td><%= item.obivka %></td>
+      <td><%= item.engine_power %></td>
+      <td><%= item.door_number %></td>
+      <td><%= item.korobka_peredach %></td>
+      <td><%= item.id_postavshika %></td>
+    </tr>
+    <% }) %>
+  </table>
+<% } else { %>
+  <p>Нет данных для вывода.</p>
+<% } %>
+</body>
+
+</html>

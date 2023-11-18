@@ -1,0 +1,14 @@
+<script>
+    app.post("/delete-model/:id", (req, res) => {
+        // удаление модели из базы данных
+        const id = req.params.id;
+        const sqlQuery = 'DELETE FROM models WHERE id = ?';
+        connection.query(sqlQuery, id, (err, result) => {
+            if (err) {
+                console.error('Ошибка удаления модели:', err);
+                return;
+            }
+            res.redirect('/');
+        });
+    });
+</script>
