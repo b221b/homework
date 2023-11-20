@@ -120,15 +120,13 @@
             <div class="forms">
 
               <!-- кнопка Изменить -->
-              <form action="/update/<%= item.id %>" method="POST">
-                <input type="hidden" name="_method" value="PUT">
-                <input type="submit" class="button" value="Изменить">
+              <form a href="edit-model.ejs" action="/edit-model" method="GET">
+                <a class="button" href="/edit-model/<%= item.id %>">Изменить</a>
               </form>
 
               <!-- кнопка Удалить -->
-              <form action="/delete/<%= item.id %>" method="POST">
-                <input type="hidden" name="_method" value="DELETE">
-                <input class="button" type="submit" value="Удалить">
+              <form action="app" method="POST">
+                <a class="button" href="/delete/<%= item.id %>">Удалить</a>
               </form>
             </div>
           </td>
@@ -140,16 +138,9 @@
       <% } %>
 
         <br>
-        <!-- Форма создания новой модели машины -->
-        <form action="/create" method="POST">
-          <input type="text" name="model_name" placeholder="Название" required>
-          <input type="text" name="color" placeholder="Цвет" required>
-          <input type="text" name="obivka" placeholder="Обивка" required>
-          <input type="text" name="engine_power" placeholder="Мощность двигателя" required>
-          <input type="text" name="door_number" placeholder="Количество дверей" required>
-          <input type="text" name="korobka_peredach" placeholder="Коробка передач" required>
-          <input type="text" name="id_postavshika" placeholder="Номер поставщика" required>
-          <input class="button" type="submit" value="Создать">
+        <!-- кнопка создать -->
+        <form action="/create-model/" method="POST">
+          <a class="button" href="/create-model/">Создать</a>
         </form>
 </body>
 

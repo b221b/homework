@@ -46,10 +46,22 @@ app.get('/', (req, res) => {
   });
 });
 
-app.post('/create', (req, res) => {
-  let sqlQuery = `INSERT INTO models (model_name, color, obivka, engine_power, door_number, korobka_peredach, id_postavshika) VALUES ('${req.fields.model_name}', '${req.fields.color}', '${req.fields.obivka}', '${req.fields.engine_power}', '${req.fields.door_number}', '${req.fields.korobka_peredach}', '${req.fields.id_postavshika}')`;
+app.get('/create-model', (req, res) => {
+  res.render('create-model');
+});
 
-  connection.query(sqlQuery, (err) => {
+app.post('/models', (req, res) => {
+  const sqlQuery = 'INSERT INTO models SET ?';
+  const data = {
+    model_name: req.fields.model_name,
+    color: req.fields.color,
+    obivka: req.fields.obivka,
+    engine_power: req.fields.engine_power,
+    door_number: req.fields.door_number,
+    korobka_peredach: req.fields.korobka_peredach,
+    id_postavshika: req.fields.id_postavshika
+  };
+  connection.query(sqlQuery, data, (err, results) => {
     if (err) {
       console.error('Ошибка выполнения запроса:', err);
       return;
@@ -58,22 +70,40 @@ app.post('/create', (req, res) => {
   });
 });
 
-app.put('/update/:id', (req, res) => {
-  let sqlQuery = `UPDATE models SET model_name='${req.fields.model_name}', color='${req.fields.color}', obivka='${req.fields.obivka}', engine_power='${req.fields.engine_power}', door_number='${req.fields.door_number}', korobka_peredach='${req.fields.korobka_peredach}', id_postavshika='${req.fields.id_postavshika}' WHERE id='${req.params.id}'`;
-
-  connection.query(sqlQuery, (err) => {
+app.get('/edit-model/:id', (req, res) => {
+  const sqlQuery = 'SELECT * FROM models WHERE id = ?';
+  connection.query(sqlQuery, req.params.id, (err, results) => {
     if (err) {
       console.error('Ошибка выполнения запроса:', err);
       return;
+    }
+    res.render('edit-model', { data: results[0] });
+  });
+});
+
+app.put('/models/:id', (req, res) => {
+  const sqlQuery = 'UPDATE models SET ? WHERE id = ?';
+  const data = {
+    model_name: req.fields.model_name,
+    color: req.fields.color,
+    obivka: req.fields.obivka,
+    engine_power: req.fields.engine_power,
+    door_number: req.fields.door_number,
+    korobka_peredach: req.fields.korobka_peredach,
+    id_postavshika: req.fields.id_postavshika
+  };
+  connection.query(sqlQuery, [data, req.params.id], (err, results) => {
+    if (err) {
+      console.error('Ошибка выполнения запроса:', err);
+      return res.status(500).send('Ошибка на сервере!');
     }
     res.redirect('/');
   });
 });
 
-app.delete('/delete/:id', (req, res) => {
-  let sqlQuery = `DELETE FROM models WHERE id='${req.params.id}'`;
-
-  connection.query(sqlQuery, (err) => {
+app.delete('/models/:id', (req, res) => {
+  const sqlQuery = 'DELETE FROM models WHERE id = ?';
+  connection.query(sqlQuery, req.params.id, (err, results) => {
     if (err) {
       console.error('Ошибка выполнения запроса:', err);
       return;
