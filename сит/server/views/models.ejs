@@ -120,14 +120,14 @@
             <div class="forms">
 
               <!-- кнопка Изменить -->
-              <form action="/update/<%= item.id %>" method="POST">
-                <input type="hidden" name="_method" value="PUT">
+              <form action="/update" method="POST">
+                <input type="hidden" name="id" value="<%= item.id %>">
                 <input type="submit" class="button" value="Изменить">
               </form>
 
               <!-- кнопка Удалить -->
-              <form action="/delete/<%= item.id %>" method="POST">
-                <input type="hidden" name="_method" value="DELETE">
+              <form action="/delete" method="POST">
+                <input type="hidden" name="id" value="<%= item.id %>">
                 <input class="button" type="submit" value="Удалить">
               </form>
             </div>

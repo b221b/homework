@@ -58,8 +58,19 @@ app.post('/create', (req, res) => {
   });
 });
 
-app.put('/update/:id', (req, res) => {
-  let sqlQuery = `UPDATE models SET model_name='${req.fields.model_name}', color='${req.fields.color}', obivka='${req.fields.obivka}', engine_power='${req.fields.engine_power}', door_number='${req.fields.door_number}', korobka_peredach='${req.fields.korobka_peredach}', id_postavshika='${req.fields.id_postavshika}' WHERE id='${req.params.id}'`;
+app.get('/update/:id', (req, res) => {
+  const sqlQuery = `SELECT * FROM models WHERE id='${req.params.id}'`;
+  connection.query(sqlQuery, (err, results) => {
+    if (err) {
+      console.error('Ошибка выполнения запроса:', err);
+      return;
+    }
+    res.render('edit-model', { data: results[0] });
+  });
+});
+
+app.post('/delete', (req, res) => {
+  let sqlQuery = `DELETE FROM models WHERE id='${req.fields.id}'`;
 
   connection.query(sqlQuery, (err) => {
     if (err) {
@@ -70,18 +81,6 @@ app.put('/update/:id', (req, res) => {
   });
 });
 
-app.delete('/delete/:id', (req, res) => {
-  let sqlQuery = `DELETE FROM models WHERE id='${req.params.id}'`;
-
-  connection.query(sqlQuery, (err) => {
-    if (err) {
-      console.error('Ошибка выполнения запроса:', err);
-      return;
-    }
-    res.redirect('/');
-  });
-});
-
-app.listen(3000, function () {
+app.listen(3001, function () {
   console.log('Сервер работает на порту 3000');
 });
