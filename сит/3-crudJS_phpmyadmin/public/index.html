@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>CRUD Table</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .form-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f7f7f7;
+            border-radius: 5px;
+        }
+
+        .form-container label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-container input[type="text"] {
+            width: 100%;
+            padding: 5px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+        }
+
+        .form-container button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            margin-right: 10px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        #employeeList {
+            width: 100%;
+            max-width: 800px;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+
+        #employeeList th,
+        #employeeList td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        #employeeList th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        #employeeList tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        #employeeList tr:hover {
+            background-color: #ddd;
+        }
+
+        .edit-button {
+            /* Добавьте здесь стили для кнопки "Edit" */
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+            padding: 5px 10px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            transition-duration: 0.4s;
+        }
+
+        .edit-button:hover {
+            /* Добавьте здесь стили для кнопки "Edit" при наведении на нее */
+            background-color: #0056b3;
+            color: white;
+        }
+
+        .delete-button {
+            /* Добавьте здесь стили для кнопки "Delete" */
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            cursor: pointer;
+            padding: 5px 10px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            transition-duration: 0.4s;
+        }
+
+        .delete-button:hover {
+            /* Добавьте здесь стили для кнопки "Delete" при наведении на нее */
+            background-color: #bd2130;
+            color: white;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+</head>
+
+<body>
+    <form class="form-container" id="formData">
+        <label for="id">ID:</label> <input type="text" id="id" name="id">
+        <br>
+        <label for="name_firma">Название фирмы:</label>
+        <input type="text" id="name_firma" name="name_firma">
+        <br>
+        <label for="phone">Телефон:</label>
+        <input type="text" id="phone" name="phone">
+        <br>
+        <label for="email">Почта:</label>
+        <input type="text" id="email" name="email">
+        <br>
+        <label for="website">Сайт:</label>
+        <input type="text" id="website" name="website">
+        <br> <label for="city">Город:</label>
+        <input type="text" id="city" name="city">
+        <br>
+        <label for="flag">Флаг:</label>
+        <input type="text" id="flag" name="flag">
+        <br>
+        <button type="button" id="addBtn">Добавить</button>
+        <button type="button" id="updateBtn">Изменить</button>
+        <button type="button" id="deleteBtn">Удалить</button>
+    </form>
+    <br>
+    <table id="employeeList">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Название фирмы</th>
+                <th>Телефон</th>
+                <th>Почта</th>
+                <th>Сайт</th>
+                <th>Город</th>
+                <th>Флаг</th>
+                <th>Действие</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script>
+        let selectedRow;
+
+        function insertNewRecord(data) {
+            // Insert data into JSON file
+            fetch('/addEmployee', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    $("#employeeList tbody").append(`
+            <tr>
+                <td>${data.id}</td>
+                <td>${data.name_firma}</td>
+                <td>${data.phone}</td>
+                <td>${data.email}</td>
+                <td>${data.website}</td>
+                <td>${data.city}</td>
+                <td>${data.flag}</td>
+                <td><a class="edit-button" onClick="onEdit(this)">Edit</a> <a class="delete-button" onClick="onDelete(this)">Delete</a></td>
+            </tr>
+        `);
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+        }
+
+        // Fetch employees from local JSON file
+        function fetchEmployees() {
+            fetch('/getEmployees')
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(item => {
+                        insertNewRecord(item);
+                    });
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+        }
+
+        $(document).ready(function () {
+            fetchEmployees();
+        });
+
+        function resetForm() {
+            $("#formData input").val("");
+            selectedRow = null;
+        }
+
+        function onEdit(td) {
+            selectedRow = td.parentElement.parentElement;
+            document.getElementById("id").value = selectedRow.cells[0].innerHTML;
+            document.getElementById("name_firma").value = selectedRow.cells[1].innerHTML;
+            document.getElementById("phone").value = selectedRow.cells[2].innerHTML;
+            document.getElementById("email").value = selectedRow.cells[3].innerHTML;
+            document.getElementById("website").value = selectedRow.cells[4].innerHTML;
+            document.getElementById("city").value = selectedRow.cells[5].innerHTML;
+            document.getElementById("flag").value = selectedRow.cells[6].innerHTML;
+        }
+
+        function updateRecord(formData) {
+            selectedRow.cells[0].innerHTML = formData.id;
+            selectedRow.cells[1].innerHTML = formData.name_firma;
+            selectedRow.cells[2].innerHTML = formData.phone;
+            selectedRow.cells[3].innerHTML = formData.email;
+            selectedRow.cells[4].innerHTML = formData.website;
+            selectedRow.cells[5].innerHTML = formData.city;
+            selectedRow.cells[6].innerHTML = formData.flag;
+        }
+
+        function onDelete(td) {
+            if (confirm('Are you sure to delete this record ?')) {
+                row = td.parentElement.parentElement;
+                document.getElementById("employeeList").deleteRow(row.rowIndex);
+                resetForm();
+            }
+        }
+
+        $("#addBtn").click(function () {
+            if ($("#id").val() == "") {
+                alert("ID cannot be empty");
+                return;
+            }
+            insertNewRecord(readFormData());
+            resetForm();
+        });
+
+        $("#updateBtn").click(function () {
+            if (!selectedRow) {
+                alert("Please select a record to update");
+                return;
+            }
+            updateRecord(readFormData());
+            resetForm();
+        });
+
+        $("#deleteBtn").click(function () {
+            if (!selectedRow) {
+                alert("Please select a record to delete");
+                return;
+            }
+            onDelete(selectedRow.children()[7]);
+        });
+
+        function readFormData() {
+            let data = {};
+            $("#formData input").each(function () {
+                data[this.id] = $(this).val();
+            });
+            return data;
+        }
+
+        function fillTableData(data) {
+            data.forEach(item => {
+                insertNewRecord(item);
+            });
+        }
+
+        $(document).ready(function () {
+            //Fill data in table from database
+            $.get('/getEmployees', (data) => {
+                fillTableData(data);
+            });
+        });
+
+        $(document).ready(function () {
+            //Fill data in table from database
+            //fillTableData(dataFromDatabase);
+        });
+    </script>
+</body>
+
+</html>

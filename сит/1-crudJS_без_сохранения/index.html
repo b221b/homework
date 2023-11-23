@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        JavaScript CRUD Example Tutorial
+    </title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .employee-form {
+            border-style: solid;
+            /* margin-bottom: 10px; */
+            /* margin-left: 10px; */
+            padding: 10px;
+            /* width: 50%; */
+            margin: auto;
+            width: 50%;
+            /* border: 3px solid green; */
+            /* padding: 10px; */
+        }
+
+        .employees-table {
+            border-style: solid;
+            /* margin-bottom: 10px; */
+            /* margin-left: 10px; */
+            padding: 20px;
+            /* width: 50%; */
+            margin: auto;
+            width: 84%;
+            /* border: 3px solid green; */
+            /* padding: 10px; */
+        }
+
+        body>table {
+            width: 80%;
+        }
+
+        table {
+            border-collapse: collapse;
+        }
+
+        table.list {
+            width: 100%;
+        }
+
+        td,
+        th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even),
+        table.list thead>tr {
+            background-color: #dddddd;
+        }
+
+        input[type=text],
+        input[type=number] {
+            width: 100%;
+            padding: 8px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        input[type=submit] {
+            width: 30%;
+            background-color: black;
+            color: white;
+            padding: 10px 18px;
+            /* margin: 0px 0; */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        form div.form-action-buttons {
+            text-align: right;
+        }
+
+        a {
+            cursor: pointer;
+            text-decoration: underline;
+            color: #0000ee;
+            margin-right: 4px;
+        }
+
+        label.validation-error {
+            color: red;
+            margin-left: 5px;
+        }
+
+        .hide {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>
+        <center>CRUD JavaScript</center>
+    </h1>
+    <hr>
+    <div class="employee-form">
+        <form onsubmit="event.preventDefault();onFormSubmit();" autocomplete="off">
+            <div>
+                <label>ID</label>
+                <label class="validation-error hide" id="fullNameValidationError">This field is required.</label>
+                <input type="text" name="id" id="id">
+            </div>
+            <div>
+                <label>Name Firma</label>
+                <input type="text" name="name_firma" id="name_firma">
+            </div>
+            <div>
+                <label>Phone</label>
+                <input type="text" name="phone" id="phone">
+            </div>
+            <div>
+                <label>Email</label>
+                <input type="text" name="email" id="email">
+            </div>
+            <div>
+                <label>Website</label>
+                <input type="text" name="website" id="website">
+            </div>
+            <div>
+                <label>City</label>
+                <input type="text" name="city" id="city">
+            </div>
+            <div>
+                <label>Flag</label>
+                <input type="text" name="flag" id="flag">
+            </div>
+            <div class="form-action-buttons">
+                <input type="submit" value="Submit">
+            </div>
+        </form>
+    </div>
+    <br />
+    <div class="employees-table">
+        <table class="list" id="employeeList">
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>name_firma</th>
+                    <th>phone</th>
+                    <th>email</th>
+                    <th>website</th>
+                    <th>city</th>
+                    <th>flag</th>
+                </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>
