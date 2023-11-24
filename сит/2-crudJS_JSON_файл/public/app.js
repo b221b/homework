@@ -1,13 +1,14 @@
 const express = require('express');
 const fs = require('fs').promises;
 const path = require('path');
+const router = express.Router();
 
 let dataFromDatabase = [];
 
 async function loadData() {
     if (dataFromDatabase.length === 0) {
         try {
-            const data = await fs.readFile('сит/123/public/database.json');
+            const data = await fs.readFile(path.join(__dirname, 'database.json'), 'utf8');
             dataFromDatabase = JSON.parse(data);
         } catch (err) {
             console.error(err);
@@ -18,7 +19,7 @@ async function loadData() {
 
 async function saveData() {
     try {
-        await fs.writeFile('сит/123/public/database.json', JSON.stringify(dataFromDatabase));
+        await fs.writeFile(path.join(__dirname, 'database.json'), JSON.stringify(dataFromDatabase));
     } catch (err) {
         console.error(err);
         throw err;
@@ -46,48 +47,55 @@ app.get('/getEmployees', async (req, res) => {
 app.post('/addEmployee', async (req, res) => {
     try {
         await loadData();
-        dataFromDatabase.push(req.body);
+        const employeeData = req.body;
+        const maxId = dataFromDatabase.reduce((max, item) => item.id > max ? item.id : max, 0);
+        employeeData.id = maxId + 1;
+        dataFromDatabase.push(employeeData);
         await saveData();
-        res.json({ message: 'Employee added successfully' });
+        res.json({ message: 'Employee added successfully', employee: employeeData });
     } catch (err) {
         res.status(500).json({ message: 'Error saving data' });
     }
 });
 
-app.put('/updateEmployee/:id', async (req, res) => {
-    try {
-        await loadData();
-        const id = parseInt(req.params.id);
-        const employeeIndex = dataFromDatabase.findIndex(e => e.id === id);
-        if (employeeIndex === -1) {
-            return res.status(404).json({ message: 'Employee not found' });
-        }
-        dataFromDatabase[employeeIndex] = req.body;
-        await saveData();
-        res.json({ message: 'Employee updated successfully' });
-    } catch (err) {
-        res.status(500).json({ message: 'Error saving data' });
-    }
+$("#updateBtn").click(function () {
+    let formData = readFormData();
+    fetch('/updateEmployee/' + formData.id, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+    })
+    .then(response => response.json())
+    .then(data => {
+        updateRecord(formData); // Обновляем запись в UI
+        fetchEmployees(); // Перезагружаем данные из базы чтобы синхронизировать UI и базу
+        resetForm();
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
 });
 
-app.delete('/deleteEmployee/:id', async (req, res) => {
-    try {
-        await loadData();
-        const id = parseInt(req.params.id);
-        const employeeIndex = dataFromDatabase.findIndex(e => e.id === id);
-        if (employeeIndex === -1) {
-            return res.status(404).json({ message: 'Employee not found' });
-        }
-        dataFromDatabase.splice(employeeIndex, 1);
-        await saveData().catch(err => {
-            console.error(err);
-            res.status(500).json({ message: 'Error saving data' });
+function onDelete(td) {
+    if (confirm('Are you sure to delete this record ?')) {
+        row = td.parentElement.parentElement;
+        let id = row.cells[0].innerHTML;
+        fetch('/deleteEmployee/' + id, {
+            method: 'DELETE'
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("employeeList").deleteRow(row.rowIndex);
+            fetchEmployees(); // перезагружаем данные из базы
+            resetForm();
+        })
+        .catch((error) => {
+            console.error('Error:', error);
         });
-        res.json({ message: 'Employee deleted successfully' });
-    } catch (err) {
-        res.status(500).json({ message: 'Error loading data' });
     }
-});
+}
 
 app.listen(3000, () => {
     console.log('Server is running on port 3000');

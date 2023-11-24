@@ -109,7 +109,7 @@ const saveData = async () => {
     try {
         dataFromDatabase.forEach(async employee => {
             let sql = 'INSERT INTO postavshiki (id, name_firma, phone, email, website, city, flag) VALUES (NULL, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE name_firma = ?, phone = ?, email = ?, website = ?, city = ?, flag = ?';
-            let query = connection.query(sql, [userObject.name_firma, userObject.phone, userObject.email, userObject.website, userObject.city, userObject.flag, userObject.name_firma, userObject.phone, userObject.email, userObject.website, userObject.city, userObject.flag], (error, results, fields) => {
+            let query = db.query(sql, [userObject.name_firma, userObject.phone, userObject.email, userObject.website, userObject.city, userObject.flag, userObject.name_firma, userObject.phone, userObject.email, userObject.website, userObject.city, userObject.flag], (error, results, fields) => {
                 if (error) {
                     console.log('Ошибка записи: ', error);
                     return;
