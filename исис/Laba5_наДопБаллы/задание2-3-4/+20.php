@@ -1,52 +1,50 @@
 <?php
 
-class DatabaseWrapper {
-    private $db_host;
-    private $db_user;
-    private $db_password;
-    private $db_name;
+class DatabaseWrapper
+{
     private $mysql;
 
-    public function __construct($host, $user, $password, $db) {
-        $this->db_host = $host;
-        $this->db_user = $user;
-        $this->db_password = $password;
-        $this->db_name = $db;
-
-        $this->connect();
-    }
-
-    private function connect() {
-        $this->mysql = @new mysqli($this->db_host, $this->db_user, $this->db_password, $this->db_name);
+    public function __construct($host, $user, $password, $database)
+    {
+        $this->mysql = new mysqli($host, $user, $password, $database);
 
         if ($this->mysql->connect_error) {
-            echo 'Errno: ' . $this->mysql->connect_errno;
-            echo '<br>';
-            echo 'Error: ' . $this->mysql->connect_error;
-            exit();
+            die('Connect Error (' . $this->mysql->connect_errno . ') ' . $this->mysql->connect_error);
         }
     }
 
-    public function query($sql) {
-        return $this->mysql->query($sql);
+    public function query($sql)
+    {
+        $result = $this->mysql->query($sql);
+
+        if (!$result) {
+            die('Query Error (' . $this->mysql->errno . ') ' . $this->mysql->error);
+        }
+
+        return $result;
     }
 
-    public function select($table, $columns = '*', $where = '') {
+    public function select($table, $columns, $where = '')
+    {
         $sql = "SELECT $columns FROM $table";
+
         if ($where != '') {
             $sql .= " WHERE $where";
         }
+
         return $this->query($sql);
     }
 
-    public function insert($table, $data) {
+    public function insert($table, $data)
+    {
         $columns = implode(',', array_keys($data));
         $values = "'" . implode("','", array_values($data)) . "'";
         $sql = "INSERT INTO $table ($columns) VALUES ($values)";
         return $this->query($sql);
     }
 
-    public function update($table, $data, $where) {
+    public function update($table, $data, $where)
+    {
         $set = '';
         foreach ($data as $key => $value) {
             $set .= "$key='$value',";
@@ -56,47 +54,67 @@ class DatabaseWrapper {
         return $this->query($sql);
     }
 
-    public function delete($table, $where) {
+    public function delete($table, $where)
+    {
         $sql = "DELETE FROM $table WHERE $where";
         return $this->query($sql);
     }
 
-    public function truncate($table) {
+    public function truncate($table)
+    {
         $sql = "TRUNCATE TABLE $table";
         return $this->query($sql);
     }
 
-    public function fetchAssoc($result) {
+    public function fetchAssoc($result)
+    {
         return $result->fetch_assoc();
     }
 
-    public function fetchAll($result) {
+    public function fetchAll($result)
+    {
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
-    public function escapeString($value) {
+    public function escapeString($value)
+    {
         return $this->mysql->real_escape_string($value);
+    }
+
+    public function fetchDataFromTable($table)
+    {
+        $sql = "SELECT * FROM $table";
+        $result = $this->query($sql);
+        $data = $this->fetchAll($result);
+        return $data;
     }
 }
 
 $database = new DatabaseWrapper('localhost', 'root', '', 'komercheskaya_firma5');
 
-$result = $database->select('postavshiki', '*', 'id=26');
-$data = $database->fetchAssoc($result);
+// Получение списка таблиц
+$tables = $database->query('SHOW TABLES');
 
-$insertData = array('name_firma' => 'newfirma', 'phone' => '987', 'email' => 'newuser@example.com', 'website' => 'www.example.com', 'city' => 'City', 'flag' => 1);
-$database->insert('postavshiki', $insertData);
+// Преобразование списка таблиц в виде выпадающего списка
+echo '<select name="table" id="table">';
+while ($row = $database->fetchAssoc($tables)) {
+    echo '<option value="' . $row['Tables_in_komercheskaya_firma5'] . '">' . $row['Tables_in_komercheskaya_firma5'] . '</option>';
+}
+echo '</select>';
 
-$updateData = array('phone' => '1234');
-$database->update('postavshiki', $updateData, "name_firma='newuser'");
-
-$database->delete('postavshiki', 'id=26');
+$table = $_POST['table']; // This assumes you're using a POST request to send the selected table
+$data = $database->fetchDataFromTable($table);
 
 if ($data) {
-  echo "Information:<br>";
-  foreach ($data as $key => $value) {
-      echo "$key: $value<br>";
-  }
+    echo "Information:<br>";
+    foreach ($data as $row) {
+        foreach ($row as $key => $value) {
+            echo "$key: $value<br>";
+        }
+        echo "<hr>";
+    }
 } else {
-  echo "Data not found.";
+    echo "Data not found.";
 }
+
+?>
