@@ -355,7 +355,6 @@
         <br>
         <button type="button" id="addBtn">Добавить</button>
         <button type="button" id="updateBtn">Обновить</button>
-        <button type="button" id="deleteBtn">Удалить</button>
     </form>
     <br>
     <table id="employeeList">
@@ -429,7 +428,7 @@
         function onDelete(td) {
             selectedRow = td.parentElement.parentElement;
             var id = selectedRow.cells[0].innerHTML;
-            if (confirm('Are you sure to delete this record ?')) {
+            if (confirm('Вы уверены что хотите удалить эту запись?')) {
                 $.ajax({
                     url: '/deleteEmployee/' + id,
                     method: 'POST',
@@ -484,13 +483,13 @@
                     }
                 });
             } else {
-                alert("Please select a record to update");
+                alert("Пожалуйста, выберите запись что бы ее отредактировать");
             }
         });
 
         $("#deleteBtn").click(function () {
             if (!selectedRow) {
-                alert("Please select a record to delete");
+                alert("Пожалуйста, выберите запись что бы ее удалить");
                 return;
             }
             onDelete(selectedRow.children()[7]);

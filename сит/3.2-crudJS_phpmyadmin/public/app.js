@@ -31,7 +31,7 @@ app.post('/addEmployee', (req, res) => {
             res.status(500).send(err);
             return;
         }
-        res.json({ message: 'Employee added!', id: result.insertId });
+        res.json({ message: 'Поставщик добавлен!', id: result.insertId });
     });
 });
 
@@ -57,7 +57,7 @@ app.post('/updateEmployee/:id', (req, res) => {
             res.status(500).send(err);
             return;
         }
-        res.json({ message: "postavshiki updated!", affectedRows: result.affectedRows });
+        res.json({ message: "Поставщик обновлен!", affectedRows: result.affectedRows });
     });
 });
 
@@ -70,10 +70,10 @@ app.post('/deleteEmployee/:id', (req, res) => {
             res.status(500).send(err);
             return;
         }
-        res.json({ message: "postavshiki deleted!", affectedRows: result.affectedRows });
+        res.json({ message: "Поставщик удален!", affectedRows: result.affectedRows });
     });
 });
 
-app.listen(3001, () => {
+app.listen(3000, () => {
     console.log('Server is running on port 3000');
 });
