@@ -4,7 +4,7 @@ class Session
     public function __construct()
     {
         session_start();
-        
+
         if (!isset($_SESSION['users'])) {
             $_SESSION['users'] = [];
         }
@@ -61,6 +61,57 @@ $users = $session->getSessionVariable('users'); ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Users</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        h1,
+        h2 {
+            color: #333;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 10%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        button[type="submit"] {
+            padding: 8px 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        table {
+            width: 30%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
 </head>
 
 <body>
@@ -68,9 +119,11 @@ $users = $session->getSessionVariable('users'); ?>
     <form method="post">
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" />
+        <br><br>
 
         <label for="password">Password:</label>
         <input type="password" id="password" name="password" />
+        <br><br>
 
         <button type="submit" name="add_user">Add User</button>
     </form>
