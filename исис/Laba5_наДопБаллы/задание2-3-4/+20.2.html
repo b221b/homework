@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .box {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .btn:hover {
+            background-color: #f0f0f0;
+        }
+
+        .btn-select {
+            background-color: #008CBA;
+            color: white;
+        }
+
+        .btn-select:hover {
+            background-color: #007B9A;
+        }
+
+        .btn-insert {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .btn-insert:hover {
+            background-color: #45a049;
+        }
+
+        .btn-update {
+            background-color: #FF8000;
+            color: white;
+        }
+
+        .btn-update:hover {
+            background-color: #e67e22;
+        }
+
+        .btn-delete {
+            background-color: #FF0000;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background-color: #c40000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="box">
+        <form action="123.php" method="post">
+            <input type="hidden" name="action" value="select">
+            <input type="submit" class="btn btn-select" value="Выбрать">
+        </form>
+        <form action="+20.2.php" method="post">
+            <input type="hidden" name="action" value="insert">
+            <input type="submit" class="btn btn-insert" value="Добавить">
+        </form>
+        <form action="+20.2.php" method="post">
+            <input type="hidden" name="action" value="update">
+            <input type="submit" class="btn btn-update" value="Обновить">
+        </form>
+        <form action="+20.2.php" method="post">
+            <input type="hidden" name="action" value="delete">
+            <input type="submit" class="btn btn-delete" value="Удалить">
+        </form>
+    </div>
+
+</body>
+
+</html>

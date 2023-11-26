@@ -1,70 +1,71 @@
 <?php
-require_once 'db.php';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-	// Получаем данные из формы
-	$modelName = $_POST['model_name'];
-	$color = $_POST['color'];
-	$obivka = $_POST['obivka'];
-	$enginePower = $_POST['engine_power'];
-	$doorNumber = $_POST['door_number'];
-	$korobkaPeredach = $_POST['korobka_peredach'];
-	$idPostavshika = $_POST['id_postavshika'];
-	$flag = $_POST['flag'];
+// The data table is now hardcoded
+$table = "models";
 
-	// Создаем новую модель
-	$model = R::dispense('models');
-	$model->model_name = $modelName;
-	$model->color = $color;
-	$model->obivka = $obivka;
-	$model->engine_power = $enginePower;
-	$model->door_number = $doorNumber;
-	$model->korobka_peredach = $korobkaPeredach;
-	$model->id_postavshika = $idPostavshika;
-	$model->flag = $flag;
-	
-	// Сохраняем модель в базе данных
-	$id = R::store($model);
+// Connection to the database
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "miroslav";
 
-	// Перенаправляем на страницу с таблицей
-	header('Location: index.php');
-	exit();
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+if ($conn->connect_error) {
+    die("Connection error: " . $conn->connect_error);
 }
+
+// Fields are now hardcoded
+$fields = array(
+    "model_name", 
+    "color", 
+    "obivka", 
+    "engine_power", 
+    "door_number", 
+    "korobka_peredach", 
+    "id_postavshika", 
+    "flag"
+);
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Get the max id value
+    $max_id = $conn->query("SELECT MAX(id) FROM $table")->fetch_row()[0];
+    $max_id = is_null($max_id) ? 1 : $max_id + 1;  // If the table is empty, we set id = 1
+
+    // Creating a new record (insert)
+    $insertQuery = "INSERT INTO $table (id, ";
+    $values = "VALUES ($max_id, ";
+
+    foreach ($fields as $field) {
+        if (isset($_POST[$field])) { 
+            $value = $conn->real_escape_string($_POST[$field]);
+            $insertQuery .= "$field, ";
+            $values .= "'$value', ";
+        }
+    }
+
+    $insertQuery = rtrim($insertQuery, ", ") . ") ";
+    $values = rtrim($values, ", ") . ");";
+    $insertQuery .= $values;
+
+    $conn->query($insertQuery);
+
+    // Redirect to the main page
+    header("Location: index.php");
+    exit();
+}
+
+// Form to add a new entry
+echo "<h2>Add new record</h2>";
+echo "<form action='' method='POST'>";
+
+foreach ($fields as $field) {
+    echo "<label>{$field}:</label><br>";
+    echo "<input type='text' name='{$field}'><br>";
+}
+
+echo "<input type='submit' value='Add'>";
+echo "</form>";
+
+$conn->close();
 ?>
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Создать новую модель</title>
-</head>
-<body>
-	<h1>Создать новую модель</h1>
-
-	<form method="POST">
-		<label>Название модели:</label>
-		<input type="text" name="model_name" required><br>
-
-		<label>Цвет:</label>
-		<input type="text" name="color" required><br>
-
-		<label>Обивка:</label>
-		<input type="text" name="obivka" required><br>
-
-		<label>Мощность двигателя:</label>
-		<input type="text" name="engine_power" required><br>
-
-		<label>Количество дверей:</label>
-		<input type="number" name="door_number" required><br>
-
-		<label>Коробка передач:</label>
-		<input type="text" name="korobka_peredach" required><br>
-
-		<label>ID поставщика:</label>
-		<input type="number" name="id_postavshika" required><br>
-
-		<label>Флаг:</label>
-		<input type="text" name="flag" required><br>
-
-		<button type="submit">Создать</button>
-	</form>
-</body>
-</html>
