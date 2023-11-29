@@ -3,19 +3,19 @@ const mysql = require('mysql');
 const path = require('path');
 const app = express();
 
-app.use(express.json()); // Это позволит приложению понимать JSON-запросы
+app.use(express.json()); 
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// Создайте соединение с базой данных
+
 const dbConnection = mysql.createConnection({
-    host: "localhost",         // или другой адрес, где хостится ваша БД
-    user: "root",              // ваш пользователь БД
-    password: "",              // ваш пароль
-    database: "javascript"     // имя вашей базы данных
+    host: "localhost",         
+    user: "root",              
+    password: "",              
+    database: "javascript"     
 });
 
 dbConnection.connect(error => {
@@ -47,7 +47,7 @@ app.get('/getSuppliers', (req, res) => {
     });
 });
 
-// API-эндпоинт для обновления записи о сотруднике по ID
+
 app.post('/updateEmployee/:id', (req, res) => {
     const { id } = req.params;
     const updatedEmployee = req.body;
@@ -61,7 +61,7 @@ app.post('/updateEmployee/:id', (req, res) => {
     });
 });
 
-// API-эндпоинт для удаления записи о сотруднике по ID
+
 app.post('/deleteEmployee/:id', (req, res) => {
     const { id } = req.params;
     const query = "DELETE FROM postavshiki WHERE id = ?";
