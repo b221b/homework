@@ -1,0 +1,484 @@
+		/*Задание 1*/
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Stock {
+private:
+    string company_name;
+    int number_of_shares;
+    float share_price;
+    float total_value;
+
+    void set_tot() {
+        total_value = number_of_shares * share_price;
+    }
+
+public:
+    Stock(const string &name, int shares, float price)
+        : company_name(name), number_of_shares(shares), share_price(price) {
+        set_tot();
+    }
+
+    const string &getCompanyName() const {
+        return company_name;
+    }
+
+    int getNumberOfShares() const {
+        return number_of_shares;
+    }
+
+    float getSharePrice() const {
+        return share_price;
+    }
+
+    float getTotalValue() const {
+        return total_value;
+    }
+
+    void setCompanyName(const string &name) {
+        company_name = name;
+    }
+
+    void setNumberOfShares(int shares) {
+        number_of_shares = shares;
+        set_tot();
+    }
+
+    void setSharePrice(float price) {
+        share_price = price;
+        set_tot();
+    }
+
+    void buy(int shares, float price) {
+        if (shares >= 0) {
+            number_of_shares += shares;
+            share_price = price;
+            set_tot();
+        } else {
+            cout << "Error: Number of shares to buy must be non-negative." << endl;
+        }
+    }
+
+    void sell(int shares) {
+        if (shares >= 0 && shares <= number_of_shares) {
+            number_of_shares -= shares;
+            set_tot();
+        } else {
+            cout << "Error: Number of shares to sell must be non-negative and no greater than existing shares." << endl;
+        }
+    }
+
+    void update(float price) {
+        share_price = price;
+        set_tot();
+    }
+
+    void show() {
+        cout << "Company: " << company_name << endl;
+        cout << "Number of shares: " << number_of_shares << endl;
+        cout << "Price per share: " << share_price << endl;
+        cout << "Total value: " << total_value << endl;
+    }
+
+    void acquire(const string &name, int shares, float price) {
+        company_name = name;
+        number_of_shares = shares;
+        share_price = price;
+        set_tot();
+    }
+};
+
+int main() {
+    Stock apple("Apple Inc.", 100, 150.50);
+    Stock microsoft("Microsoft Corp.", 75, 228.0);
+    
+    apple.show();
+    cout << endl;
+    
+    microsoft.show();
+    cout << endl;
+
+    cout << "Buying 10 shares of Apple at $160.00:" << endl;
+    apple.buy(10, 160.0);
+    apple.show();
+    cout << endl;
+
+    cout << "Selling 50 shares of Apple:" << endl;
+    apple.sell(50);
+    apple.show();
+    cout << endl;
+
+    cout << "Updating share price of Microsoft to $230.00:" << endl;
+    microsoft.update(230.0);
+    microsoft.show();
+
+    return 0;
+}
+
+		/*Задание 2*/
+
+#include <iostream>
+#include <string>
+#include <ctime>
+using namespace std;
+
+class Stock {
+private:
+    string company_name;
+    int number_of_shares;
+    float share_price;
+    float total_value;
+
+    void set_tot() {
+        total_value = number_of_shares * share_price;
+    }
+
+public:
+    // Конструктор по умолчанию
+    Stock() {
+        cout << "Default constructor called." << endl;
+        company_name = "";
+        number_of_shares = 0;
+        share_price = 0.0;
+        set_tot();
+    }
+
+    // Конструктор с параметрами
+    Stock(const string &name, int shares, float price)
+        : company_name(name), number_of_shares(shares), share_price(price) {
+        cout << "Parameterized constructor called." << endl;
+        set_tot();
+    }
+
+    // Деструктор
+    ~Stock() {
+        cout << "Destructor called for company: " << company_name << endl;
+    }
+
+    // Остальные методы класса остаются без изменений
+
+    const string &getCompanyName() const {
+        return company_name;
+    }
+
+    int getNumberOfShares() const {
+        return number_of_shares;
+    }
+
+    float getSharePrice() const {
+        return share_price;
+    }
+
+    float getTotalValue() const {
+        return total_value;
+    }
+
+    void setCompanyName(const string &name) {
+        company_name = name;
+    }
+
+    void setNumberOfShares(int shares) {
+        number_of_shares = shares;
+        set_tot();
+    }
+
+    void setSharePrice(float price) {
+        share_price = price;
+        set_tot();
+    }
+
+    void buy(int shares, float price) {
+        if (shares >= 0) {
+            number_of_shares += shares;
+            share_price = price;
+            set_tot();
+        } else {
+            cout << "Error: Number of shares to buy must be non-negative." << endl;
+        }
+    }
+
+    void sell(int shares) {
+        if (shares >= 0 && shares <= number_of_shares) {
+            number_of_shares -= shares;
+            set_tot();
+        } else {
+            cout << "Error: Number of shares to sell must be non-negative and no greater than existing shares." << endl;
+        }
+    }
+
+    void update(float price) {
+        share_price = price;
+        set_tot();
+    }
+
+    void show() {
+        cout << "Company: " << company_name << endl;
+        cout << "Number of shares: " << number_of_shares << endl;
+        cout << "Price per share: " << share_price << endl;
+        cout << "Total value: " << total_value << endl;
+    }
+
+    void acquire(const string &name, int shares, float price) {
+        company_name = name;
+        number_of_shares = shares;
+        share_price = price;
+        set_tot();
+    }
+};
+
+int main() {
+    const int NUM_STOCKS = 3;
+    Stock stocks[NUM_STOCKS];
+
+    // Инициализируем элементы массива с использованием конструкторов с параметрами
+    stocks[0] = Stock("Apple Inc.", 100, 150.50);
+    stocks[1] = Stock("Microsoft Corp.", 75, 228.0);
+    stocks[2] = Stock("Google LLC", 50, 280.75);
+
+    // Выводим информацию о каждой акции в массиве
+    for (int i = 0; i < NUM_STOCKS; i++) {
+        cout << "Stock " << i+1 << " details:" << endl;
+        stocks[i].show();
+        cout << endl;
+    }
+
+    return 0;
+}
+
+		/*Задание 3*/
+
+#include <iostream>
+#include <string>
+#include <ctime>
+using namespace std;
+
+class Stock {
+private:
+    string company_name;
+    int number_of_shares;
+    float share_price;
+    float total_value;
+
+    void set_tot() {
+        total_value = number_of_shares * share_price;
+    }
+
+public:
+    // Конструктор по умолчанию
+    Stock() {
+        cout << "Default constructor called." << endl;
+        company_name = "";
+        number_of_shares = 0;
+        share_price = 0.0;
+        set_tot();
+    }
+
+    // Конструктор с параметрами
+    Stock(const string &name, int shares, float price)
+        : company_name(name), number_of_shares(shares), share_price(price) {
+        cout << "Parameterized constructor called." << endl;
+        set_tot();
+    }
+
+    // Деструктор
+    ~Stock() {
+        cout << "Destructor called for company: " << company_name << endl;
+    }
+
+    // Остальные методы класса остаются без изменений
+
+    const string &getCompanyName() const {
+        return company_name;
+    }
+
+    int getNumberOfShares() const {
+        return number_of_shares;
+    }
+
+    float getSharePrice() const {
+        return share_price;
+    }
+
+    float getTotalValue() const {
+        return total_value;
+    }
+
+    void setCompanyName(const string &name) {
+        company_name = name;
+    }
+
+    void setNumberOfShares(int shares) {
+        number_of_shares = shares;
+        set_tot();
+    }
+
+    void setSharePrice(float price) {
+        share_price = price;
+        set_tot();
+    }
+
+    void buy(int shares, float price) {
+        if (shares >= 0) {
+            number_of_shares += shares;
+            share_price = price;
+            set_tot();
+        } else {
+            cout << "Error: Number of shares to buy must be non-negative." << endl;
+        }
+    }
+
+    void sell(int shares) {
+        if (shares >= 0 && shares <= number_of_shares) {
+            number_of_shares -= shares;
+            set_tot();
+        } else {
+            cout << "Error: Number of shares to sell must be non-negative and no greater than existing shares." << endl;
+        }
+    }
+
+    void update(float price) {
+        share_price = price;
+        set_tot();
+    }
+
+    void show() {
+        cout << "Company: " << company_name << endl;
+        cout << "Number of shares: " << number_of_shares << endl;
+        cout << "Price per share: " << share_price << endl;
+        cout << "Total value: " << total_value << endl;
+    }
+
+    void acquire(const string &name, int shares, float price) {
+        company_name = name;
+        number_of_shares = shares;
+        share_price = price;
+        set_tot();
+    }
+};
+
+int main() {
+    const int NUM_STOCKS = 5;
+    Stock stocks[NUM_STOCKS] = {
+        Stock("Apple Inc.", 100, 150.50),
+        Stock("Microsoft Corp.", 75, 228.0),
+        Stock("Google LLC", 50, 280.75),
+        Stock("Amazon.com Inc.", 120, 3500.25),
+        Stock("Facebook Inc.", 60, 330.45)
+    };
+
+    // Выводим информацию о каждой акции в массиве
+    for (int i = 0; i < NUM_STOCKS; i++) {
+        cout << "Stock " << i+1 << " details:" << endl;
+        stocks[i].show();
+        cout << endl;
+    }
+
+    return 0;
+}
+
+		/*Задание 4*/
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Worker {
+private:
+    string full_name;
+    string position;
+    int hire_year;
+    double salary;
+
+public:
+    // Конструктор с параметрами
+    Worker(const string &name, const string &pos, int year, double sal)
+        : full_name(name), position(pos), hire_year(year), salary(sal) {
+    }
+
+    // Методы set
+    void setFullName(const string &name) {
+        full_name = name;
+    }
+
+    void setPosition(const string &pos) {
+        position = pos;
+    }
+
+    void setHireYear(int year) {
+        hire_year = year;
+    }
+
+    void setSalary(double sal) {
+        salary = sal;
+    }
+
+    // Методы get
+    string getFullName() const {
+        return full_name;
+    }
+
+    string getPosition() const {
+        return position;
+    }
+
+    int getHireYear() const {
+        return hire_year;
+    }
+
+    double getSalary() const {
+        return salary;
+    }
+
+    // Метод для вывода информации о работнике
+    void show() const {
+        cout << "Full Name: " << full_name << endl;
+        cout << "Position: " << position << endl;
+        cout << "Hire Year: " << hire_year << endl;
+        cout << "Salary: " << salary << endl;
+    }
+};
+
+int main() {
+    const int NUM_WORKERS = 5;
+    Worker workers[NUM_WORKERS] = {
+        Worker("John Smith", "Manager", 2015, 60000.0),
+        Worker("Alice Johnson", "Engineer", 2018, 55000.0),
+        Worker("Michael Brown", "Accountant", 2017, 52000.0),
+        Worker("Emily Davis", "Designer", 2019, 48000.0),
+        Worker("David Lee", "Technician", 2016, 58000.0)
+    };
+
+    // Вывести список работников, стаж работы которых превышает заданное число лет
+    int required_experience = 3;
+    cout << "Workers with experience more than " << required_experience << " years:" << endl;
+    for (int i = 0; i < NUM_WORKERS; i++) {
+        if (2023 - workers[i].getHireYear() > required_experience) {
+            workers[i].show();
+            cout << endl;
+        }
+    }
+
+    // Вывести список работников, зарплата которых больше заданной
+    double required_salary = 55000.0;
+    cout << "Workers with salary greater than " << required_salary << ":" << endl;
+    for (int i = 0; i < NUM_WORKERS; i++) {
+        if (workers[i].getSalary() > required_salary) {
+            workers[i].show();
+            cout << endl;
+        }
+    }
+
+    // Вывести список работников, занимающих заданную должность
+    string required_position = "Engineer";
+    cout << "Workers with position: " << required_position << ":" << endl;
+    for (int i = 0; i < NUM_WORKERS; i++) {
+        if (workers[i].getPosition() == required_position) {
+            workers[i].show();
+            cout << endl;
+        }
+    }
+
+    return 0;
+}
