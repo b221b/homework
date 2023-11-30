@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<!-- saved from url=(0041)https://nodejsdev.ru/guide/create-server/ -->
+<html lang="ru" class="js-focus-visible js" data-js-focus-visible=""><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style id="giscus-css">
+  .giscus, .giscus-frame {
+    width: 100%;
+    min-height: 150px;
+  }
+
+  .giscus-frame {
+    border: none;
+    color-scheme: light;
+  }
+</style>
+
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Справочник web-разработчика с примерами кода - Node.js">
+<meta name="author" content="nodejsdev.ru">
+<link rel="canonical" href="https://nodejsdev.ru/guide/create-server/">
+<link rel="icon" href="https://nodejsdev.ru/nodejs.svg">
+<meta name="generator" content="mkdocs-1.4.1, mkdocs-material-8.5.7">
+<title>
+	Создание сервера | Node.js с примерами кода
+</title>
+<link rel="stylesheet" href="./Создание сервера _ Node.js с примерами кода_files/main.20d9efc8.min.css">
+<link rel="stylesheet" href="./Создание сервера _ Node.js с примерами кода_files/palette.cbb835fc.min.css">
+<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+<link rel="stylesheet" href="./Создание сервера _ Node.js с примерами кода_files/css">
+<style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+<link rel="stylesheet" href="./Создание сервера _ Node.js с примерами кода_files/styles.css">
+<script async="" src="./Создание сервера _ Node.js с примерами кода_files/tag.js"></script><script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+</head>
+<body dir="ltr" data-md-color-scheme="default" data-md-color-primary="green" data-md-color-accent="green">
+<script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+<input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+<input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a href="https://nodejsdev.ru/guide/create-server/#_1" class="md-skip">
+Перейти к содержанию
+</a>
+</div>
+<div data-md-component="announce">
+</div>
+<header class="md-header md-header--shadow" data-md-component="header">
+<nav class="md-header__inner md-grid" aria-label="Верхний колонтитул">
+<a href="https://nodejsdev.ru/" title="Node.js" class="md-header__button md-logo" aria-label="Node.js" data-md-component="logo">
+<img src="./Создание сервера _ Node.js с примерами кода_files/nodejs-white.svg" alt="logo">
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+Node.js
+</span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+Создание сервера
+</span>
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="green" data-md-color-accent="green" aria-label="Тёмная тема" type="radio" name="__palette" id="__palette_1">
+<label class="md-header__button md-icon" title="Тёмная тема" for="__palette_2">
+ <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6zm0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4zM7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path></svg>
+</label>
+<input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="green" data-md-color-accent="green" aria-label="Светлая тема" type="radio" name="__palette" id="__palette_2">
+<label class="md-header__button md-icon" title="Светлая тема" for="__palette_1" hidden="">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3Z"></path></svg>
+</label>
+</form>
+<label class="md-header__button md-icon" for="__search">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input type="text" class="md-search__input" name="query" aria-label="Поиск" placeholder="Поиск" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required="">
+<label class="md-search__icon md-icon" for="__search">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"></path></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"></path></svg>
+</label>
+<nav class="md-search__options" aria-label="Поиск">
+<button type="reset" class="md-search__icon md-icon" title="Очистить" aria-label="Очистить" tabindex="-1">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"></path></svg>
+</button>
+</nav>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">Начните печатать для поиска</div>
+<ol class="md-search-result__list"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md-header__source">
+<a href="https://github.com/xsltdev/nodejsdev.ru" title="Перейти к репозиторию" class="md-source" data-md-component="source">
+<div class="md-source__icon md-icon">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"></path></svg>
+</div>
+<div class="md-source__repository md-source__repository--active">
+Справочник на Github
+<ul class="md-source__facts"><li class="md-source__fact md-source__fact--stars">81</li><li class="md-source__fact md-source__fact--forks">11</li></ul></div>
+</a>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<nav class="md-tabs" aria-label="Вкладки" data-md-component="tabs" hidden="">
+<div class="md-tabs__inner md-grid">
+<ul class="md-tabs__list">
+<li class="md-tabs__item">
+<a href="https://nodejsdev.ru/" class="md-tabs__link">
+Главная
+</a>
+</li>
+<li class="md-tabs__item">
+<a href="https://nodejsdev.ru/doc/" class="md-tabs__link">
+Документация
+</a>
+</li>
+<li class="md-tabs__item">
+<a href="https://nodejsdev.ru/api/" class="md-tabs__link">
+API
+</a>
+</li>
+<li class="md-tabs__item">
+<a href="https://nodejsdev.ru/guide/" class="md-tabs__link md-tabs__link--active">
+Гайд
+</a>
+</li>
+<li class="md-tabs__item">
+<a href="https://nodejsdev.ru/expressjs4/" class="md-tabs__link">
+Express.js 4.x
+</a>
+</li>
+</ul>
+</div>
+</nav>
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Навигация" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a href="https://nodejsdev.ru/" title="Node.js" class="md-nav__button md-logo" aria-label="Node.js" data-md-component="logo">
+<img src="./Создание сервера _ Node.js с примерами кода_files/nodejs-white.svg" alt="logo">
+</a>
+Node.js
+</label>
+<div class="md-nav__source">
+<a href="https://github.com/xsltdev/nodejsdev.ru" title="Перейти к репозиторию" class="md-source" data-md-component="source">
+<div class="md-source__icon md-icon">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"></path></svg>
+</div>
+<div class="md-source__repository md-source__repository--active">
+Справочник на Github
+<ul class="md-source__facts"><li class="md-source__fact md-source__fact--stars">81</li><li class="md-source__fact md-source__fact--forks">11</li></ul></div>
+</a>
+</div>
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/" class="md-nav__link">
+Главная
+</a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2">
+<label class="md-nav__link" for="__nav_2">
+Документация
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav class="md-nav" aria-label="Документация" data-md-level="1">
+<label class="md-nav__title" for="__nav_2">
+<span class="md-nav__icon md-icon"></span>
+Документация
+</label>
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/doc/" class="md-nav__link">
+Документация Node.js
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/doc/setup/" class="md-nav__link">
+Установка Node.js
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/doc/npm/" class="md-nav__link">
+npm
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/doc/start/" class="md-nav__link">
+Начало работы
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/doc/express/" class="md-nav__link">
+Express
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/doc/static/" class="md-nav__link">
+Статические файлы и функция static()
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/doc/templates/" class="md-nav__link">
+Шаблонизаторы
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/doc/files/" class="md-nav__link">
+Файлы
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/doc/routing/" class="md-nav__link">
+Маршрутизация
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/doc/request-object/" class="md-nav__link">
+Объект запроса
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/doc/response-object/" class="md-nav__link">
+Объект ответа
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/doc/middleware/" class="md-nav__link">
+Middleware
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/doc/http-requests/" class="md-nav__link">
+Отправка HTTP-запросов
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/doc/cookie/" class="md-nav__link">
+Cookie
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/doc/sessions/" class="md-nav__link">
+Сессии
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/doc/flash-messages/" class="md-nav__link">
+Flash-сообщения
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/doc/event-emitter/" class="md-nav__link">
+События и модуль events
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/doc/processes/" class="md-nav__link">
+Процессы
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/doc/child-processes/" class="md-nav__link">
+Дочерние процессы
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/doc/modules/" class="md-nav__link">
+ Стандартные и собственные модули
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/doc/path/" class="md-nav__link">
+Использование модуля path
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/doc/authentication/" class="md-nav__link">
+Аутентификация
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/doc/debugging/" class="md-nav__link">
+Отладка
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/doc/mongodb/" class="md-nav__link">
+MongoDB
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/doc/sql/" class="md-nav__link">
+SQL
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/doc/oracle/" class="md-nav__link">
+Oracle
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/doc/rest-api/" class="md-nav__link">
+REST API
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/doc/app-structure/" class="md-nav__link">
+Организация структуры приложения
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/doc/https/" class="md-nav__link">
+Использование HTTPS
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/doc/jwt/" class="md-nav__link">
+JWT
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/doc/websocket/" class="md-nav__link">
+WebSocket
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/doc/email/" class="md-nav__link">
+Отправка E-mail
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/doc/proxy/" class="md-nav__link">
+Прокси
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/doc/blocking-nonblocking/" class="md-nav__link">
+Блокирующие и неблокирующие вызовы
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/doc/event-loop/" class="md-nav__link">
+Event loop
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/doc/timers/" class="md-nav__link">
+Таймеры
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/doc/buffer/" class="md-nav__link">
+Буфер
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/doc/streams/" class="md-nav__link">
+Потоки
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/doc/cluster/" class="md-nav__link">
+Кластеризация
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/doc/pm2/" class="md-nav__link">
+Менеджер процессов PM2
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/doc/performance/" class="md-nav__link">
+Улучшение производительности
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/doc/security/" class="md-nav__link">
+Безопасность
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/doc/cryptography/" class="md-nav__link">
+Криптография
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/doc/cli-application/" class="md-nav__link">
+Создание CLI-приложения
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/doc/testing/" class="md-nav__link">
+Тестирование
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3">
+<label class="md-nav__link" for="__nav_3">
+API
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav class="md-nav" aria-label="API" data-md-level="1">
+<label class="md-nav__title" for="__nav_3">
+<span class="md-nav__icon md-icon"></span>
+API
+</label>
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/api/" class="md-nav__link">
+API Node.js
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/api/addons/" class="md-nav__link">
+Дополнения C++
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/api/cli/" class="md-nav__link">
+Параметры командной строки
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/api/globals/" class="md-nav__link">
+Глобальные объекты
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/api/events/" class="md-nav__link">
+Event
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/api/errors/" class="md-nav__link">
+Ошибки
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/api/debugger/" class="md-nav__link">
+Debugger
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/api/assert/" class="md-nav__link">
+Модуль assert
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/api/buffer/" class="md-nav__link">
+Buffer
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/api/child_process/" class="md-nav__link">
+Модуль child_process
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/api/cluster/" class="md-nav__link">
+Модуль cluster
+</a>
+</li>
+
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/api/console/" class="md-nav__link">
+Модуль console
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/api/crypto/" class="md-nav__link">
+Модуль crypto
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/api/dns/" class="md-nav__link">
+Модуль dns
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/api/fs/" class="md-nav__link">
+Модуль fs
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/api/http/" class="md-nav__link">
+Модуль http
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/api/http2/" class="md-nav__link">
+HTTP/2
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/api/https/" class="md-nav__link">
+Модуль https
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/api/modules/" class="md-nav__link">
+Модули: модули CommonJS
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/api/n-api/" class="md-nav__link">
+Node-API
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/api/net/" class="md-nav__link">
+Модуль net
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/api/os/" class="md-nav__link">
+Модуль os
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/api/path/" class="md-nav__link">
+Модуль path
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/api/process/" class="md-nav__link">
+Process
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/api/querystring/" class="md-nav__link">
+Модуль querystring
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/api/readline/" class="md-nav__link">
+Модуль readline
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/api/repl/" class="md-nav__link">
+Модуль repl
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/api/stream/" class="md-nav__link">
+Модуль stream
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/api/util/" class="md-nav__link">
+Util
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked="">
+<label class="md-nav__link" for="__nav_4">
+Гайд
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav class="md-nav" aria-label="Гайд" data-md-level="1">
+<label class="md-nav__title" for="__nav_4">
+<span class="md-nav__icon md-icon"></span>
+Гайд
+</label>
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/guide/" class="md-nav__link">
+Что такое Node JS. Начало работы
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/guide/first-app/" class="md-nav__link">
+Первое приложение на Node.js
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/guide/modules/" class="md-nav__link">
+Модули
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/guide/work-modules/" class="md-nav__link">
+Работа с модулями
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/guide/global/" class="md-nav__link">
+Объект global и глобальные переменные
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/guide/params/" class="md-nav__link">
+Передача параметров приложению
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/guide/npm/" class="md-nav__link">
+NPM. Package.json. Установка модулей. Определение команд
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/guide/nodemon/" class="md-nav__link">
+Nodemon
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/guide/async/" class="md-nav__link">
+Асинхронность в Node.js
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/guide/files/" class="md-nav__link">
+Работа с файлами
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/guide/events/" class="md-nav__link">
+События
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/guide/stream/" class="md-nav__link">
+Поток
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/guide/pipe/" class="md-nav__link">
+Pipe
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+<label class="md-nav__link md-nav__link--active" for="__toc">
+Создание сервера
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a href="https://nodejsdev.ru/guide/create-server/" class="md-nav__link md-nav__link--active">
+Создание сервера
+</a>
+<nav class="md-nav md-nav--secondary" aria-label="Содержание раздела">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+Содержание раздела
+</label>
+<ul class="md-nav__list" data-md-component="toc">
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/guide/create-server/#request" class="md-nav__link">
+Request
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/guide/create-server/#response" class="md-nav__link">
+Response
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/guide/create-server/#_2" class="md-nav__link">
+Маршрутизация
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/guide/create-server/#_3" class="md-nav__link">
+Переадресация
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/guide/send-file/" class="md-nav__link">
+Отправка файлов
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/guide/send-static/" class="md-nav__link">
+Отправка статических файлов
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/guide/templates/" class="md-nav__link">
+Шаблоны
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/guide/express-intro/" class="md-nav__link">
+Начало работы с Express
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/guide/express-middleware/" class="md-nav__link">
+Конвейер обработки запроса и middleware
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/guide/express-response/" class="md-nav__link">
+Отправка ответа
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/guide/express-static/" class="md-nav__link">
+Статические файлы
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/guide/express-routes/" class="md-nav__link">
+Маршрутизация фреймворка
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/guide/express-redirect/" class="md-nav__link">
+Переадресация
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/guide/express-query/" class="md-nav__link">
+Передача данных приложению. Параметры строки запроса
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/guide/express-post/" class="md-nav__link">
+POST-запросы и отправка форм
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/guide/express-route-param/" class="md-nav__link">
+Параметры маршрута
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/guide/express-router/" class="md-nav__link">
+Router
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/guide/express-json/" class="md-nav__link">
+JSON и AJAX
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/guide/express-handlebars/" class="md-nav__link">
+Представления и движок представлений Handlebars
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/guide/express-handlebars-partial/" class="md-nav__link">
+Частичные представления в Handlebars
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/guide/express-handlebars-layout/" class="md-nav__link">
+Layout в Handlebars
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/guide/express-handlebars-helper/" class="md-nav__link">
+Хелперы в Handlebars
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/guide/express-ejs/" class="md-nav__link">
+Движок EJS
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/guide/express-pug/" class="md-nav__link">
+Движок Pug
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/guide/express-pug-layout/" class="md-nav__link">
+Частичные представления и layout в Pug
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/guide/express-api/" class="md-nav__link">
+Создание API
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/guide/mocha/" class="md-nav__link">
+Mocha
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/guide/assert/" class="md-nav__link">
+Assert
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/guide/supertest/" class="md-nav__link">
+Тестирование Express
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/guide/describe/" class="md-nav__link">
+Организация тестов и метод describe
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5">
+<label class="md-nav__link" for="__nav_5">
+Express.js 4.x
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav class="md-nav" aria-label="Express.js 4.x" data-md-level="1">
+<label class="md-nav__title" for="__nav_5">
+<span class="md-nav__icon md-icon"></span>
+Express.js 4.x
+</label>
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/expressjs4/" class="md-nav__link">
+Установка Express
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/expressjs4/hello-world/" class="md-nav__link">
+Пример "Hello world"
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/expressjs4/generator/" class="md-nav__link">
+Генератор приложений Express
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/expressjs4/basic-routing/" class="md-nav__link">
+Основы маршрутизации
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/expressjs4/static-files/" class="md-nav__link">
+Предоставление статических файлов в Express
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/expressjs4/faq/" class="md-nav__link">
+Часто задаваемые вопросы (FAQ)
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/expressjs4/routing/" class="md-nav__link">
+Маршрутизация ExpressJS
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/expressjs4/writing-middleware/" class="md-nav__link">
+Написание кода промежуточных обработчиков
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/expressjs4/using-middleware/" class="md-nav__link">
+Использование промежуточных обработчиков
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/expressjs4/using-template-engines/" class="md-nav__link">
+Использование шаблонизаторов в Express
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/expressjs4/error-handling/" class="md-nav__link">
+Обработка ошибок
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/expressjs4/debugging/" class="md-nav__link">
+Отладка Express
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/expressjs4/behind-proxies/" class="md-nav__link">
+Express за прокси
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/expressjs4/database-integration/" class="md-nav__link">
+Интеграция с базами данных
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/expressjs4/developing-template-engines/" class="md-nav__link">
+Разработка шаблонизаторов для Express
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/expressjs4/pm/" class="md-nav__link">
+Диспетчеры процессов для приложений Express
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/expressjs4/best-practice-security/" class="md-nav__link">
+Лучшие практические методы для рабочей среды: Защита
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/expressjs4/best-practice-performance/" class="md-nav__link">
+Лучшие практики: производительность и надежность
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" style="top: 48px;">
+<div class="md-sidebar__scrollwrap" style="height: 526px;">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--secondary" aria-label="Содержание раздела">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+Содержание раздела
+</label>
+<ul class="md-nav__list" data-md-component="toc">
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/guide/create-server/#request" class="md-nav__link">
+Request
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/guide/create-server/#response" class="md-nav__link">
+Response
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/guide/create-server/#_2" class="md-nav__link">
+Маршрутизация
+</a>
+</li>
+<li class="md-nav__item">
+<a href="https://nodejsdev.ru/guide/create-server/#_3" class="md-nav__link">
+Переадресация
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<article class="md-content__inner md-typeset">
+<a href="https://github.com/xsltdev/nodejsdev.ru/edit/master/docs/guide/create-server.md" title="Редактировать страницу" class="md-content__button md-icon">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"></path></svg>
+</a>
+<h1 id="_1">Создание сервера<a class="headerlink" href="https://nodejsdev.ru/guide/create-server/#_1" title="Permanent link">¶</a></h1>
+<p>Для работы с сервером и протоколом http в Node.js используется модуль <a href="https://nodejs.org/api/http.html">http</a>.</p>
+<p>Чтобы создать сервер, следует вызвать метод <code>http.createServer()</code>:</p>
+<div class="highlight"><pre id="__code_1"><span></span><button class="md-clipboard md-icon" title="Копировать в буфер" data-clipboard-target="#__code_1 &gt; code"></button><code><span class="kd">const</span><span class="w"> </span><span class="nx">http</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">'http'</span><span class="p">)</span><span class="w"></span>
+<span class="nx">http</span><span class="p">.</span><span class="nx">createServer</span><span class="p">().</span><span class="nx">listen</span><span class="p">(</span><span class="mf">3000</span><span class="p">)</span><span class="w"></span>
+</code></pre></div>
+<p>Метод <code>createServer()</code> возвращает объект <code>http.Server</code>. Но чтобы сервер мог прослушивать и обрабатывать входящие подключения, у объекта сервера необходимо вызвать метод <code>listen()</code>, в который в качестве параметра передается номер порта, по которому запускается сервер.</p>
+<p>Для обработки подключений в метод <code>createServer</code> можно передать специальную функцию:</p>
+<div class="highlight"><pre id="__code_2"><span></span><button class="md-clipboard md-icon" title="Копировать в буфер" data-clipboard-target="#__code_2 &gt; code"></button><code><span class="kd">const</span><span class="w"> </span><span class="nx">http</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">'http'</span><span class="p">)</span><span class="w"></span>
+
+<span class="nx">http</span><span class="w"></span>
+<span class="w">  </span><span class="p">.</span><span class="nx">createServer</span><span class="p">(</span><span class="kd">function</span><span class="w"> </span><span class="p">(</span><span class="nx">request</span><span class="p">,</span><span class="w"> </span><span class="nx">response</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nx">response</span><span class="p">.</span><span class="nx">end</span><span class="p">(</span><span class="s1">'Hello world!'</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">})</span><span class="w"></span>
+<span class="w">  </span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="mf">3000</span><span class="p">)</span><span class="w"></span>
+</code></pre></div>
+<p>Эта функция принимает два параметра:</p>
+<ul>
+<li><code>request</code>: хранит информацию о запросе</li>
+<li><code>response</code>: управляет отправкой ответа</li>
+</ul>
+<h2 id="request">Request<a class="headerlink" href="https://nodejsdev.ru/guide/create-server/#request" title="Permanent link">¶</a></h2>
+<p>Параметр <code>request</code> позволяет получить информацию о запросе и представляет объект <code>http.IncomingMessage</code>. Отметим некоторые основные свойства этого объекта:</p>
+<ul>
+<li><code>headers</code>: возвращает заголовки запроса</li>
+<li><code>method</code>: тип запроса (<code>GET</code>, <code>POST</code>, <code>DELETE</code>, <code>PUT</code>)</li>
+<li><code>url</code>: представляет запрошенный адрес</li>
+</ul>
+<p>Например, определим следующий файл <code>app.js</code>:</p>
+<div class="highlight"><pre id="__code_3"><span></span><button class="md-clipboard md-icon" title="Копировать в буфер" data-clipboard-target="#__code_3 &gt; code"></button><code><span class="kd">var</span><span class="w"> </span><span class="nx">http</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">'http'</span><span class="p">)</span><span class="w"></span>
+
+<span class="nx">http</span><span class="w"></span>
+<span class="w">  </span><span class="p">.</span><span class="nx">createServer</span><span class="p">(</span><span class="kd">function</span><span class="w"> </span><span class="p">(</span><span class="nx">request</span><span class="p">,</span><span class="w"> </span><span class="nx">response</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Url: '</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">request</span><span class="p">.</span><span class="nx">url</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Тип запроса: '</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">request</span><span class="p">.</span><span class="nx">method</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="w"></span>
+<span class="w">      </span><span class="s1">'User-Agent: '</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">request</span><span class="p">.</span><span class="nx">headers</span><span class="p">[</span><span class="s1">'user-agent'</span><span class="p">]</span><span class="w"></span>
+<span class="w">    </span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Все заголовки'</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">headers</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">    </span><span class="nx">response</span><span class="p">.</span><span class="nx">end</span><span class="p">()</span><span class="w"></span>
+<span class="w">  </span><span class="p">})</span><span class="w"></span>
+<span class="w">  </span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="mf">3000</span><span class="p">)</span><span class="w"></span>
+</code></pre></div>
+<p>Запустим его и обратимся в браузере по адресу <a href="http://localhost:3000/index.html">http://localhost:3000/index.html</a>:</p>
+<p><img alt="3.3.png" src="./Создание сервера _ Node.js с примерами кода_files/3.3.png"></p>
+<h2 id="response">Response<a class="headerlink" href="https://nodejsdev.ru/guide/create-server/#response" title="Permanent link">¶</a></h2>
+<p>Параметр <code>response</code> управляет отправкой ответа и представляет объект <code>http.ServerResponse</code>. Среди его функциональности можно выделить следующие методы:</p>
+<ul>
+<li><code>statusCode</code>: устанавливает статусный код ответа</li>
+<li><code>statusMessage</code>: устанавливает сообщение, отправляемое вместе со статусным кодом</li>
+<li><code>setHeader(name, value)</code>: добавляет в ответ один заголовок</li>
+<li><code>write</code>: пишет в поток ответа некоторое содержимое</li>
+<li><code>writeHead</code>: добавляет в ответ статусный код и набор заголовков</li>
+<li><code>end</code>: сигнализирует серверу, что заголовки и тело ответа установлены, в итоге ответ отсылается клиента. Данный метод должен вызываться в каждом запросе.</li>
+</ul>
+<p>Например, изменим файл <code>app.js</code> следующим образом:</p>
+<div class="highlight"><pre id="__code_4"><span></span><button class="md-clipboard md-icon" title="Копировать в буфер" data-clipboard-target="#__code_4 &gt; code"></button><code><span class="kd">const</span><span class="w"> </span><span class="nx">http</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">'http'</span><span class="p">)</span><span class="w"></span>
+
+<span class="nx">http</span><span class="w"></span>
+<span class="w">  </span><span class="p">.</span><span class="nx">createServer</span><span class="p">(</span><span class="kd">function</span><span class="w"> </span><span class="p">(</span><span class="nx">request</span><span class="p">,</span><span class="w"> </span><span class="nx">response</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nx">response</span><span class="p">.</span><span class="nx">setHeader</span><span class="p">(</span><span class="s1">'UserId'</span><span class="p">,</span><span class="w"> </span><span class="mf">12</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="nx">response</span><span class="p">.</span><span class="nx">setHeader</span><span class="p">(</span><span class="w"></span>
+<span class="w">      </span><span class="s1">'Content-Type'</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="s1">'text/html; charset=utf-8;'</span><span class="w"></span>
+<span class="w">    </span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="nx">response</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s1">'&lt;h2&gt;hello world&lt;/h2&gt;'</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="nx">response</span><span class="p">.</span><span class="nx">end</span><span class="p">()</span><span class="w"></span>
+<span class="w">  </span><span class="p">})</span><span class="w"></span>
+<span class="w">  </span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="mf">3000</span><span class="p">)</span><span class="w"></span>
+</code></pre></div>
+<p>Запустим файл и обратимся в браузере к приложению:</p>
+<p><img alt="3.4.png" src="./Создание сервера _ Node.js с примерами кода_files/3.4.png"></p>
+<p>Если предстоит отправить довольно большой ответ, то мы можем несколько раз вызвать метод <code>write()</code>, последовательно оправляя в исходящий поток каждый кусочек информации. Например, отправим код более менее полноценной веб-страницы:</p>
+<div class="highlight"><pre id="__code_5"><span></span><button class="md-clipboard md-icon" title="Копировать в буфер" data-clipboard-target="#__code_5 &gt; code"></button><code><span class="kd">const</span><span class="w"> </span><span class="nx">http</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">'http'</span><span class="p">)</span><span class="w"></span>
+
+<span class="nx">http</span><span class="w"></span>
+<span class="w">  </span><span class="p">.</span><span class="nx">createServer</span><span class="p">(</span><span class="kd">function</span><span class="w"> </span><span class="p">(</span><span class="nx">request</span><span class="p">,</span><span class="w"> </span><span class="nx">response</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nx">response</span><span class="p">.</span><span class="nx">setHeader</span><span class="p">(</span><span class="s1">'Content-Type'</span><span class="p">,</span><span class="w"> </span><span class="s1">'text/html'</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="nx">response</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s1">'&lt;!DOCTYPE html&gt;'</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="nx">response</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s1">'&lt;html&gt;'</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="nx">response</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s1">'&lt;head&gt;'</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="nx">response</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s1">'&lt;title&gt;Hello Node.js&lt;/title&gt;'</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="nx">response</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s1">'&lt;meta charset="utf-8" /&gt;'</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="nx">response</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s1">'&lt;/head&gt;'</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="nx">response</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s1">'&lt;body&gt;&lt;h2&gt;Привет миг&lt;/h2&gt;&lt;/body&gt;'</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="nx">response</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s1">'&lt;/html&gt;'</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="nx">response</span><span class="p">.</span><span class="nx">end</span><span class="p">()</span><span class="w"></span>
+<span class="w">  </span><span class="p">})</span><span class="w"></span>
+<span class="w">  </span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="mf">3000</span><span class="p">)</span><span class="w"></span>
+</code></pre></div>
+<h2 id="_2">Маршрутизация<a class="headerlink" href="https://nodejsdev.ru/guide/create-server/#_2" title="Permanent link">¶</a></h2>
+<p>По умолчанию Node.js не имеет встроенной системы маршрутизации. Обычно она реализуется с помощью специальных фреймворках типа <a href="https://nodejsdev.ru/expressjs4/">Express</a>, о котором речь пойдет в следующей главе. Однако если необходимо разграничить простейшую обработку пары-тройки маршрутов, то вполне можно использовать для этого свойство <code>url</code> объекта <code>Request</code>. Например:</p>
+<div class="highlight"><pre id="__code_6"><span></span><button class="md-clipboard md-icon" title="Копировать в буфер" data-clipboard-target="#__code_6 &gt; code"></button><code><span class="kd">const</span><span class="w"> </span><span class="nx">http</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">'http'</span><span class="p">)</span><span class="w"></span>
+
+<span class="nx">http</span><span class="w"></span>
+<span class="w">  </span><span class="p">.</span><span class="nx">createServer</span><span class="p">(</span><span class="kd">function</span><span class="w"> </span><span class="p">(</span><span class="nx">request</span><span class="p">,</span><span class="w"> </span><span class="nx">response</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nx">response</span><span class="p">.</span><span class="nx">setHeader</span><span class="p">(</span><span class="w"></span>
+<span class="w">      </span><span class="s1">'Content-Type'</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="s1">'text/html; charset=utf-8;'</span><span class="w"></span>
+<span class="w">    </span><span class="p">)</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">url</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s1">'/home'</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nx">request</span><span class="p">.</span><span class="nx">url</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s1">'/'</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="nx">response</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s1">'&lt;h2&gt;Home&lt;/h2&gt;'</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">url</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">'/about'</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="nx">response</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s1">'&lt;h2&gt;About&lt;/h2&gt;'</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">url</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">'/contact'</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="nx">response</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s1">'&lt;h2&gt;Contacts&lt;/h2&gt;'</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="nx">response</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s1">'&lt;h2&gt;Not found&lt;/h2&gt;'</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="nx">response</span><span class="p">.</span><span class="nx">end</span><span class="p">()</span><span class="w"></span>
+<span class="w">  </span><span class="p">})</span><span class="w"></span>
+<span class="w">  </span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="mf">3000</span><span class="p">)</span><span class="w"></span>
+</code></pre></div>
+<p>В данном случае обрабатываются три маршрута. Если идет обрашение к корню сайта или по адресу <code>localhost:3000/home</code>, то пользователю выводится строка <code>Home</code>. Ели обращение идет по адресу <code>localhost:3000/about</code>, то пользователю в браузере отображается строка <code>About</code> и так далее. Если запрошенный адрес не соответствует ни одному маршруту, то выводится заговлок <code>Not Found</code>.</p>
+<p><img alt="3.7.png" src="./Создание сервера _ Node.js с примерами кода_files/3.7.png"></p>
+<p>Однако опять же отмечу, что рамках специальных фреймворков, которые работают поверх Node.js, например, Express, есть более удобные способы для обработки маршрутов, которые нередко и используются.</p>
+<h2 id="_3">Переадресация<a class="headerlink" href="https://nodejsdev.ru/guide/create-server/#_3" title="Permanent link">¶</a></h2>
+<p>Переадресация предполагает отправку статусного кода <code>301</code> (постоянная переадресация) или <code>302</code> (временная переадресация) и заголовка <code>Location</code>, который указывает на новый адрес. Например, выполним переадресацию с адреса <code>localhost:3000/</code> на адрес <code>localhost:3000/newpage</code></p>
+<div class="highlight"><pre id="__code_7"><span></span><button class="md-clipboard md-icon" title="Копировать в буфер" data-clipboard-target="#__code_7 &gt; code"></button><code><span class="kd">const</span><span class="w"> </span><span class="nx">http</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">'http'</span><span class="p">)</span><span class="w"></span>
+
+<span class="nx">http</span><span class="w"></span>
+<span class="w">  </span><span class="p">.</span><span class="nx">createServer</span><span class="p">(</span><span class="kd">function</span><span class="w"> </span><span class="p">(</span><span class="nx">request</span><span class="p">,</span><span class="w"> </span><span class="nx">response</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nx">response</span><span class="p">.</span><span class="nx">setHeader</span><span class="p">(</span><span class="w"></span>
+<span class="w">      </span><span class="s1">'Content-Type'</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="s1">'text/html; charset=utf-8;'</span><span class="w"></span>
+<span class="w">    </span><span class="p">)</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">url</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s1">'/'</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="nx">response</span><span class="p">.</span><span class="nx">statusCode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">302</span><span class="w"> </span><span class="c1">// временная переадресация</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// на адрес localhost:3000/newpage</span><span class="w"></span>
+<span class="w">      </span><span class="nx">response</span><span class="p">.</span><span class="nx">setHeader</span><span class="p">(</span><span class="s1">'Location'</span><span class="p">,</span><span class="w"> </span><span class="s1">'/newpage'</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">url</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">'/newpage'</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="nx">response</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s1">'New address'</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="nx">response</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s1">'Not Found'</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="nx">response</span><span class="p">.</span><span class="nx">statusCode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">404</span><span class="w"> </span><span class="c1">// адрес не найден</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="nx">response</span><span class="p">.</span><span class="nx">end</span><span class="p">()</span><span class="w"></span>
+<span class="w">  </span><span class="p">})</span><span class="w"></span>
+<span class="w">  </span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="mf">3000</span><span class="p">)</span><span class="w"></span>
+</code></pre></div>
+
+<h2 id="__comments">Комментарии</h2>
+<script src="./Создание сервера _ Node.js с примерами кода_files/client.js" data-repo="xsltdev/nodejsdev.ru" data-repo-id="MDEwOlJlcG9zaXRvcnkzNDkxNzU3ODg=" data-category="Announcements" data-category-id="DIC_kwDOFM__7M4CRQ9U" data-mapping="title" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="ru" crossorigin="anonymous" async="">
+  </script><div class="giscus"><iframe class="giscus-frame" title="Comments" scrolling="no" allow="clipboard-write" src="./Создание сервера _ Node.js с примерами кода_files/widget.html" style="height: 322px;"></iframe></div>
+
+<script>
+    var giscus = document.querySelector("script[src*=giscus]")
+
+    /* Set palette on initial load */
+    var palette = __md_get("__palette")
+    if (palette && typeof palette.color === "object") {
+      var theme = palette.color.scheme === "slate" ? "dark" : "light"
+      giscus.setAttribute("data-theme", theme)
+    }
+
+    /* Register event handlers after documented loaded */
+    document.addEventListener("DOMContentLoaded", function() {
+      var ref = document.querySelector("[data-md-component=palette]")
+      ref.addEventListener("change", function() {
+        var palette = __md_get("__palette")
+        if (palette && typeof palette.color === "object") {
+          var theme = palette.color.scheme === "slate" ? "dark" : "light"
+
+          /* Instruct Giscus to change theme */
+          var frame = document.querySelector(".giscus-frame")
+          frame.contentWindow.postMessage(
+            { giscus: { setConfig: { theme } } },
+            "https://giscus.app"
+          )
+        }
+      })
+    })
+  </script>
+</article>
+</div>
+</div>
+</main>
+<footer class="md-footer">
+<nav class="md-footer__inner md-grid" aria-label="Нижний колонтитул">
+<a href="https://nodejsdev.ru/guide/pipe/" class="md-footer__link md-footer__link--prev" aria-label="Назад: Pipe" rel="prev">
+<div class="md-footer__button md-icon">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"></path></svg>
+</div>
+<div class="md-footer__title">
+<div class="md-ellipsis">
+<span class="md-footer__direction">
+Назад
+</span>
+Pipe
+</div>
+</div>
+</a>
+<a href="https://nodejsdev.ru/guide/send-file/" class="md-footer__link md-footer__link--next" aria-label="Вперед: Отправка файлов" rel="next">
+<div class="md-footer__title">
+<div class="md-ellipsis">
+<span class="md-footer__direction">
+Вперед
+</span>
+Отправка файлов
+</div>
+</div>
+<div class="md-footer__button md-icon">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"></path></svg>
+</div>
+</a>
+</nav>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright">
+<div class="md-copyright__highlight">
+(C) 2021, Справочник web-разработчика Node.js с примерами кода
+</div>
+</div>
+
+
+<div class="md-social">
+<a href="https://t.me/nodejsdev_ru" target="_blank" rel="noopener" title="Группа в Telegram" class="md-social__link">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M248 8C111.033 8 0 119.033 0 256s111.033 248 248 248 248-111.033 248-248S384.967 8 248 8Zm114.952 168.66c-3.732 39.215-19.881 134.378-28.1 178.3-3.476 18.584-10.322 24.816-16.948 25.425-14.4 1.326-25.338-9.517-39.287-18.661-21.827-14.308-34.158-23.215-55.346-37.177-24.485-16.135-8.612-25 5.342-39.5 3.652-3.793 67.107-61.51 68.335-66.746.153-.655.3-3.1-1.154-4.384s-3.59-.849-5.135-.5q-3.283.746-104.608 69.142-14.845 10.194-26.894 9.934c-8.855-.191-25.888-5.006-38.551-9.123-15.531-5.048-27.875-7.717-26.8-16.291q.84-6.7 18.45-13.7 108.446-47.248 144.628-62.3c68.872-28.647 83.183-33.623 92.511-33.789 2.052-.034 6.639.474 9.61 2.885a10.452 10.452 0 0 1 3.53 6.716 43.765 43.765 0 0 1 .417 9.769Z"></path></svg>
+</a>
+</div>
+<div class="md-copyright" style="width: 100%; padding-top: 0;">
+
+<a href="https://metrika.yandex.ru/stat/?id=54884653&amp;from=informer" target="_blank" rel="nofollow"><img src="./Создание сервера _ Node.js с примерами кода_files/3_0_FFFFFFFF_EFEFEFFF_0_pageviews" style="width: 88px; height: 31px; border: 0" alt="Яндекс.Метрика" title="Яндекс.Метрика: данные за сегодня (просмотры, визиты и уникальные посетители)" class="ym-advanced-informer" data-cid="54884653" data-lang="ru" align="middle"></a>
+
+
+<script type="text/javascript">
+		(function (m, e, t, r, i, k, a) {
+			m[i] =
+				m[i] ||
+				function () {
+					(m[i].a = m[i].a || []).push(arguments);
+				};
+			m[i].l = 1 * new Date();
+			(k = e.createElement(t)),
+				(a = e.getElementsByTagName(t)[0]),
+				(k.async = 1),
+				(k.src = r),
+				a.parentNode.insertBefore(k, a);
+		})(
+			window,
+			document,
+			'script',
+			'https://mc.yandex.ru/metrika/tag.js',
+			'ym'
+		);
+
+		ym(54884653, 'init', {
+			clickmap: true,
+			trackLinks: true,
+			accurateTrackBounce: true,
+		});
+	</script>
+<noscript><div>
+			<img
+				src="https://mc.yandex.ru/watch/54884653"
+				style="position: absolute; left: -9999px"
+				alt=""
+			/></div
+	></noscript>
+
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.tracking", "navigation.instant"], "search": "../../assets/javascripts/workers/search.16e2a7d4.min.js", "translations": {"clipboard.copied": "\u0421\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d\u043e \u0432 \u0431\u0443\u0444\u0435\u0440", "clipboard.copy": "\u041a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0432 \u0431\u0443\u0444\u0435\u0440", "search.config.lang": "ru", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "\u041f\u043e\u0438\u0441\u043a", "search.result.more.one": "\u0415\u0449\u0451 1 \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.more.other": "\u0415\u0449\u0451 # \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.none": "\u0421\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u043e", "search.result.one": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e 1 \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0435", "search.result.other": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439: #", "search.result.placeholder": "\u041d\u0430\u0447\u043d\u0438\u0442\u0435 \u043f\u0435\u0447\u0430\u0442\u0430\u0442\u044c \u0434\u043b\u044f \u043f\u043e\u0438\u0441\u043a\u0430", "search.result.term.missing": "\u041e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0443\u0435\u0442", "select.version.title": "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0435\u0440\u0441\u0438\u044e"}}</script>
+<script src="./Создание сервера _ Node.js с примерами кода_files/bundle.8492ddcf.min.js"></script>
+
+</body></html>
