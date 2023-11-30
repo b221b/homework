@@ -106,7 +106,6 @@ int main() {
     manager.addTable(Table(8));
     manager.addTable(Table(9));
 
-
     std::string input;
 
     while (true) {
