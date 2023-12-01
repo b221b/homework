@@ -1,55 +1,60 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include <sstream>
 
 class Table {
+private:
+    int number;
+    bool isReserved;
+
+protected:
+
 public:
-    Table(int number) : number(number), reserved(false), reservedBy("") {}
+    std::string visitorName;
+
+    Table(int number) : number(number), visitorName("") {}
 
     int getNumber() const {
         return number;
     }
 
     bool isReserved() const {
-        return reserved;
+        return isReserved;
     }
 
-    const std::string& getReservedBy() const {
-        return reservedBy;
-    }
-
-    void reserve(const std::string& name) {
-        reserved = true;
-        reservedBy = name;
+    void reserve(const std::string& visitorName) {
+        isReserved = true;
+        this->visitorName = visitorName;
     }
 
     void free() {
-        reserved = false;
-        reservedBy = "";
+        isReserved = false;
+        visitorName = "";
     }
-    
-private:
-    int number;
-    bool reserved;
-    std::string reservedBy;
 };
 
 class Manager {
+private:
+    std::vector<Table> tables;
+    int coffeeOrderTableNumber;
+    std::string managerName;
+
 public:
+    Manager(const std::string& managerName) : managerName(managerName) {}
+
     void addTable(const Table& table) {
         tables.push_back(table);
     }
 
-    void reserveTable(int tableNumber, const std::string& name) {
-        for (Table& table : tables) {
-            if (table.getNumber() == tableNumber) {
-                if (!table.isReserved()) {
-                    table.reserve(name);
-                    std::cout << "Table " << tableNumber << " successfully taken for " << name << "\n" << std::endl;
+    void reserveTable(int tableNumber, const std::string& visitorName) {
+        for (size_t i = 0; i < tables.size(); ++i) {
+            if (tables[i].getNumber() == tableNumber) {
+                if (!tables[i].isReserved()) {
+                    tables[i].reserve(visitorName);
+                    std::cout << "Table " << tableNumber << " reserved for " << visitorName << "\n" << std::endl;
                 }
                 else {
-                    std::cout << "Table " << tableNumber << " already taken" << "\n" << std::endl;
+                    std::cout << "Table " << tableNumber << " is already reserved" << "\n" << std::endl;
                 }
                 return;
             }
@@ -58,44 +63,32 @@ public:
     }
 
     void freeTable(int tableNumber) {
-        for (Table& table : tables) {
-            if (table.getNumber() == tableNumber) {
-                if (table.isReserved()) {
-                    table.free();
-                    std::cout << "Table " << tableNumber << " released" << "\n" << std::endl;
-                }
-                else {
-                    std::cout << "Table " << tableNumber << " not taken" << "\n" << std::endl;
-                }
+        for (size_t i = 0; i < tables.size(); ++i) {
+            if (tables[i].getNumber() == tableNumber) {
+                tables[i].free();
                 return;
             }
         }
         std::cout << "Table " << tableNumber << " not found" << "\n" << std::endl;
     }
-    
+
     void printTableStatus() const {
-        std::cout << "Tables and their status:" << std::endl;
-        for (const Table& table : tables) {
-            std::cout << "Table " << table.getNumber() << ": ";
-            if (table.isReserved()) {
-                std::cout << "is taken by " << table.getReservedBy();
-                if (table.getNumber() == coffeeOrderTableNumber) {
-                    std::cout << " - ordered coffee";
-                }
+        for (size_t i = 0; i < tables.size(); ++i) {
+            std::cout << "Table " << tables[i].getNumber();
+            if (tables[i].isReserved()) {
+                std::cout << " is reserved for " << tables[i].visitorName;
             }
             else {
-                std::cout << "free";
+                std::cout << " is not reserved";
             }
-            std::cout << std::endl;
+            std::cout << "\n";
         }
     }
 
     void getCoffee(int tableNumber) {
-        orderCoffee(tableNumber);
-        for (Table& table : tables) {
-            if (table.getNumber() == tableNumber) {
-                if (table.isReserved()) {
-
+        for (size_t i = 0; i < tables.size(); ++i) {
+            if (tables[i].getNumber() == tableNumber) {
+                if (tables[i].isReserved()) {
                     std::cout << "Coffee ordered for Table " << tableNumber << "\n" << std::endl;
                 }
                 else {
@@ -107,11 +100,6 @@ public:
         std::cout << "Table " << tableNumber << " not found" << "\n" << std::endl;
     }
 
-    void orderCoffee(int tableNumber) {
-        coffeeOrderTableNumber = tableNumber;
-    }
-
-
     void printPayment(int tableNumber) {
         if (tableNumber == coffeeOrderTableNumber) {
             std::cout << "Payment for coffee: $60.00" << std::endl;
@@ -121,77 +109,60 @@ public:
         }
     }
 
-private:
-    std::vector<Table> tables;
-    int coffeeOrderTableNumber;
+    double calculateTotalIncome() {
+        double totalIncome = 0;
+        for (size_t i = 0; i < tables.size(); ++i) {
+            if (tables[i].isReserved()) {
+                totalIncome += 60; // $60 per coffee
+            }
+        }
+        return totalIncome;
+    }
+
+    void resetCoffeeOrder(int tableNumber) {
+        for (size_t i = 0; i < tables.size(); ++i) {
+            if (tables[i].getNumber() == tableNumber) {
+                tables[i].free();
+                return;
+            }
+        }
+    }
 };
 
 int main() {
     // manager
-    Manager manager;
-
-    // add tables
-    //manager.addTable(Table(1));
+    Manager m("CoffeeShop Manager");
+    Table t1(1), t2(2), t3(3);
 
     // add tables
     for (int i = 1; i <= 10; ++i) {
         manager.addTable(Table(i));
     }
 
-    std::string input;
+    // reserve tables
+    manager.reserveTable(1, "John");
+    manager.reserveTable(2, "Mike");
 
-    while (true) {
-        std::cout << "Choose option\n 1 - Take table \n 2 - free table \n 3 - info about tables \n 4 - Coffee \n 5 - print Payment \n";
-        std::getline(std::cin, input);
+    // print table status
+    manager.printTableStatus();
 
-        if (input == "exit") {
-            break;
-        }
+    // order coffee
+    manager.getCoffee(1);
+    manager.getCoffee(3);
 
-        std::cout << "-----------------------------" << std::endl;
+    // print payment
+    manager.printPayment(1);
+    manager.printPayment(3);
 
-        std::istringstream is(input);
-        std::string command;
-        int tableId;
-        std::string visitorName;
+    // calculate total income
+    double totalIncome = manager.calculateTotalIncome();
+    std::cout << "Total income: $" << totalIncome << std::endl;
 
-        is >> command;
+    // reset coffee order
+    manager.resetCoffeeOrder(1);
 
-        if (command == "1") {
-            is >> tableId;
-            is >> visitorName;
-            manager.reserveTable(tableId, visitorName);
-            manager.printTableStatus();
-            std::cout << "-----------------------------" << std::endl;
-
-        }
-        else if (command == "2") {
-            is >> tableId;
-            manager.freeTable(tableId);
-            manager.printTableStatus();
-            manager.printPayment(1);
-            std::cout << "-----------------------------" << std::endl;
-
-        }
-        else if (command == "3") {
-            std::cout << "info about tables: " << std::endl;
-            manager.printTableStatus();
-            std::cout << "-----------------------------" << std::endl;
-        }
-        else if (input == "4") {
-            int tableNumber;
-            std::cin >> tableNumber;
-            manager.getCoffee(tableNumber);
-        }
-        else if (command == "5") {
-            int tableNumber;
-            std::cout << "Enter table number for payment: ";
-            std::cin >> tableNumber;
-            manager.printPayment(tableNumber);
-        }
-    }
-
-    std::cout << "-----------------------------" << std::endl;
+    // print payment after reset
+    manager.printPayment(1);
 
     return 0;
 }
