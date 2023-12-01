@@ -1,168 +1,155 @@
 #include <iostream>
+#include <ctime>
+#include <cstdlib>
 #include <vector>
-#include <string>
+#include <iomanip>
+
+using namespace std;
+
+class CafeConstants {
+public:
+    static const int NUM_MANAGERS = 3;
+    static const int NUM_ZONES = 3;
+    static const int TABLES_PER_ZONE = 3;
+    static const int CAFE_OPEN_TIME = 9 * 60;
+    static const int CAFE_CLOSE_TIME = 23 * 60;
+    static const int HOUR_RATE = 200;
+};
 
 class Table {
-private:
-    int number;
-    bool isReserved;
-
-protected:
-
 public:
-    std::string visitorName;
+    int zone;
+    int number;
+    bool occupied;
+};
 
-    Table(int number) : number(number), visitorName("") {}
-
-    int getNumber() const {
-        return number;
-    }
-
-    bool isReserved() const {
-        return isReserved;
-    }
-
-    void reserve(const std::string& visitorName) {
-        isReserved = true;
-        this->visitorName = visitorName;
-    }
-
-    void free() {
-        isReserved = false;
-        visitorName = "";
-    }
+class Customer {
+public:
+    int numPeople;
+    int zone;
+    int tableNumber;
+    vector<string> orders;
+    int entranceTime;
+    int exitTime;
+    double payment;
 };
 
 class Manager {
-private:
-    std::vector<Table> tables;
-    int coffeeOrderTableNumber;
-    std::string managerName;
-
 public:
-    Manager(const std::string& managerName) : managerName(managerName) {}
-
-    void addTable(const Table& table) {
-        tables.push_back(table);
-    }
-
-    void reserveTable(int tableNumber, const std::string& visitorName) {
-        for (size_t i = 0; i < tables.size(); ++i) {
-            if (tables[i].getNumber() == tableNumber) {
-                if (!tables[i].isReserved()) {
-                    tables[i].reserve(visitorName);
-                    std::cout << "Table " << tableNumber << " reserved for " << visitorName << "\n" << std::endl;
-                }
-                else {
-                    std::cout << "Table " << tableNumber << " is already reserved" << "\n" << std::endl;
-                }
-                return;
-            }
-        }
-        std::cout << "Table " << tableNumber << " not found" << "\n" << std::endl;
-    }
-
-    void freeTable(int tableNumber) {
-        for (size_t i = 0; i < tables.size(); ++i) {
-            if (tables[i].getNumber() == tableNumber) {
-                tables[i].free();
-                return;
-            }
-        }
-        std::cout << "Table " << tableNumber << " not found" << "\n" << std::endl;
-    }
-
-    void printTableStatus() const {
-        for (size_t i = 0; i < tables.size(); ++i) {
-            std::cout << "Table " << tables[i].getNumber();
-            if (tables[i].isReserved()) {
-                std::cout << " is reserved for " << tables[i].visitorName;
-            }
-            else {
-                std::cout << " is not reserved";
-            }
-            std::cout << "\n";
-        }
-    }
-
-    void getCoffee(int tableNumber) {
-        for (size_t i = 0; i < tables.size(); ++i) {
-            if (tables[i].getNumber() == tableNumber) {
-                if (tables[i].isReserved()) {
-                    std::cout << "Coffee ordered for Table " << tableNumber << "\n" << std::endl;
-                }
-                else {
-                    std::cout << "Table " << tableNumber << " not taken, can't order coffee" << "\n" << std::endl;
-                }
-                return;
-            }
-        }
-        std::cout << "Table " << tableNumber << " not found" << "\n" << std::endl;
-    }
-
-    void printPayment(int tableNumber) {
-        if (tableNumber == coffeeOrderTableNumber) {
-            std::cout << "Payment for coffee: $60.00" << std::endl;
-        }
-        else {
-            std::cout << "No coffee order for table " << tableNumber << std::endl;
-        }
-    }
-
-    double calculateTotalIncome() {
-        double totalIncome = 0;
-        for (size_t i = 0; i < tables.size(); ++i) {
-            if (tables[i].isReserved()) {
-                totalIncome += 60; // $60 per coffee
-            }
-        }
-        return totalIncome;
-    }
-
-    void resetCoffeeOrder(int tableNumber) {
-        for (size_t i = 0; i < tables.size(); ++i) {
-            if (tables[i].getNumber() == tableNumber) {
-                tables[i].free();
-                return;
-            }
-        }
-    }
+    string name;
+    int tablesServed; // New variable to track the number of tables served
 };
 
-int main() {
-    // manager
-    Manager m("CoffeeShop Manager");
-    Table t1(1), t2(2), t3(3);
+void printCheck(const Customer& customer) {
+    cout << setfill('-') << setw(40) << "" << setfill(' ') << endl;
+    cout << setw(20) << left << "| Guests arrived: " << setw(19) << right << customer.numPeople << endl;
+    cout << setw(20) << left << "| Hall: " << setw(19) << right << customer.zone << endl;
+    cout << setw(20) << left << "| Table: " << setw(19) << right << customer.tableNumber << endl;
+    cout << setw(20) << left << "| Orders: ";
+    for (const string& order : customer.orders) {
+        cout << order << " ";
+    }
+    cout << setw(18) << right << endl;
 
-    // add tables
-    for (int i = 1; i <= 10; ++i) {
-        manager.addTable(Table(i));
+    cout << setw(20) << left << "| Start time: " << setw(18) << right << customer.entranceTime / 60 << ":" << customer.entranceTime % 60 << endl;
+
+    // Adjust exit time to wrap around to the next day if needed
+    int exitHours = customer.exitTime / 60 % 24;
+    int exitMinutes = customer.exitTime % 60;
+    cout << setw(20) << left << "| Exit time: " << setw(18) << right << exitHours << ":" << exitMinutes << endl;
+
+    cout << setw(20) << left << "| Payment: " << setw(18) << right << customer.payment << " rubles " << endl;
+    cout << setfill('-') << setw(40) << "" << setfill(' ') << endl;
+}
+
+int main() {
+    srand(time(0));
+
+    Manager managers[CafeConstants::NUM_MANAGERS] = { {"Manager 1"}, {"Manager 2"}, {"Manager 3"} };
+    Table tables[CafeConstants::NUM_ZONES * CafeConstants::TABLES_PER_ZONE];
+
+    for (int i = 0; i < CafeConstants::NUM_ZONES * CafeConstants::TABLES_PER_ZONE; ++i) {
+        tables[i].zone = i / CafeConstants::TABLES_PER_ZONE + 1;
+        tables[i].number = i % CafeConstants::TABLES_PER_ZONE + 1;
+        tables[i].occupied = false;
     }
 
-    // reserve tables
-    manager.reserveTable(1, "John");
-    manager.reserveTable(2, "Mike");
+    int currentTime = CafeConstants::CAFE_OPEN_TIME;
 
-    // print table status
-    manager.printTableStatus();
+    int maxTablesServedByManager = 0;
+    string managerWithMaxTablesServed;
 
-    // order coffee
-    manager.getCoffee(1);
-    manager.getCoffee(3);
+    int maxTableUsage = 0;
+    int mostDemandedTableNumber;
 
-    // print payment
-    manager.printPayment(1);
-    manager.printPayment(3);
+    int maxCustomersAtTable = 0;
+int tableWithMaxCustomers;
 
-    // calculate total income
-    double totalIncome = manager.calculateTotalIncome();
-    std::cout << "Total income: $" << totalIncome << std::endl;
+    while (currentTime <= CafeConstants::CAFE_CLOSE_TIME) {
+        // Генерация компании
+        Customer customer;
+        customer.numPeople = rand() % 8 + 1; // от 1 до 8 человек
+        customer.zone = rand() % CafeConstants::NUM_ZONES + 1;
+        customer.tableNumber = -1;
+        customer.entranceTime = currentTime;
 
-    // reset coffee order
-    manager.resetCoffeeOrder(1);
+        // Поиск свободного стола
+        for (int i = 0; i < CafeConstants::TABLES_PER_ZONE; ++i) {
+            int tableIndex = (customer.zone - 1) * CafeConstants::TABLES_PER_ZONE + i;
+            if (!tables[tableIndex].occupied) {
+                customer.tableNumber = tables[tableIndex].number;
+                tables[tableIndex].occupied = true;
+                break;
+            }
+        }
 
-    // print payment after reset
-    manager.printPayment(1);
+        // Заказ кофе, чая, печенья и мармелада
+        int numCoffees = rand() % 5 + 1; // каждый человек может заказать от 1 до 5 чашек кофе
+        int numTeas = rand() % 3 + 1; // каждый человек может заказать от 1 до 3 чашек чая
+        int numCookies = rand() % 2 + 1; // каждый человек может заказать от 1 до 2 печенек
+        int numMarmalades = rand() % 2 + 1; // каждый человек может заказать от 1 до 2 порций мармелада
+
+        for (int i = 0; i < numCoffees; ++i) {
+            customer.orders.push_back("Coffee");
+        }
+
+        for (int i = 0; i < numTeas; ++i) {
+            customer.orders.push_back("Tea");
+        }
+
+        for (int i = 0; i < numCookies; ++i) {
+            customer.orders.push_back("Cookie");
+        }
+
+        for (int i = 0; i < numMarmalades; ++i) {
+            customer.orders.push_back("Marmalade");
+        }
+
+        // Выход из кафе
+        customer.exitTime = currentTime + (numCoffees + numTeas + numCookies + numMarmalades) * 15; // время в минутах
+        customer.payment = (customer.exitTime - customer.entranceTime) / 60.0 * CafeConstants::HOUR_RATE * customer.numPeople;
+
+        // Вывод информации
+        cout << "Time: " << currentTime / 60 << ":" << currentTime % 60 << endl;
+        cout << "Manager: " << managers[customer.zone - 1].name << endl;
+
+        if (customer.tableNumber != -1) {
+            printCheck(customer);
+        }
+        else {
+            cout << "No available tables in Zone " << customer.zone << endl;
+        }
+
+        // Освобождение стола
+        if (customer.tableNumber != -1) {
+            int tableIndex = (customer.zone - 1) * CafeConstants::TABLES_PER_ZONE + (customer.tableNumber - 1);
+            tables[tableIndex].occupied = false;
+        }
+
+        // Увеличение времени
+        currentTime = customer.exitTime;
+    }
+
 
     return 0;
 }
