@@ -1,0 +1,104 @@
+Time: 9:0
+Manager: Manager 1
+----------------------------------------
+| Guests arrived:                     7
+| Hall:                               1
+| Table:                         Table 3
+| Orders: Coffee Coffee Tea Tea Cookie Marmalade 
+| Start time:                        9:0
+| Exit time:                        10:30
+| Payment:                        2100 rubles 
+----------------------------------------
+Time: 10:30
+Manager: Manager 3
+----------------------------------------
+| Guests arrived:                     6
+| Hall:                               3
+| Table:                         Table 9
+| Orders: Coffee Coffee Tea Tea Tea Cookie Marmalade Marmalade 
+| Start time:                       10:30
+| Exit time:                        12:30
+| Payment:                        2400 rubles 
+----------------------------------------
+Time: 12:30
+Manager: Manager 3
+----------------------------------------
+| Guests arrived:                     3
+| Hall:                               3
+| Table:                         Table 9
+| Orders: Coffee Coffee Tea Cookie Cookie Marmalade 
+| Start time:                       12:30
+| Exit time:                        14:0
+| Payment:                         900 rubles 
+----------------------------------------
+Time: 14:0
+Manager: Manager 3
+----------------------------------------
+| Guests arrived:                     6
+| Hall:                               3
+| Table:                         Table 9
+| Orders: Coffee Tea Tea Tea Cookie Cookie Marmalade 
+| Start time:                       14:0
+| Exit time:                        15:45
+| Payment:                        2100 rubles 
+----------------------------------------
+Time: 15:45
+Manager: Manager 3
+----------------------------------------
+| Guests arrived:                     4
+| Hall:                               3
+| Table:                         Table 9
+| Orders: Coffee Coffee Tea Tea Tea Cookie Marmalade 
+| Start time:                       15:45
+| Exit time:                        17:30
+| Payment:                        1400 rubles 
+----------------------------------------
+Time: 17:30
+Manager: Manager 1
+----------------------------------------
+| Guests arrived:                     5
+| Hall:                               1
+| Table:                         Table 3
+| Orders: Coffee Coffee Coffee Tea Tea Tea Cookie Cookie Marmalade 
+| Start time:                       17:30
+| Exit time:                        19:45
+| Payment:                        2250 rubles 
+----------------------------------------
+Time: 19:45
+Manager: Manager 2
+----------------------------------------
+| Guests arrived:                     7
+| Hall:                               2
+| Table:                         Table 6
+| Orders: Coffee Coffee Coffee Tea Tea Cookie Marmalade 
+| Start time:                       19:45
+| Exit time:                        21:30
+| Payment:                        2450 rubles 
+----------------------------------------
+Time: 21:30
+Manager: Manager 2
+----------------------------------------
+| Guests arrived:                     8
+| Hall:                               2
+| Table:                         Table 6
+| Orders: Coffee Coffee Tea Cookie Marmalade 
+| Start time:                       21:30
+| Exit time:                        22:45
+| Payment:                        2000 rubles 
+----------------------------------------
+Time: 22:45
+Manager: Manager 1
+----------------------------------------
+| Guests arrived:                     6
+| Hall:                               1
+| Table:                         Table 3
+| Orders: Coffee Coffee Coffee Tea Tea Tea Cookie Cookie Marmalade 
+| Start time:                       22:45
+| Exit time:                         1:0
+| Payment:                        2700 rubles 
+----------------------------------------
+Manager with the most calls: Manager 3
+Most demanded table number: 1
+Table with the most Guests: Table 1 with 4 guests.
+Total Revenue for the day: 18300 rubles
+Total number of guests: 9

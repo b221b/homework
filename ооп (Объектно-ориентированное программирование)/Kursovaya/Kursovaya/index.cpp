@@ -68,7 +68,8 @@ int main() {
     struct tm now;
     localtime_s(&now, &t);
     char filename[80];
-    strftime(filename, sizeof(filename), "%Y.%m.%d...%H.%M.%S_check.txt", &now);
+    strftime(filename, sizeof(filename), "%Y.%m.%d___%H.%M.%S_check.txt", &now);
+
 
     // Create ofstream for writing to the file
     ofstream outputFile(filename);
@@ -175,7 +176,7 @@ int main() {
         }
         //--------------------TASKS--------------------
 
-    //--------------------task1--------------------
+        //--------------------task1--------------------
         for (int i = 0; i < CafeConstants::NUM_MANAGERS; ++i) {
             if (managerCalls[i] > maxTablesServedByManager) {
                 maxTablesServedByManager = managerCalls[i];
@@ -215,15 +216,21 @@ int main() {
 
     //--------------------task2 & 3 end----------------
 
-    cout << "Manager with the most calls: " << managerWithMaxTablesServed << endl;
-    cout << "Most demanded table number: " << mostDemandedTableNumber << endl;
-    cout << "Table with the most Guests: Table " << tableWithMaxCustomers << " with " << maxCustomersAtTable << " guests." << endl;
+    cout << " " << endl;
+    cout << " " << endl;
+    cout << "+-------------------------------------------------+" << endl;
+    cout << "|                Dop. zadaniya                    |" << endl;
+    cout << "+-------------------------------------------------+" << endl;
+    cout << "|Manager with the most calls: " << managerWithMaxTablesServed << endl;
+    cout << "|Most demanded table number: " << mostDemandedTableNumber << endl;
+    cout << "|Table with the most Guests: Table " << tableWithMaxCustomers << " with " << maxCustomersAtTable << " guests." << endl;
 
     // displaying total revenue for the whole day
-    cout << "Total Revenue for the day: " << totalRevenue << " rubles" << endl;
+    cout << "|Total Revenue for the day: " << totalRevenue << " rubles" << endl;
 
     // displaying total number of guests
-    cout << "Total number of guests: " << totalGuests << endl;
+    cout << "|Total number of guests: " << totalGuests << endl;
+    cout << "+-------------------------------------------------+" << endl;
 
     // Close the file and restore cout
     outputFile.close();
