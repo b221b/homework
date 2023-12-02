@@ -1,0 +1,130 @@
+#include <iostream>
+#include <vector>
+#include <cstdlib>
+#include <ctime>
+
+using namespace std;
+
+struct Visitor {
+    int numPeople;
+    string orderedItem;
+    int totalPayment;
+};
+
+struct Table {
+    int tableNumber;
+    int managerNumber;
+    bool isOccupied;
+    vector<Visitor> visitors;
+};
+
+struct Manager {
+    string name;
+    vector<int> assignedTables;
+};
+
+const int NUM_MANAGERS = 3;
+const int NUM_TABLES = 9;
+const int OPENING_TIME = 9 * 60; // 9:00 утра в минутах
+const int CLOSING_TIME = 23 * 60; // 11:00 ночи в минутах
+const int HOUR_RATE = 200;
+
+vector<Manager> managers;
+vector<Table> tables;
+
+void initializeManagers() {
+    // Инициализация менеджеров
+    for (unsigned int i = 1; i <= NUM_MANAGERS; ++i) {
+        managers.push_back({ "Менеджер " + to_string(i), {} });
+    }
+}
+
+void initializeTables() {
+    // Инициализация столов
+    for (unsigned int i = 1; i <= NUM_TABLES; ++i) {
+        int managerIndex = (i - 1) / 3; // Распределение по залам
+        tables.push_back({ i, managerIndex, false, {} });
+        managers[managerIndex].assignedTables.push_back(i);
+    }
+}
+
+void printCheck(const Visitor& visitor, int tableNumber) {
+    cout << "Пришли посетители в количестве: " << visitor.numPeople << " человек(а) за стол номер " << tableNumber << " в зале номер " << (tableNumber - 1) / 3 + 1 << endl;
+    cout << "Заказали: " << visitor.orderedItem << endl;
+    cout << "Сумма к оплате: " << visitor.totalPayment << " рублей" << endl;
+    cout << "Ушли." << endl << endl;
+}
+
+int main() {
+    srand(static_cast<unsigned>(time(nullptr)));
+
+    initializeManagers();
+    initializeTables();
+
+    for (int minute = OPENING_TIME; minute <= CLOSING_TIME; ++minute) {
+        // В этом цикле можно реализовать логику вашего приложения для каждой минуты дня.
+        // Например, обработка прихода посетителей, оплата и другие события.
+        // В данном коде реализовано только генерация случайных событий.
+
+        // Генерация случайных событий
+        if (rand() % 5 == 0) {  // 1 раз в 5 минут
+            int tableIndex = rand() % NUM_TABLES;
+            Table& selectedTable = tables[tableIndex];
+
+            if (!selectedTable.isOccupied) {
+                Visitor visitor;
+                visitor.numPeople = rand() % 8 + 1;  // от 1 до 8 человек
+                visitor.orderedItem = "Кофе";  // предположим, что все заказывают кофе
+                visitor.totalPayment = visitor.numPeople * HOUR_RATE / 60;  // оплата за час
+
+                selectedTable.visitors.push_back(visitor);
+                selectedTable.isOccupied = true;
+
+                // Вывод чека
+                printCheck(visitor, selectedTable.tableNumber);
+            }
+        }
+    }
+
+    // После завершения дня, выполнение дополнительных заданий:
+
+    // 1) Какой менеджер вызывался больше остальных?
+    int maxManagerCalls = 0;
+    string mostActiveManager;
+    for (const Manager& manager : managers) {
+        if (manager.assignedTables.size() > maxManagerCalls) {
+            maxManagerCalls = manager.assignedTables.size();
+            mostActiveManager = manager.name;
+        }
+    }
+    cout << "Самый активный менеджер: " << mostActiveManager << endl;
+
+    // 2) Какой столик появлялся чаще остальных?
+    int maxTableAppearances = 0;
+    int mostFrequentTable = 0;
+    for (const Table& table : tables) {
+        if (table.visitors.size() > maxTableAppearances) {
+            maxTableAppearances = table.visitors.size();
+            mostFrequentTable = table.tableNumber;
+        }
+    }
+    cout << "Самый популярный стол: " << mostFrequentTable << endl;
+
+    // 3) Максимальное количество посетителей за все время
+    int maxTotalVisitors = 0;
+    int tableWithMaxVisitors = 0;
+    for (const Table& table : tables) {
+        int totalVisitors = 0;
+        for (const Visitor& visitor : table.visitors) {
+            totalVisitors += visitor.numPeople;
+        }
+
+        if (totalVisitors > maxTotalVisitors) {
+            maxTotalVisitors = totalVisitors;
+            tableWithMaxVisitors = table.tableNumber;
+        }
+    }
+    cout << "Максимальное количество посетителей: " << maxTotalVisitors << " за столом номер " << tableWithMaxVisitors << endl;
+
+    return 0;
+}

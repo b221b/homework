@@ -83,17 +83,17 @@ int main() {
     int mostDemandedTableNumber;
 
     int maxCustomersAtTable = 0;
-int tableWithMaxCustomers;
+    int tableWithMaxCustomers;
 
     while (currentTime <= CafeConstants::CAFE_CLOSE_TIME) {
-        // Генерация компании
+        // Company generation
         Customer customer;
-        customer.numPeople = rand() % 8 + 1; // от 1 до 8 человек
+        customer.numPeople = rand() % 8 + 1; // from 1 to 8 people
         customer.zone = rand() % CafeConstants::NUM_ZONES + 1;
         customer.tableNumber = -1;
         customer.entranceTime = currentTime;
 
-        // Поиск свободного стола
+        // Finding a free table
         for (int i = 0; i < CafeConstants::TABLES_PER_ZONE; ++i) {
             int tableIndex = (customer.zone - 1) * CafeConstants::TABLES_PER_ZONE + i;
             if (!tables[tableIndex].occupied) {
@@ -103,11 +103,12 @@ int tableWithMaxCustomers;
             }
         }
 
-        // Заказ кофе, чая, печенья и мармелада
-        int numCoffees = rand() % 5 + 1; // каждый человек может заказать от 1 до 5 чашек кофе
-        int numTeas = rand() % 3 + 1; // каждый человек может заказать от 1 до 3 чашек чая
-        int numCookies = rand() % 2 + 1; // каждый человек может заказать от 1 до 2 печенек
-        int numMarmalades = rand() % 2 + 1; // каждый человек может заказать от 1 до 2 порций мармелада
+        // Order coffee, tea, cookies and marmalade
+        // each person can order from x(5) to y(1) objects
+        int numCoffees = rand() % 5 + 1; 
+        int numTeas = rand() % 3 + 1; 
+        int numCookies = rand() % 2 + 1; 
+        int numMarmalades = rand() % 2 + 1; 
 
         for (int i = 0; i < numCoffees; ++i) {
             customer.orders.push_back("Coffee");
@@ -125,11 +126,11 @@ int tableWithMaxCustomers;
             customer.orders.push_back("Marmalade");
         }
 
-        // Выход из кафе
-        customer.exitTime = currentTime + (numCoffees + numTeas + numCookies + numMarmalades) * 15; // время в минутах
+        // Exit from the cafe
+        customer.exitTime = currentTime + (numCoffees + numTeas + numCookies + numMarmalades) * 15; // time in minutes
         customer.payment = (customer.exitTime - customer.entranceTime) / 60.0 * CafeConstants::HOUR_RATE * customer.numPeople;
 
-        // Вывод информации
+        // Information output
         cout << "Time: " << currentTime / 60 << ":" << currentTime % 60 << endl;
         cout << "Manager: " << managers[customer.zone - 1].name << endl;
 
@@ -140,13 +141,13 @@ int tableWithMaxCustomers;
             cout << "No available tables in Zone " << customer.zone << endl;
         }
 
-        // Освобождение стола
+        // Clearing the table
         if (customer.tableNumber != -1) {
             int tableIndex = (customer.zone - 1) * CafeConstants::TABLES_PER_ZONE + (customer.tableNumber - 1);
             tables[tableIndex].occupied = false;
         }
 
-        // Увеличение времени
+        // Increase time
         currentTime = customer.exitTime;
     }
 

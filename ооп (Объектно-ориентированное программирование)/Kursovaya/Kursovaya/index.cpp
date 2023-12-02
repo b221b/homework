@@ -1,7 +1,8 @@
 #include <iostream>
+#include <fstream>
+#include <vector>
 #include <ctime>
 #include <cstdlib>
-#include <vector>
 #include <iomanip>
 
 using namespace std;
@@ -37,15 +38,15 @@ public:
 class Manager {
 public:
     string name;
-    int tablesServed; // New variable to track the number of tables served
+    int tablesServed;
 };
 
 void printCheck(const Customer& customer) {
     cout << setfill('-') << setw(40) << "" << setfill(' ') << endl;
     cout << setw(20) << left << "| Guests arrived: " << setw(19) << right << customer.numPeople << endl;
     cout << setw(20) << left << "| Hall: " << setw(19) << right << customer.zone << endl;
-    cout << setw(20) << left << "| Table: " << setw(19) << right << customer.tableNumber << endl;
-    cout << setw(20) << left << "| Orders: ";
+    cout << setw(20) << left << "| Table: " << setw(19) << right << "Table " << customer.zone * CafeConstants::TABLES_PER_ZONE + customer.tableNumber - 1 << endl;
+    cout << "| Orders: ";
     for (const string& order : customer.orders) {
         cout << order << " ";
     }
@@ -63,6 +64,20 @@ void printCheck(const Customer& customer) {
 }
 
 int main() {
+    time_t t = time(0);
+    struct tm now;
+    localtime_s(&now, &t);
+    char filename[80];
+    strftime(filename, sizeof(filename), "%Y.%m.%d...%H.%M.%S_check.txt", &now);
+
+
+    // Create ofstream for writing to the file
+    ofstream outputFile(filename);
+
+    // Redirect cout to the file
+    streambuf* coutbuf = cout.rdbuf(); // Save the original cout buffer
+    cout.rdbuf(outputFile.rdbuf());    // Redirect cout to the file
+
     srand(time(0));
 
     Manager managers[CafeConstants::NUM_MANAGERS] = { {"Manager 1"}, {"Manager 2"}, {"Manager 3"} };
@@ -76,24 +91,40 @@ int main() {
 
     int currentTime = CafeConstants::CAFE_OPEN_TIME;
 
+    //task 1
     int maxTablesServedByManager = 0;
     string managerWithMaxTablesServed;
 
+    //task 2
     int maxTableUsage = 0;
-    int mostDemandedTableNumber;
+    int mostDemandedTableNumber = 0;
 
+    //task 3
     int maxCustomersAtTable = 0;
-int tableWithMaxCustomers;
+    int tableWithMaxCustomers = 0;
+
+    int managerCalls[CafeConstants::NUM_MANAGERS] = { 0 };
+    int tableUsage[CafeConstants::NUM_ZONES * CafeConstants::TABLES_PER_ZONE] = { 0 };
+
+    double maxPayment = 0;
+
+    double totalRevenue = 0;
+
+    // Additional variable for counting the number of guests
+    int totalGuests = 0;
 
     while (currentTime <= CafeConstants::CAFE_CLOSE_TIME) {
-        // Генерация компании
+        // Company generation
         Customer customer;
-        customer.numPeople = rand() % 8 + 1; // от 1 до 8 человек
+        customer.numPeople = rand() % 8 + 1; // from 1 to 8 people
         customer.zone = rand() % CafeConstants::NUM_ZONES + 1;
         customer.tableNumber = -1;
         customer.entranceTime = currentTime;
 
-        // Поиск свободного стола
+        // Increment totalGuests
+        totalGuests++;
+
+        // Finding a free table
         for (int i = 0; i < CafeConstants::TABLES_PER_ZONE; ++i) {
             int tableIndex = (customer.zone - 1) * CafeConstants::TABLES_PER_ZONE + i;
             if (!tables[tableIndex].occupied) {
@@ -103,11 +134,12 @@ int tableWithMaxCustomers;
             }
         }
 
-        // Заказ кофе, чая, печенья и мармелада
-        int numCoffees = rand() % 5 + 1; // каждый человек может заказать от 1 до 5 чашек кофе
-        int numTeas = rand() % 3 + 1; // каждый человек может заказать от 1 до 3 чашек чая
-        int numCookies = rand() % 2 + 1; // каждый человек может заказать от 1 до 2 печенек
-        int numMarmalades = rand() % 2 + 1; // каждый человек может заказать от 1 до 2 порций мармелада
+        // Order coffee, tea, cookies and marmalade
+        // each person can order from x(3) to y(1) objects
+        int numCoffees = rand() % 3 + 1;
+        int numTeas = rand() % 3 + 1;
+        int numCookies = rand() % 2 + 1;
+        int numMarmalades = rand() % 2 + 1;
 
         for (int i = 0; i < numCoffees; ++i) {
             customer.orders.push_back("Coffee");
@@ -125,11 +157,14 @@ int tableWithMaxCustomers;
             customer.orders.push_back("Marmalade");
         }
 
-        // Выход из кафе
-        customer.exitTime = currentTime + (numCoffees + numTeas + numCookies + numMarmalades) * 15; // время в минутах
+        // Exit from the cafe
+        customer.exitTime = currentTime + (numCoffees + numTeas + numCookies + numMarmalades) * 15; // time in minutes
         customer.payment = (customer.exitTime - customer.entranceTime) / 60.0 * CafeConstants::HOUR_RATE * customer.numPeople;
 
-        // Вывод информации
+        // ╬сэюты хь юс∙є■ т√Ёєўъє
+        totalRevenue += customer.payment;
+
+        // Information output
         cout << "Time: " << currentTime / 60 << ":" << currentTime % 60 << endl;
         cout << "Manager: " << managers[customer.zone - 1].name << endl;
 
@@ -139,17 +174,61 @@ int tableWithMaxCustomers;
         else {
             cout << "No available tables in Zone " << customer.zone << endl;
         }
+        //--------------------TASKS--------------------
 
-        // Освобождение стола
+    //--------------------task1--------------------
+        for (int i = 0; i < CafeConstants::NUM_MANAGERS; ++i) {
+            if (managerCalls[i] > maxTablesServedByManager) {
+                maxTablesServedByManager = managerCalls[i];
+                managerWithMaxTablesServed = managers[i].name;
+            }
+        }
+        //--------------------task1 end----------------
+
+        //--------------------task2 & 3--------------------
         if (customer.tableNumber != -1) {
             int tableIndex = (customer.zone - 1) * CafeConstants::TABLES_PER_ZONE + (customer.tableNumber - 1);
             tables[tableIndex].occupied = false;
-        }
+            managerCalls[customer.zone - 1]++;
+            tableUsage[tableIndex]++;
 
-        // Увеличение времени
+            double paymentForTable = (customer.exitTime - customer.entranceTime) / 60.0 * CafeConstants::HOUR_RATE * customer.numPeople;
+            if (paymentForTable > maxPayment) {
+                maxPayment = paymentForTable;
+                mostDemandedTableNumber = customer.tableNumber;
+            }
+
+            if (tableUsage[tableIndex] > maxCustomersAtTable) {
+                maxCustomersAtTable = tableUsage[tableIndex];
+                tableWithMaxCustomers = customer.tableNumber; // ╬сэюты хь эюьхЁ ёЄюыр ё эршсюы№°шь ъюышўхёЄтюь яюёхЄшЄхыхщ
+                mostDemandedTableNumber = customer.tableNumber; // ╬сэюты хь эюьхЁ эршсюыхх тюёЄЁхсютрээюую ёЄюыр
+            }
+        }
         currentTime = customer.exitTime;
+
+        if (customer.tableNumber != -1) {
+            if (tableUsage[(customer.zone - 1) * CafeConstants::TABLES_PER_ZONE + (customer.tableNumber - 1)] > maxCustomersAtTable) {
+                maxCustomersAtTable = tableUsage[(customer.zone - 1) * CafeConstants::TABLES_PER_ZONE + (customer.tableNumber - 1)];
+                tableWithMaxCustomers = customer.tableNumber;
+            }
+        }
     }
 
+    //--------------------task2 & 3 end----------------
+
+    cout << "Manager with the most calls: " << managerWithMaxTablesServed << endl;
+    cout << "Most demanded table number: " << mostDemandedTableNumber << endl;
+    cout << "Table with the most Guests: Table " << tableWithMaxCustomers << " with " << maxCustomersAtTable << " guests." << endl;
+
+    // displaying total revenue for the whole day
+    cout << "Total Revenue for the day: " << totalRevenue << " rubles" << endl;
+
+    // displaying total number of guests
+    cout << "Total number of guests: " << totalGuests << endl;
+
+    // Close the file and restore cout
+    outputFile.close();
+    cout.rdbuf(coutbuf); // Reset cout to the original buffer
 
     return 0;
 }
