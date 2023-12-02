@@ -70,7 +70,6 @@ int main() {
     char filename[80];
     strftime(filename, sizeof(filename), "%Y.%m.%d...%H.%M.%S_check.txt", &now);
 
-
     // Create ofstream for writing to the file
     ofstream outputFile(filename);
 
