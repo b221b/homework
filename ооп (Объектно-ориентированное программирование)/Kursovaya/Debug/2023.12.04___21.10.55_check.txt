@@ -1,0 +1,110 @@
+Time: 9:0
+Manager: Manager 3
+----------------------------------------
+| Guests arrived:                     6
+| Hall:                               3
+| Table:                         Table 9
+| Orders: Coffee Tea Tea Tea Cookie Cookie Marmalade 
+| Start time:                        9:0
+| Exit time:                        10:45
+| Payment:                        2100 rubles 
+----------------------------------------
+Time: 10:45
+Manager: Manager 1
+----------------------------------------
+| Guests arrived:                     5
+| Hall:                               1
+| Table:                         Table 3
+| Orders: Coffee Coffee Coffee Tea Tea Cookie Marmalade Marmalade 
+| Start time:                       10:45
+| Exit time:                        12:45
+| Payment:                        2000 rubles 
+----------------------------------------
+Time: 12:45
+Manager: Manager 1
+----------------------------------------
+| Guests arrived:                     8
+| Hall:                               1
+| Table:                         Table 3
+| Orders: Coffee Coffee Coffee Tea Tea Cookie Marmalade Marmalade 
+| Start time:                       12:45
+| Exit time:                        14:45
+| Payment:                        3200 rubles 
+----------------------------------------
+Time: 14:45
+Manager: Manager 3
+----------------------------------------
+| Guests arrived:                     3
+| Hall:                               3
+| Table:                         Table 9
+| Orders: Coffee Coffee Tea Cookie Marmalade 
+| Start time:                       14:45
+| Exit time:                        16:0
+| Payment:                         750 rubles 
+----------------------------------------
+Time: 16:0
+Manager: Manager 1
+----------------------------------------
+| Guests arrived:                     2
+| Hall:                               1
+| Table:                         Table 3
+| Orders: Coffee Tea Cookie Marmalade 
+| Start time:                       16:0
+| Exit time:                        17:0
+| Payment:                         400 rubles 
+----------------------------------------
+Time: 17:0
+Manager: Manager 2
+----------------------------------------
+| Guests arrived:                     2
+| Hall:                               2
+| Table:                         Table 6
+| Orders: Coffee Tea Tea Cookie Cookie Marmalade Marmalade 
+| Start time:                       17:0
+| Exit time:                        18:45
+| Payment:                         700 rubles 
+----------------------------------------
+Time: 18:45
+Manager: Manager 2
+----------------------------------------
+| Guests arrived:                     5
+| Hall:                               2
+| Table:                         Table 6
+| Orders: Coffee Tea Tea Tea Cookie Marmalade 
+| Start time:                       18:45
+| Exit time:                        20:15
+| Payment:                        1500 rubles 
+----------------------------------------
+Time: 20:15
+Manager: Manager 3
+----------------------------------------
+| Guests arrived:                     4
+| Hall:                               3
+| Table:                         Table 9
+| Orders: Coffee Coffee Coffee Tea Tea Cookie Marmalade 
+| Start time:                       20:15
+| Exit time:                        22:0
+| Payment:                        1400 rubles 
+----------------------------------------
+Time: 22:0
+Manager: Manager 2
+----------------------------------------
+| Guests arrived:                     6
+| Hall:                               2
+| Table:                         Table 6
+| Orders: Coffee Coffee Coffee Tea Tea Tea Cookie Cookie Marmalade Marmalade 
+| Start time:                       22:0
+| Exit time:                         0:30
+| Payment:                        3000 rubles 
+----------------------------------------
+ 
+ 
++-------------------------------------------------+
+|                  Dop. zadaniya                  |
++-------------------------------------------------+
+| Manager with the most calls: Manager 1
+| Most demanded table number: 1
+| Table with the most Guests: Table 1 with 3 guests.
+| Total Revenue for the day: 15050 rubles
+| Total number of guests: 9
++-------------------------------------------------+

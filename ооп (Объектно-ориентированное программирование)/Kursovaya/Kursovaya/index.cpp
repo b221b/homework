@@ -64,11 +64,13 @@ void printCheck(const Customer& customer) {
 }
 
 int main() {
+    //----------------------Âûגמה ג פאיכ--------------------------------
+
     time_t t = time(0);
     struct tm now;
     localtime_s(&now, &t);
     char filename[80];
-    strftime(filename, sizeof(filename), "%Y.%m.%d___%H.%M.%S_check.txt", &now);
+    strftime(filename, sizeof(filename), "%Y.%m.%d___%H-%M-%S_check.txt", &now);
 
 
     // Create ofstream for writing to the file
@@ -77,6 +79,8 @@ int main() {
     // Redirect cout to the file
     streambuf* coutbuf = cout.rdbuf(); // Save the original cout buffer
     cout.rdbuf(outputFile.rdbuf());    // Redirect cout to the file
+
+//----------------------Âûגמה ג פאיכ--------------------------------
 
     srand(time(0));
 
@@ -219,22 +223,22 @@ int main() {
     cout << " " << endl;
     cout << " " << endl;
     cout << "+-------------------------------------------------+" << endl;
-    cout << "|                Dop. zadaniya                    |" << endl;
+    cout << "|                  Dop. zadaniya                  |" << endl;
     cout << "+-------------------------------------------------+" << endl;
-    cout << "|Manager with the most calls: " << managerWithMaxTablesServed << endl;
-    cout << "|Most demanded table number: " << mostDemandedTableNumber << endl;
-    cout << "|Table with the most Guests: Table " << tableWithMaxCustomers << " with " << maxCustomersAtTable << " guests." << endl;
-
-    // displaying total revenue for the whole day
-    cout << "|Total Revenue for the day: " << totalRevenue << " rubles" << endl;
-
-    // displaying total number of guests
-    cout << "|Total number of guests: " << totalGuests << endl;
+    cout << "| Manager with the most calls: " << managerWithMaxTablesServed << endl;
+    cout << "| Most demanded table number: " << mostDemandedTableNumber << endl;
+    cout << "| Table with the most Guests: Table " << tableWithMaxCustomers << " with " << maxCustomersAtTable << " guests." << endl;
+    cout << "| Total Revenue for the day: " << totalRevenue << " rubles" << endl;
+    cout << "| Total number of guests: " << totalGuests << endl;
     cout << "+-------------------------------------------------+" << endl;
 
-    // Close the file and restore cout
+    //----------------------Âûגמה ג פאיכ--------------------------------
+
+            // Close the file and restore cout
     outputFile.close();
     cout.rdbuf(coutbuf); // Reset cout to the original buffer
+
+//----------------------Âûגמה ג פאיכ--------------------------------
 
     return 0;
 }
