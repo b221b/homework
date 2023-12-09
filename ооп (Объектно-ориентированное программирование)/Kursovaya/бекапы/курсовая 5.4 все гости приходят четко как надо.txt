@@ -1,0 +1,184 @@
+#include <iostream>
+#include <vector>
+#include <ctime>
+#include <cstdlib>
+#include <iomanip>
+#include <unordered_set>
+
+using namespace std;
+
+class CafeConstants {
+public:
+    static const int NUM_MANAGERS = 3;
+    static const int NUM_ZONES = 3;
+    static const int TABLES_PER_ZONE = 3;
+    static const int CAFE_OPEN_TIME = 9 * 60;
+    static const int CAFE_CLOSE_TIME = 23 * 60;
+    static const int HOUR_RATE = 200;
+};
+
+class Table {
+public:
+    int number;
+    int zone;
+    bool occupied;
+    bool inUse;
+};
+
+class Check {
+public:
+    int startTime;
+    int endTime;
+    int zone;
+    string managerName;
+    int tableNumber;
+    int numPeople;
+    vector<string> orders;
+    double payment;
+};
+
+class Manager {
+public:
+    string name;
+    vector<Check> checks;
+    double totalRevenue;
+};
+
+void printCheck(const Check& check) {
+    cout << setfill('-') << setw(40) << "" << setfill(' ') << endl;
+    cout << setw(20) << left << "| Guests arrived: " << setw(19) << right << check.numPeople << endl;
+    cout << setw(20) << left << "| Hall: " << setw(19) << right << check.zone << endl;
+    cout << setw(20) << left << "| Table: " << setw(19) << right << "Table " << check.tableNumber << endl;
+    cout << "| Orders: ";
+    for (const string& order : check.orders) {
+        cout << order << " ";
+    }
+    cout << setw(18) << right << endl;
+
+    cout << setw(20) << left << "| Start time: " << setw(18) << right << check.startTime / 60 << ":" << check.startTime % 60 << endl;
+
+    int exitHours = check.endTime / 60 % 24;
+    int exitMinutes = check.endTime % 60;
+    cout << setw(20) << left << "| Exit time: " << setw(18) << right << exitHours << ":" << exitMinutes << endl;
+
+    cout << setw(20) << left << "| Payment: " << setw(18) << right << check.payment << " rubles " << endl;
+    cout << setfill('-') << setw(40) << "" << setfill(' ') << endl;
+}
+
+int main() {
+    srand(time(0));
+
+    vector<Manager> managers(CafeConstants::NUM_MANAGERS);
+    vector<Table> tables(CafeConstants::NUM_ZONES * CafeConstants::TABLES_PER_ZONE);
+
+    for (int i = 0; i < CafeConstants::NUM_ZONES * CafeConstants::TABLES_PER_ZONE; ++i) {
+        tables[i].zone = i / CafeConstants::TABLES_PER_ZONE + 1;
+        tables[i].number = i % CafeConstants::TABLES_PER_ZONE + 1;
+        tables[i].occupied = false;
+        tables[i].inUse = false;  // Initialize inUse variable to false
+    }
+
+    int currentTime = CafeConstants::CAFE_OPEN_TIME;
+
+    //-------------------------------
+
+    //task 1
+    int maxTablesServedByManager = 0;
+    string managerWithMaxTablesServed;
+
+    //task 2
+    int maxTableUsage = 0;
+    int mostDemandedTableNumber = 0;
+
+    //task 3
+    int maxCustomersAtTable = 0;
+    int tableWithMaxCustomers = 0;
+
+    int managerCalls[CafeConstants::NUM_MANAGERS] = { 0 };
+    int tableUsage[CafeConstants::NUM_ZONES * CafeConstants::TABLES_PER_ZONE] = { 0 };
+
+    double maxPayment = 0;
+
+    double totalRevenue = 0;
+
+
+    //-------------------------------
+
+    unordered_set<int> usedTables;
+
+    while (currentTime <= CafeConstants::CAFE_CLOSE_TIME) {
+        int numGroups = rand() % 5 + 1;
+
+        for (int group = 0; group < numGroups; ++group) {
+            int numPeople = rand() % 8 + 1;
+            int zone = rand() % CafeConstants::NUM_ZONES + 1;
+
+            // Vector to store available table numbers for the current round
+            vector<int> availableTables;
+
+            for (int i = 0; i < CafeConstants::TABLES_PER_ZONE; ++i) {
+                int tableNumber = (zone - 1) * CafeConstants::TABLES_PER_ZONE + i + 1;
+
+                // Check if the table is not in use and not already used in the current round
+                if (!tables[tableNumber - 1].inUse && usedTables.find(tableNumber) == usedTables.end()) {
+                    availableTables.push_back(tableNumber);
+                }
+            }
+
+            if (!availableTables.empty()) {
+                // Randomly select a table from the available tables
+                int randomTableIndex = rand() % availableTables.size();
+                int selectedTableNumber = availableTables[randomTableIndex];
+
+                int tableIndex = selectedTableNumber - 1;
+
+                tables[tableIndex].inUse = true;
+                usedTables.insert(selectedTableNumber);
+
+                Check check;
+                check.startTime = currentTime;
+                check.numPeople = numPeople;
+                check.zone = zone;
+                check.tableNumber = selectedTableNumber;
+
+                    int numCoffees = rand() % 3 + 1;
+                    int numTeas = rand() % 3 + 1;
+                    int numCookies = rand() % 2 + 1;
+                    int numMarmalades = rand() % 2 + 1;
+
+                    for (int i = 0; i < numCoffees; ++i) {
+                        check.orders.push_back("Coffee");
+                    }
+
+                    for (int i = 0; i < numTeas; ++i) {
+                        check.orders.push_back("Tea");
+                    }
+
+                    for (int i = 0; i < numCookies; ++i) {
+                        check.orders.push_back("Cookie");
+                    }
+
+                    for (int i = 0; i < numMarmalades; ++i) {
+                        check.orders.push_back("Marmalade");
+                    }
+
+                    check.endTime = currentTime + (numCoffees + numTeas + numCookies + numMarmalades) * 15;
+                    check.payment = (check.endTime - check.startTime) / 60.0 * CafeConstants::HOUR_RATE * numPeople;
+
+                    // Randomly select manager name
+                    int randomManagerIndex = rand() % CafeConstants::NUM_MANAGERS + 1;  // Adding 1 to get values between 1 and 3
+                    cout << "Time: " << currentTime / 60 << ":" << currentTime % 60 << endl;
+                    cout << "Manager: Manager " << randomManagerIndex << endl;
+                    printCheck(check);
+
+                    tables[tableIndex].inUse = false;
+                    usedTables.erase(selectedTableNumber);
+            }
+        }
+        currentTime += 30; // Increment by 30 minutes
+    }
+
+    //--------------------task2 & 3 end----------------
+
+    return 0;
+}
